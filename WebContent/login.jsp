@@ -3,7 +3,15 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+
+
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<link rel="stylesheet" href="http://foundation.zurb.com/assets/css/templates/foundation.css">
+<script src="http://foundation.zurb.com/assets/js/modernizr.js"></script>
+<script src="http://foundation.zurb.com/assets/js/jquery.js"></script>
+<script src="http://foundation.zurb.com/assets/js/templates/foundation.js"></script>
+
 <title>CERTUS</title>
 </head>
 <body>
