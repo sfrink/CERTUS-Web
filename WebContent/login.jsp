@@ -2,19 +2,7 @@
 
     <!-- Main Content Section -->
     <!-- This has been source ordered to come first in the markup (and on small devices) but to be to the right of the nav on larger screens -->
-      
-	<%
-	
-	if(request.isSecure()) {
-		out.print("Secure");
-	} else {
-		out.print("not secure");
-	}
-	
-	
-	%>
-
-
+  
 
     <h3>Welcome to CERTUS!</h3>
     <br>
