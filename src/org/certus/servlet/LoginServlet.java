@@ -61,9 +61,9 @@ public class LoginServlet extends HttpServlet {
 				System.setSecurityManager(new RMISecurityManager());
 			}
 			
-			String host = "128.164.193.234";
+//			String host = "128.164.193.234";
 			
-//			String host = "127.0.0.1";
+			String host = "127.0.0.1";
 
 			
 			
