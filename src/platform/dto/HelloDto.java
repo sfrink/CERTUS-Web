@@ -1,4 +1,4 @@
-package org.certus.dto;
+package platform.dto;
 
 public class HelloDto {
 

@@ -1,6 +1,6 @@
-package org.certus.service;
+package platform.service;
 
-import org.certus.dto.HelloDto;
+import platform.dto.HelloDto;
 
 public class HelloService {
 
