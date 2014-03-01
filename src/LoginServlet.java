@@ -41,8 +41,8 @@ public class LoginServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		String basePath = "/Users/dkarmazi/Desktop/files/";
-//		System.getProperties().setProperty("java.security.policy", basePath + "policy");
+//		String basePath = "/Users/dkarmazi/Desktop/files/";
+		String basePath = "/home/dkarmazi/files/";
 		System.getProperties().setProperty("javax.net.ssl.trustStore", basePath + "ClientTrustedCerts");
 		System.getProperties().setProperty("javax.net.ssl.trustStorePassword", "CertusCertPass");
 				
