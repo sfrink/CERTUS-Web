@@ -1,16 +1,15 @@
+package platform.servlets;
+
 
 
 import java.io.IOException;
-import java.net.InetAddress;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import rmi.Initializer;
 
 
 
@@ -41,65 +40,14 @@ public class LoginServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-//		String basePath = "/Users/dkarmazi/Desktop/files/";
-		String basePath = "/home/dkarmazi/files/";
-		System.getProperties().setProperty("javax.net.ssl.trustStore", basePath + "ClientTrustedCerts");
-		System.getProperties().setProperty("javax.net.ssl.trustStorePassword", "CertusCertPass");
-				
-		try {
-			System.getSecurityManager();
-//			if (System.getSecurityManager() == null) {
-//				System.setSecurityManager(new RMISecurityManager());
-//			}
+		String input = request.getParameter("username");
+		String message = Initializer.rmi.sayHello(input);
+		
+		request.setAttribute("atr", message);
+		RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
+		rd.forward(request, response);
+		return;
 			
-			String host = "127.0.0.1";
-
-			int PORT = 2019;
-
-			String input = request.getParameter("username");
-			
-			Registry registry = LocateRegistry.getRegistry(
-			InetAddress.getByName(host).getHostName(), PORT,
-			new RMISSLClientSocketFactory());
-
-		
-			// "serverInterface" is the identifier that we'll use to refer
-			// to the remote object that implements the "serverInterface"
-			// interface
-			ServerInterface serverInterface = (ServerInterface) registry.lookup("CertusServer");
-
-			
-			String message = "blank";
-			
-			message = serverInterface.sayHello(input);
-			
-			request.setAttribute("atr", message);
-			RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
-			rd.forward(request, response);
-			return;
-			
-			
-			
-			
-			
-			
-		} catch (Exception e) {
-			System.out.println("Certus Client exception: " + e.getMessage());
-			e.printStackTrace();
-		}
-
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 //		String username = request.getParameter("username");
 //		String password = request.getParameter("password");
 		
