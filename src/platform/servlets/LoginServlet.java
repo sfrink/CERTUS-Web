@@ -3,12 +3,16 @@ package platform.servlets;
 
 
 import java.io.IOException;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import platform.dto.HelloDto;
+import platform.service.HelloService;
 import rmi.Initializer;
 
 
@@ -41,7 +45,10 @@ public class LoginServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		String input = request.getParameter("username");
-		String message = Initializer.rmi.sayHello(input);
+	
+		HelloService hello = new HelloService();
+		HelloDto helloDto = hello.getHello(input);
+		String message = helloDto.getText();
 		
 		request.setAttribute("atr", message);
 		RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
