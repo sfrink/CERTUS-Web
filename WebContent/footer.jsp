@@ -1,20 +1,21 @@
  <!-- Footer -->
-
   <footer class="row">
     <div class="large-12 columns">
       <hr />
       <div class="row">
         <div class="large-6 columns">
-          <p>© Copyright no one at all. Go to town.</p>
+          <p>© CSCI-6908 CERTUS Voting System</p>
         </div>
         <div class="large-6 columns">
           <ul class="inline-list right">
-            <li><a href="#">Section 1</a></li>
-            <li><a href="#">Section 2</a></li>
-            <li><a href="#">Section 3</a></li>
-            <li><a href="#">Section 4</a></li>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Contact</a></li>
           </ul>
         </div>
       </div>
     </div> 
   </footer>
+  
+<script>$(document).foundation();</script>
+</body>
+</html> 

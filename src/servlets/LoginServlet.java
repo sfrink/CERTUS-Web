@@ -1,4 +1,4 @@
-package platform.servlets;
+package servlets;
 
 
 
@@ -11,9 +11,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import platform.dto.HelloDto;
-import platform.service.HelloService;
-import rmi.Initializer;
+import dto.Validator;
+import service.LoginService;
 
 
 
@@ -43,35 +42,24 @@ public class LoginServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-		String input = request.getParameter("username");
-	
-		HelloService hello = new HelloService();
-		HelloDto helloDto = hello.getHello(input);
-		String message = helloDto.getText();
-		
-		request.setAttribute("atr", message);
-		RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
-		rd.forward(request, response);
-		return;
 			
-//		String username = request.getParameter("username");
-//		String password = request.getParameter("password");
+		String username = request.getParameter("username");
+		String password = request.getParameter("password");
 		
-//		Validator v = LoginService.authenticate(username, password);
-//		request.setAttribute("s_status", v.getStatus());
-//
-//		if(v.isVerified()) {
-//			RequestDispatcher rd = request.getRequestDispatcher("editList.jsp");
-//			rd.forward(request, response);
-//			return;
-//		} else {
-//			RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
-//			rd.forward(request, response);
-//			return;
-//		}
-
+		Validator v = LoginService.authenticate(username, password);
+		request.setAttribute("message", v.getStatus());
+		request.setAttribute("username", username);
 		
+		if(v.isVerified()) {
+			request.setAttribute("state", "success" );
+			RequestDispatcher rd = request.getRequestDispatcher("main.jsp");
+			rd.forward(request, response);
+			return;
+		} else {
+			request.setAttribute("state", "fail" );
+			RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
+			rd.forward(request, response);
+			return;
+		}
 	}
-
 }

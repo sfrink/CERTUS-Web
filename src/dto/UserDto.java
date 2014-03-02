@@ -1,4 +1,4 @@
-package platform.dto;
+package dto;
 
 public class UserDto {
 	

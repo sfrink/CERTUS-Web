@@ -1,8 +1,8 @@
-package platform.service;
+package service;
 
 import java.rmi.RemoteException;
 
-import platform.dto.HelloDto;
+import dto.HelloDto;
 import rmi.Initializer;
 
 public class HelloService {
