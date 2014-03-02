@@ -4,8 +4,8 @@
 
 <%
 
-String username = request.getAttribute("username") != null ? (String) request.getAttribute("username") : "jgalt@jj.com";
-String password = "cdsnJewqq1";
+String username = request.getAttribute("username") != null ? (String) request.getAttribute("username") : "user@certus.org";
+String password = "password";
 
 
 String state = (String) request.getAttribute("state");
