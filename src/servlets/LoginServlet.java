@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import dto.UserDto;
 import dto.Validator;
 import service.LoginService;
 
@@ -47,16 +48,20 @@ public class LoginServlet extends HttpServlet {
 		String password = request.getParameter("password");
 		
 		Validator v = LoginService.authenticate(username, password);
-		request.setAttribute("message", v.getStatus());
 		request.setAttribute("username", username);
 		
 		if(v.isVerified()) {
+			UserDto u = (UserDto) v.getObject();
+			request.setAttribute("message", v.getStatus() + ", " + u.getFirst_name() + " " + u.getLast_name());
+
+			
 			request.setAttribute("state", "success" );
 			RequestDispatcher rd = request.getRequestDispatcher("main.jsp");
 			rd.forward(request, response);
 			return;
 		} else {
 			request.setAttribute("state", "fail" );
+			request.setAttribute("message", v.getStatus());
 			RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
 			rd.forward(request, response);
 			return;

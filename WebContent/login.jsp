@@ -26,20 +26,20 @@ if(state != null && state.equals("fail")) {
   
   
 <div class="row">
-  <div class="large-6 columns">
+  <div class="large-6 medium-6 columns">
 <form action="login" method="post">
   <fieldset>
     <legend>Authorization</legend>
 
     <div class="row">
-      <div class="large-6 columns">
+      <div class="large-6 medium-6 columns">
       	<label>Email</label>
 		<input type="text" name="username" value="<%=username%>"/>      
       </div>
     </div>
 
     <div class="row">
-      <div class="large-6 columns">
+      <div class="large-6 medium-6 columns">
 		<label>Password</label>
 		<input type="password" name="password" value="<%=password%>"/>
       </div>
