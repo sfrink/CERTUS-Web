@@ -4,7 +4,7 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 import dto.*;
-import enumeration.CandidateStatus;
+import enumeration.Status;
 import rmi.Initializer;
 
 public class CandidateService {
@@ -30,7 +30,7 @@ public class CandidateService {
     	return candidates;
     }
     
-    public static ArrayList<CandidateDto> getCandidatesForElection(int election_id, CandidateStatus candidateStatus){
+    public static ArrayList<CandidateDto> getCandidatesForElection(int election_id, Status candidateStatus){
     	ArrayList<CandidateDto> candidates = new ArrayList<CandidateDto>();
     	try {
 			candidates = Initializer.rmi.getCandidatesOfElection(election_id, candidateStatus);
