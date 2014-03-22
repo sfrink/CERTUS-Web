@@ -67,4 +67,76 @@ public class ElectionService {
 		}
 		return validator;
     }
+    
+    public static Validator addElection(String name, int ownerId)
+    {
+    	Validator validator = new Validator();
+    	
+		try {
+			validator  = Initializer.rmi.addElection(name, ownerId);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		return validator;
+    }
+    
+    public static Validator editElection(ElectionDto election)
+    {
+    	Validator validator = new Validator();
+    	
+		try {
+			validator  = Initializer.rmi.editElection(election);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		return validator;
+    }
+    
+    public static Validator openElection(int electionId)
+    {
+    	Validator validator = new Validator();
+    	
+		try {
+			validator  = Initializer.rmi.editElectionStatus(electionId, ElectionStatus.OPEN);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		return validator;
+    }
+    
+    public static Validator closeElection(int electionId)
+    {
+    	Validator validator = new Validator();
+    	
+		try {
+			validator  = Initializer.rmi.editElectionStatus(electionId, ElectionStatus.CLOSED);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		return validator;
+    }
+    
+    public static Validator disableElection(int electionId)
+    {
+    	Validator validator = new Validator();
+    	
+		try {
+			validator  = Initializer.rmi.editElectionStatus(electionId, ElectionStatus.DELETED);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		return validator;
+    }
+    
+    public static Validator publishElectionResults(int electionId)
+    {
+    	Validator validator = new Validator();
+    	
+		try {
+			validator  = Initializer.rmi.editElectionStatus(electionId, ElectionStatus.PUBLISHED);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		return validator;
+    }
 }
