@@ -10,38 +10,49 @@ import enumeration.ElectionStatus;
 
 public class ElectionService {
 	
-	public static ElectionDto getElection(int id) {
-		ElectionDto electionDto = new ElectionDto();
+	public static Validator selectElection(int id) {
+		Validator validator = null;
 		try {
-			Validator validator = Initializer.rmi.selectElection(id);
-			electionDto = (ElectionDto)validator.getObject();
+			validator = Initializer.rmi.selectElection(id);
+			
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
-		return electionDto;
+		return validator;
 	}
 	
-    public static ArrayList<ElectionDto> selectElections(ElectionStatus electionStatus) {
+    public static Validator selectElections(ElectionStatus electionStatus) {
+    	Validator validator = null;
     	
-    	ArrayList<ElectionDto> elections = new ArrayList<ElectionDto>();
 		try {
-			Validator validator  = Initializer.rmi.selectElections(electionStatus);
-			elections = (ArrayList<ElectionDto>)validator.getObject();
+			validator  = Initializer.rmi.selectElections(electionStatus);
+			
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
-		return elections;
+		return validator;
     }
     
-    public static ArrayList<ElectionDto> selectElections() {
-    	ArrayList<ElectionDto> elections = new ArrayList<ElectionDto>();
+    public static Validator selectElections() {
+    	Validator validator = null;
 		try {
-			Validator validator = Initializer.rmi.selectElections();
-			elections = (ArrayList<ElectionDto>)validator.getObject();
+			validator = Initializer.rmi.selectElections();
+			 
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
-		return elections;
+		return validator;
     }
 
+    public static Validator selectElectionsOwnedByUser(int electionOwnerId, ElectionStatus electionStatus) {
+    	Validator validator = null;
+    	
+		try {
+			validator  = Initializer.rmi.selectElectionsOwnedByUser(electionOwnerId, electionStatus);
+			
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		return validator;
+    }
 }

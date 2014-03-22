@@ -9,37 +9,37 @@ import rmi.Initializer;
 
 public class CandidateService {
 
-	public static CandidateDto getCandidate(int id){
-		CandidateDto candidateDto = new CandidateDto();
+	public static Validator selectCandidate(int id){
+		Validator validator = null;
 		try {
-			Validator validator = Initializer.rmi.selectCandidate(id);
-			candidateDto = (CandidateDto) validator.getObject();
+			validator = Initializer.rmi.selectCandidate(id);
+			
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
 		
-		return candidateDto;
+		return validator;
 	}
 	
-    public static ArrayList<CandidateDto> getCandidatesForElection(int election_id){
-    	ArrayList<CandidateDto> candidates = new ArrayList<CandidateDto>();
+    public static Validator selectCandidatesForElection(int election_id){
+    	Validator validator = null;
     	try {
-    		Validator validator = Initializer.rmi.selectCandidatesOfElection(election_id);
-    		candidates =  (ArrayList<CandidateDto>)validator.getObject();	
+    		validator = Initializer.rmi.selectCandidatesOfElection(election_id);
+    		
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
-    	return candidates;
+    	return validator;
     }
     
-    public static ArrayList<CandidateDto> getCandidatesForElection(int election_id, Status candidateStatus){
-    	ArrayList<CandidateDto> candidates = new ArrayList<CandidateDto>();
+    public static Validator selectCandidatesForElection(int election_id, Status candidateStatus){
+    	Validator validator = null;
     	try {
-    		Validator validator = Initializer.rmi.selectCandidatesOfElection(election_id, candidateStatus);
-    		candidates =  (ArrayList<CandidateDto>)validator.getObject();
+    		validator = Initializer.rmi.selectCandidatesOfElection(election_id, candidateStatus);
+    		
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
-    	return candidates;
+    	return validator;
     }
 }
