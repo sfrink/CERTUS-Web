@@ -68,12 +68,12 @@ public class ElectionService {
 		return validator;
     }
     
-    public static Validator addElection(String name, int ownerId)
+    public static Validator addElectionWithCandidates(ElectionDto electionDto)
     {
     	Validator validator = new Validator();
     	
 		try {
-			validator  = Initializer.rmi.addElection(name, ownerId);
+			validator  = Initializer.rmi.addElectiodWithCandidates(electionDto);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
