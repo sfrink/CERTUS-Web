@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import dto.UserDto;
 import dto.Validator;
+import service.HeaderService;
 import service.LoginService;
 
 
@@ -54,6 +55,8 @@ public class LoginServlet extends HttpServlet {
 			UserDto u = (UserDto) v.getObject();
 			request.setAttribute("message", v.getStatus() + ", " + u.getFirst_name() + " " + u.getLast_name());
 
+			HeaderService.authenticate();
+			HeaderService.setUserId(u.getUser_id());
 			
 			request.setAttribute("state", "success" );
 			RequestDispatcher rd = request.getRequestDispatcher("main.jsp");

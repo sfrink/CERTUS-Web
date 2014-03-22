@@ -24,6 +24,10 @@ if(state != null && state.equals("success")) {
 
 	<h3>Welcome   </h3>
 
+	<a href="election" class="button radius">Add / Edit Elections</a>
+    <br>
+
+
   </div>
 </div>
 

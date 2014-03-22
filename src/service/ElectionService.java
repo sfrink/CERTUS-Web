@@ -57,11 +57,11 @@ public class ElectionService {
     }
     
     public static Validator selectElectionsOwnedByUser(int electionOwnerId) {
-    	Validator validator = null;
+    	
+    	Validator validator = new Validator();
     	
 		try {
 			validator  = Initializer.rmi.selectElectionsOwnedByUser(electionOwnerId);
-			
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
