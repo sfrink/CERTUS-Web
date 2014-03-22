@@ -55,4 +55,16 @@ public class ElectionService {
 		}
 		return validator;
     }
+    
+    public static Validator selectElectionsOwnedByUser(int electionOwnerId) {
+    	Validator validator = null;
+    	
+		try {
+			validator  = Initializer.rmi.selectElectionsOwnedByUser(electionOwnerId);
+			
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		return validator;
+    }
 }
