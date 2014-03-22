@@ -12,7 +12,8 @@ public class CandidateService {
 	public static CandidateDto getCandidate(int id){
 		CandidateDto candidateDto = new CandidateDto();
 		try {
-			candidateDto = Initializer.rmi.getCandidate(id);
+			Validator validator = Initializer.rmi.selectCandidate(id);
+			candidateDto = (CandidateDto) validator.getObject();
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
@@ -23,7 +24,8 @@ public class CandidateService {
     public static ArrayList<CandidateDto> getCandidatesForElection(int election_id){
     	ArrayList<CandidateDto> candidates = new ArrayList<CandidateDto>();
     	try {
-			candidates = Initializer.rmi.getCandidatesOfElection(election_id);
+    		Validator validator = Initializer.rmi.selectCandidatesOfElection(election_id);
+    		candidates =  (ArrayList<CandidateDto>)validator.getObject();	
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
@@ -33,7 +35,8 @@ public class CandidateService {
     public static ArrayList<CandidateDto> getCandidatesForElection(int election_id, Status candidateStatus){
     	ArrayList<CandidateDto> candidates = new ArrayList<CandidateDto>();
     	try {
-			candidates = Initializer.rmi.getCandidatesOfElection(election_id, candidateStatus);
+    		Validator validator = Initializer.rmi.selectCandidatesOfElection(election_id, candidateStatus);
+    		candidates =  (ArrayList<CandidateDto>)validator.getObject();
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
