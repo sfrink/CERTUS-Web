@@ -73,7 +73,7 @@ public class ElectionService {
     	Validator validator = new Validator();
     	
 		try {
-			validator  = Initializer.rmi.addElectiodWithCandidates(electionDto);
+			validator  = Initializer.rmi.addElectionWithCandidates(electionDto);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}

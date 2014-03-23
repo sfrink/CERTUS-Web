@@ -33,6 +33,8 @@ public class ElectionServlet extends HttpServlet {
 	private String mode = "1";
 	private String messageAlert = "";
 	private String messageLabel = "";
+	
+	
 
        
     /**
@@ -65,7 +67,8 @@ public class ElectionServlet extends HttpServlet {
 						editElection = (ElectionDto) vEditElection.getObject();
 						editElectionCandidates = (ArrayList<CandidateDto>) vEditElectionCandidates.getObject();
 						editElection.setCandidateList(editElectionCandidates);
-						
+						request.setAttribute("edit_election", drawNewElection(editElection));
+
 						mode = "3";
 					} else {
 						editMessage = "1" + vEditElectionCandidates.getStatus();
@@ -78,14 +81,12 @@ public class ElectionServlet extends HttpServlet {
 			}
 			
 			
-			System.out.println(editMessage);
 			
 			
 			messageLabel = drawMessageLabel("Please fill in all required labels", "secondary");
 			request.setAttribute("mode", mode);
 			request.setAttribute("existing_elections", drawExistingElections());
 			request.setAttribute("new_election", drawNewElection(null));
-			request.setAttribute("edit_election", drawNewElection(editElection));
 			request.setAttribute("message_alert", messageAlert);
 			request.setAttribute("message_label", messageLabel);
 
@@ -110,12 +111,14 @@ public class ElectionServlet extends HttpServlet {
 		
 		ElectionDto newElection = new ElectionDto();		
 		ArrayList<CandidateDto> newCandidates = new ArrayList<CandidateDto>();
-				
+
+		// get information for election
 		newElection.setElectionName(request.getParameter("new_election_name"));
 		newElection.setOwnerId(HeaderService.getUserId());
 		
-		if(request.getParameterValues("new_candidate_names") != null) {
-			String[] new_candidates_names = request.getParameterValues("new_candidate_names");
+		// get information for candidates
+		if(request.getParameterValues("rowNewCandName") != null) {
+			String[] new_candidates_names = request.getParameterValues("rowNewCandName");
 
 			for(int i = 0; i < new_candidates_names.length; i++) {
 				CandidateDto c = new CandidateDto();
@@ -226,8 +229,16 @@ public class ElectionServlet extends HttpServlet {
 	
 	
 	public String drawNewElection(ElectionDto e) {
-		String out = "";		
-
+		String out = "";
+		// new candidate mode by default;
+		String editingMode       = "save_new_election";
+		String candRowId         = "rowNewCandId";
+		String candRowName       = "rowNewCandName";
+		String candHolderId      = "rowNewCandHolder";
+		String funcNewCandAdd    = "addNewCandRow";
+		String funcNewCandRemove = "removeNewCandRow";
+		
+		
 		ArrayList<CandidateDto> candidates =  new ArrayList<CandidateDto>();
 
 		if(e == null) {
@@ -240,10 +251,16 @@ public class ElectionServlet extends HttpServlet {
 		if(e.getElectionName() == null)
 			e.setElectionName("");
 		
-		String editingMode = "save_new_election";
 		if(e.getElectionId() > 0) {
-			editingMode = "save_edited_election";
+			// editing existing candidate mode
+			editingMode       = "save_edited_election";
+			candRowId         = "rowEditCandId";
+			candRowName       = "rowEditCandName";
+			candHolderId      = "rowEditCandHolder";
+			funcNewCandAdd    = "addEditCandRow";
+			funcNewCandRemove = "removeEditCandRow";
 		}
+		
 		
 		// draw election info
 		out += "<form action=\"election\" method=\"post\">";
@@ -264,14 +281,14 @@ public class ElectionServlet extends HttpServlet {
 		// draw candidates info
 		out += "<fieldset>";
 		out += "<legend>Add candidates</legend>";
-		out += "<div id=\"itemRows\">";
+		out += "<div id=\"" + candHolderId + "\">";
 		
 		int i = 1;
 	    for (CandidateDto c : candidates) {
-			out += "<div id=\"rowNum" + i + "\">";
+			out += "<div id=\"" + candRowId +  + i + "\">";
 	    	out += "<label>Candidate Name</label>";
-	    	out += "<input type=\"text\" name=\"new_candidate_names\" value=\"" + c.getCandidateName() + "\" />";
-	    	out += "<a class=\"button tiny radius alert\" href=\"javascript:void(0)\" onclick=\"removeRow(" + i + ");\">Remove</a>";
+	    	out += "<input type=\"text\" name=\"" + candRowName + "\" value=\"" + c.getCandidateName() + "\" />";
+	    	out += "<a class=\"button tiny radius alert\" href=\"javascript:void(0)\" onclick=\"" + funcNewCandRemove + "(" + i + ");\">Remove</a>";
 	    	out += "</div>";
 
 			i++;
@@ -279,11 +296,11 @@ public class ElectionServlet extends HttpServlet {
 		           
 		if(candidates.size() == 0) {
 			out += "<label>Candidate Name</label>";
-			out += "<input type=\"text\" name=\"new_candidate_names\" value=\"\" />";
+			out += "<input type=\"text\" name=\"" + candRowName + "\" value=\" \" />";
 		}
 		        
 		out += "</div>";
-		out += "<input onclick=\"addRow(this.form);\" type=\"button\" value=\"Add more candidates\" class=\"button tiny radius\" />";
+		out += "<input onclick=\"" + funcNewCandAdd + "(this.form);\" type=\"button\" value=\"Add more candidates\" class=\"button tiny radius\" />";
 		 
 		out += "</fieldset>"; 
 		out += "</div>"; 
