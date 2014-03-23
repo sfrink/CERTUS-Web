@@ -22,19 +22,17 @@ if(state != null && state.equals("success")) {
 <div class="row">
   <div class="large-12 columns">
 
-	<h3>Welcome   </h3>
+	<h3>Welcome Screen | Authorized User</h3>
 
-	<a href="election" class="button radius">Add / Edit Elections</a>
-    <br>
-
-
+	<div class="row">
+	  <a href="election" class="button radius">Add / Edit Elections</a>
+	</div>
+	
+	<div class="row">  
+		<a href="voting" class="button radius">Vote</a>
+	</div>
   </div>
 </div>
-
-
-
-
-
 
 
 
