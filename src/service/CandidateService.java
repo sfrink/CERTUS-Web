@@ -42,7 +42,7 @@ public class CandidateService {
 		}
     	return validator;
     }
-    
+    /*
     public static Validator addCandidatesNames(ArrayList<String> names, int electionId)
     {
     	Validator validator = new Validator();
@@ -66,7 +66,7 @@ public class CandidateService {
 		}
 		return validator;
     }
-    
+   
     public static Validator editCandidate(CandidateDto candidate)
     {
     	Validator validator = new Validator();
@@ -78,7 +78,7 @@ public class CandidateService {
 		}
 		return validator;
     }
-    
+     */
     public static Validator enableCandidate(int candidateId)
     {
     	Validator validator = new Validator();
