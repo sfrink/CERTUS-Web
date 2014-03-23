@@ -73,19 +73,19 @@ public class ElectionService {
     	Validator validator = new Validator();
     	
 		try {
-			validator  = Initializer.rmi.addElectiodWithCandidates(electionDto);
+			validator  = Initializer.rmi.addElectionWithCandidates(electionDto);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
 		return validator;
     }
     
-    public static Validator editElection(ElectionDto election)
+    public static Validator editElectionWithCandidates(ElectionDto election)
     {
     	Validator validator = new Validator();
     	
 		try {
-			validator  = Initializer.rmi.editElection(election);
+			validator  = Initializer.rmi.editElectionWithCandidates(election);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
