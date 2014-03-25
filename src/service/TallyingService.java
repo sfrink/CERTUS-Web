@@ -14,17 +14,26 @@ import dto.Validator;
 public class TallyingService
 {
 
-	public static Validator tally(int electionId) {
+	/**
+	 * @param electionId
+	 * @return Validator with ElectionDto
+	 */
+	public static Validator Results(int electionId) {
 		Validator validator = new Validator();
 
 		try {
-			validator = Initializer.rmi.voteProgressStatusForElection(electionId);
+			validator = Initializer.rmi.selectResults(electionId);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
 		return validator;
 	}
 
+	
+	/**
+	 * @param electionId
+	 * @return Validator with ElectionProgressDto
+	 */
 	public static Validator voteProgressStatusForElection(int electionId){
 		Validator validator = new Validator();
 
