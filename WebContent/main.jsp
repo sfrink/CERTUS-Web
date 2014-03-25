@@ -31,6 +31,11 @@ if(state != null && state.equals("success")) {
 	<div class="row">  
 		<a href="voting" class="button radius">Vote</a>
 	</div>
+	
+	<div class="row">
+		<a href="tallying" class="button radius">Tallying</a>
+	</div>
+	
   </div>
 </div>
 

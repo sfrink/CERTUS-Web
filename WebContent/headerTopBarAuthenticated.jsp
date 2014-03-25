@@ -3,7 +3,7 @@
       <!-- Title Area -->
       <li class="name">
         <h1>
-          <a href="#">CERTUS VOTING SYSTEM</a>
+          <a href="login">CERTUS VOTING SYSTEM</a>
         </h1>
       </li>
       <li class="toggle-topbar menu-icon"><a href="#"><span>menu</span></a></li>

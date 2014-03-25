@@ -2,53 +2,39 @@
 <jsp:include page="headerTopBarAuthenticated.jsp" /> 
 
 <%
-	String allElections = (String) request.getAttribute("all_elections");
-
-
-
-
+String mode = (String) request.getAttribute("mode");	
+String messageAlert = (String) request.getAttribute("message_alert");
+String messageLabel = (String) request.getAttribute("message_label");
+String outElections = (String) request.getAttribute("out_elections");
+String outModal = (String) request.getAttribute("out_modal");
 %>
 
-
-
-
-
+<%=messageAlert %>
 
 <div class="row">
 	<div class="large-12 columns">
+    	<h3>Voting</h3>
 
-    	<h3>Voting Screen | Authenticated User</h3>
+		<%=outElections %>	
+	</div>	
 
-	<div class="row">
-		<%=allElections %>
-	
-		<span>Line1</span>
-    </div>
-	<div class="row">
-		<span>Line2</span>
-    </div>
+	<div id="voting_modal" class="reveal-modal" data-reveal>
+		<div class="row">
+			<div class="large-6 large-centered medium-6 large-centered columns">
+				<%=messageLabel %>
+			</div>
+		</div>
 		
-
-
-
-
-
+		<%=outModal %>
+		<a class="close-reveal-modal">&#215;</a>
 	</div>
 </div>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <jsp:include page="footer.jsp" />
+
+<% if(mode.equals("2")) { %>
+  <script>$('#voting_modal').foundation('reveal', 'open');</script>
+<% } %>
+
+

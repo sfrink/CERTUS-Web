@@ -16,7 +16,7 @@ function addEditCandRow(frm) {
 	editCandNum ++;
 	var candRowId = "rowEditCandId";
 	var candRowName = "rowEditCandName";
-	var candRowHolderId = "rowEditCandHolder";
+	var candHolderId = "rowEditCandHolder";
 	
 	var row = '<div id="' + candRowId + editCandNum + '"><label>Candidate Name</label><input type="text" name="'+ candRowName +'" value=""><a class="button tiny radius alert" href="javascript:void(0)" onclick="removeEditCandRow('+editCandNum+');">Remove</a></div>';
 		
@@ -32,5 +32,5 @@ function removeNewCandRow(rnum) {
 function removeEditCandRow(rnum) {
 	var candRowId = "rowEditCandId";
 
-	jQuery('#' + candRowId + rnum).remove();
+	jQuery('#' + candRowId + rnum).hide();
 }

@@ -59,7 +59,7 @@ public class ElectionServlet extends HttpServlet {
 			ArrayList<CandidateDto> editElectionCandidates = null;
 
 			if(request.getParameter("election") != null) {
-				System.out.println("inside if");
+
 				int electionId = Integer.parseInt(request.getParameter("election"));
 				Validator vEditElection = ElectionService.selectElection(electionId);
 				
@@ -80,11 +80,8 @@ public class ElectionServlet extends HttpServlet {
 					editMessage = "2" + vEditElection.getStatus();
 				}
 			} else {
-				System.out.println("inside else");
 				editMessage = "Incorrect election_id";
 			}
-			
-			System.out.println("editMessage: " + editMessage);
 			
 			
 			messageLabel = drawMessageLabel("Please fill in all required labels", "secondary");
@@ -121,41 +118,17 @@ public class ElectionServlet extends HttpServlet {
 		newElection.setOwnerId(HeaderService.getUserId());
 		newElection.setElectionId(Integer.parseInt(request.getParameter("election_id")));
 		
-		// get information for candidates
-		if(request.getParameterValues("rowNewCandName") != null) {
-			String[] new_candidates_names = request.getParameterValues("rowNewCandName");
-
-			String raw_candidate_id;
-			int candidate_id;
-			for(int i = 0; i < new_candidates_names.length; i++) {
-				
-				// determine candidate id if it was set
-				candidate_id = 0;
-				if(request.getParameter("candidate_id"+i) != null) {
-					raw_candidate_id = (String) request.getParameter("candidate_id"+i);
-					candidate_id = Integer.parseInt(raw_candidate_id);
-				}
-							
-				CandidateDto c = new CandidateDto();
-				c.setCandidateId(candidate_id);
-				c.setCandidateName("" + new_candidates_names[i]);
-				c.setDisplayOrder(i);
-				c.setStatus(ElectionStatus.NEW.getCode());
-				newCandidates.add(c);
-			}
-		}
-
-		// save election with candidates
-		newElection.setCandidateList(newCandidates);
 		
-				
+		// ADDING A NEW ELECTION
 		if(request.getParameter("save_new_election") != null && 
 		   request.getParameter("save_new_election").equals("Save Election")) {
 
+			newCandidates = getCandidateListFromNames(request, "rowNewCandName", "rowNewCandIdHid");
+			// save election with candidates
+			newElection.setCandidateList(newCandidates);
 
-			Validator vElection = ElectionService.addElectionWithCandidates(newElection);
 			
-			System.out.println(vElection.getStatus());
+			Validator vElection = ElectionService.addElectionWithCandidates(newElection);
 			
 			if(vElection.isVerified()) {
 				// insert of candidates was successful
@@ -173,17 +146,27 @@ public class ElectionServlet extends HttpServlet {
 		if(request.getParameter("save_edited_election") != null && 
 				   request.getParameter("save_edited_election").equals("Save Election")) {
 			
+			newCandidates = getCandidateListFromNames(request, "rowEditCandName", "rowEditCandIdHid");
+			// save election with candidates
+			newElection.setCandidateList(newCandidates);
+
+			
+			System.out.println("Inside editing");			
+			System.out.println(newElection.toString());
+			
 			// update existing election
 			Validator vEditElection = ElectionService.editElectionWithCandidates(newElection);
 			
 			if(vEditElection.isVerified()) {
-				
-				
-			}
-			
-			System.out.println("");
-			newElection = null;
-			mode = "1";
+				// insert of candidates was successful
+				// change mode of the screen
+				mode = "1";
+				messageAlert = drawMessageAlert(vEditElection.getStatus(), "success");
+								
+				newElection = null;
+			} else {
+				messageLabel = drawMessageLabel(vEditElection.getStatus(), "alert");
+			}			
 		}
 		
 
@@ -257,10 +240,12 @@ public class ElectionServlet extends HttpServlet {
 		// new candidate mode by default;
 		String editingMode       = "save_new_election";
 		String candRowId         = "rowNewCandId";
+		String candRowIdHid		 = "rowNewCandIdHid";
 		String candRowName       = "rowNewCandName";
 		String candHolderId      = "rowNewCandHolder";
 		String funcNewCandAdd    = "addNewCandRow";
 		String funcNewCandRemove = "removeNewCandRow";
+
 		int electionId = 0;
 		
 		ArrayList<CandidateDto> candidates =  new ArrayList<CandidateDto>();
@@ -279,6 +264,7 @@ public class ElectionServlet extends HttpServlet {
 			// editing existing candidate mode
 			editingMode       = "save_edited_election";
 			candRowId         = "rowEditCandId";
+			candRowIdHid      = "rowEditCandIdHid";
 			candRowName       = "rowEditCandName";
 			candHolderId      = "rowEditCandHolder";
 			funcNewCandAdd    = "addEditCandRow";
@@ -309,15 +295,13 @@ public class ElectionServlet extends HttpServlet {
 		out += "<div id=\"" + candHolderId + "\">";
 		
 		int i = 1;
-		int candidate_id = 0;
 	    for (CandidateDto c : candidates) {
-	    	candidate_id = (c.getCandidateId() > 0) ? c.getCandidateId() : 0;
 	    	
 			out += "<div id=\"" + candRowId +  + i + "\">";
 	    	out += "<label>Candidate Name</label>";
-	    	
-			out += "<input type=\"hidden\" name=\"candidate_id" + i + "\" value=\"" + candidate_id + "\">";
-
+	    	if(c.getCandidateId() > 0) {
+	    		out += drawHiddenFieldsForCandidate(c);
+	    	}
 	    	out += "<input type=\"text\" name=\"" + candRowName + "\" value=\"" + c.getCandidateName() + "\" />";
 	    	out += "<a class=\"button tiny radius alert\" href=\"javascript:void(0)\" onclick=\"" + funcNewCandRemove + "(" + i + ");\">Remove</a>";
 	    	out += "</div>";
@@ -388,8 +372,105 @@ public class ElectionServlet extends HttpServlet {
 
 	
 	
-	
-	
-	
+	public ArrayList<CandidateDto> getCandidateListFromNames(HttpServletRequest request, String candNames, String candIdsHid) {
+		ArrayList<CandidateDto> newCandidates = new ArrayList<CandidateDto>();
 
+		if(request.getParameterValues(candNames) != null) {
+			String[] new_candidates_names = request.getParameterValues(candNames);
+
+			String raw_candidate_id;
+			int candidate_id;
+			for(int i = 0; i < new_candidates_names.length; i++) {
+				
+				// determine candidate id if it was set
+				candidate_id = 0;
+				int j = i + 1;
+				if(request.getParameter(candIdsHid+j) != null) {
+					raw_candidate_id = (String) request.getParameter(candIdsHid+j);
+					candidate_id = Integer.parseInt(raw_candidate_id);
+				}
+							
+				CandidateDto c = new CandidateDto();
+				c.setCandidateId(candidate_id);
+				c.setCandidateName("" + new_candidates_names[i]);
+				c.setDisplayOrder(i);
+				c.setStatus(ElectionStatus.NEW.getCode());
+				newCandidates.add(c);
+			}
+		}
+		
+		return newCandidates;	
+	}
+	
+	public ArrayList<CandidateDto> getCandidateListFromId(HttpServletRequest request, String candNames, String candIdsHid) {
+		ArrayList<CandidateDto> newCandidates = new ArrayList<CandidateDto>();
+
+		if(request.getParameterValues(candNames) != null) {
+			String[] new_candidates_names = request.getParameterValues(candNames);
+
+			String raw_candidate_id;
+			int candidate_id;
+			for(int i = 0; i < new_candidates_names.length; i++) {
+				
+				// determine candidate id if it was set
+				candidate_id = 0;
+				int j = i + 1;
+				if(request.getParameter(candIdsHid+j) != null) {
+					raw_candidate_id = (String) request.getParameter(candIdsHid+j);
+					candidate_id = Integer.parseInt(raw_candidate_id);
+				}
+							
+				CandidateDto c = new CandidateDto();
+				c.setCandidateId(candidate_id);
+				c.setCandidateName("" + new_candidates_names[i]);
+				c.setDisplayOrder(i);
+				c.setStatus(ElectionStatus.NEW.getCode());
+				newCandidates.add(c);
+			}
+		}
+		
+		return newCandidates;	
+	}
+
+	
+	
+	
+	
+	public String drawHiddenFieldsForCandidate(CandidateDto c) {
+		String out = "";
+		
+		// check if the object is empty;
+		if(c == null) {
+			return out;
+		}
+		
+		int candidateId = (c.getCandidateId() > 0) ? c.getCandidateId() : 0;
+		
+		out += "<input type=\"hidden\" name=\"candidate_ids[]\" value=\"" + c.getCandidateId() + "\">";
+		out += "<input type=\"hidden\" name=\"candidate_status" + candidateId + "\" value=\"" + c.getStatus() + "\">";
+		
+		return out;
+	}
+	
+	public String drawElectionAction(ElectionDto e) {
+		String out = "";
+		
+		if(e == null) {
+			return out;
+		}
+		
+		
+		
+		if(e.getStatus() == ElectionStatus.NEW) {
+			
+		}
+		
+		
+		
+		
+		return out;
+	}
+	
+	
 }
+

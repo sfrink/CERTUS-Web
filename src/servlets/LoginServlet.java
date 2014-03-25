@@ -53,10 +53,10 @@ public class LoginServlet extends HttpServlet {
 		
 		if(v.isVerified()) {
 			UserDto u = (UserDto) v.getObject();
-			request.setAttribute("message", v.getStatus() + ", " + u.getFirst_name() + " " + u.getLast_name());
+			request.setAttribute("message", v.getStatus() + ", " + u.getFirstName() + " " + u.getLastName());
 
 			HeaderService.authenticate();
-			HeaderService.setUserId(u.getUser_id());
+			HeaderService.setUserId(u.getUserId());
 			
 			request.setAttribute("state", "success" );
 			RequestDispatcher rd = request.getRequestDispatcher("main.jsp");
