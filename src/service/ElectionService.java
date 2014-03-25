@@ -159,7 +159,7 @@ public class ElectionService {
     	Validator validator = new Validator();
     	
 		try {
-			validator  = Initializer.rmi.editElectionStatus(electionId, ElectionStatus.CLOSED);
+			validator  = Initializer.rmi.closeElectionAndPublishResults(electionId);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
@@ -178,15 +178,4 @@ public class ElectionService {
 		return validator;
     }
     
-    public static Validator publishElectionResults(int electionId)
-    {
-    	Validator validator = new Validator();
-    	
-		try {
-			validator  = Initializer.rmi.editElectionStatus(electionId, ElectionStatus.PUBLISHED);
-		} catch (RemoteException e) {
-			e.printStackTrace();
-		}
-		return validator;
-    }
 }
