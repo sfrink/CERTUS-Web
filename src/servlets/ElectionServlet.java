@@ -461,7 +461,8 @@ public class ElectionServlet extends HttpServlet {
 		
 		
 		
-		if(e.getStatus() == ElectionStatus.NEW) {
+		if(e.getStatus() == ElectionStatus.NEW.getCode()) {
+			
 			
 		}
 		
