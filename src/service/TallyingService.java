@@ -18,7 +18,7 @@ public class TallyingService
 	 * @param electionId
 	 * @return Validator with ElectionDto
 	 */
-	public static Validator Results(int electionId) {
+	public static Validator results(int electionId) {
 		Validator validator = new Validator();
 
 		try {
