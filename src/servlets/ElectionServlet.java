@@ -192,8 +192,7 @@ public class ElectionServlet extends HttpServlet {
 				editElection.setOwnerId(HeaderService.getUserId());
 				editElection.setElectionName(request.getParameter("new_election_name"));
 				ArrayList<CandidateDto> editElectionCandidates = new ArrayList<CandidateDto>();
-				editElectionCandidates = getCandidateListFromNames(request,
-						"rowEditCandName", "rowEditCandIdHid");
+				editElectionCandidates = getCandidateListFromId(request);
 				// save election with candidates
 				editElection.setCandidateList(editElectionCandidates);
 
@@ -407,6 +406,7 @@ public class ElectionServlet extends HttpServlet {
 
 			String raw_candidate_id;
 			int candidate_id;
+						
 			for(int i = 0; i < new_candidates_names.length; i++) {
 				
 				// determine candidate id if it was set
@@ -429,27 +429,44 @@ public class ElectionServlet extends HttpServlet {
 		return newCandidates;	
 	}
 	
-	public ArrayList<CandidateDto> getCandidateListFromId(HttpServletRequest request, String candNames, String candIdsHid) {
+	public ArrayList<CandidateDto> getCandidateListFromId(HttpServletRequest request) {
 		ArrayList<CandidateDto> newCandidates = new ArrayList<CandidateDto>();
 
-		if(request.getParameterValues(candNames) != null) {
-			String[] new_candidates_names = request.getParameterValues(candNames);
-
-			String raw_candidate_id;
-			int candidate_id;
-			for(int i = 0; i < new_candidates_names.length; i++) {
-				
-				// determine candidate id if it was set
-				candidate_id = 0;
-				int j = i + 1;
-				if(request.getParameter(candIdsHid+j) != null) {
-					raw_candidate_id = (String) request.getParameter(candIdsHid+j);
-					candidate_id = Integer.parseInt(raw_candidate_id);
-				}
-							
+		// existing records
+		if(request.getParameterValues("edit_candidate_ids") != null) {
+			String[] existing_cand_names = request.getParameterValues("edit_candidate_ids");
+			
+			for(String cand: existing_cand_names) {
+				// for all existing candidates
 				CandidateDto c = new CandidateDto();
-				c.setCandidateId(candidate_id);
-				c.setCandidateName("" + new_candidates_names[i]);
+				// set id
+				c.setCandidateId(Integer.parseInt(cand));
+
+				// set name
+				if(request.getParameter("edit_candidate_name" + cand) != null) {
+					c.setCandidateName(request.getParameter("edit_candidate_name" + cand));
+				}
+
+				// set status				
+				if(request.getParameter("edit_candidate_status" + cand) != null) {
+					c.setStatus(Integer.parseInt(request.getParameter("edit_candidate_status" + cand)));				
+				}
+
+				// set display order
+				c.setDisplayOrder(0);
+				// add to list
+				newCandidates.add(c);
+			}
+		}
+		
+		// new records
+		if(request.getParameterValues("rowEditCandNameNew") != null) {
+			String[] new_cand_names = request.getParameterValues("rowEditCandNameNew");
+
+			for(int i = 0; i < new_cand_names.length; i++) {
+				CandidateDto c = new CandidateDto();
+				c.setCandidateId(0);
+				c.setCandidateName("" + new_cand_names[i]);
 				c.setDisplayOrder(i);
 				c.setStatus(ElectionStatus.NEW.getCode());
 				newCandidates.add(c);
@@ -463,21 +480,7 @@ public class ElectionServlet extends HttpServlet {
 	
 	
 	
-	public String drawHiddenFieldsForCandidate(CandidateDto c) {
-		String out = "";
-		
-		// check if the object is empty;
-		if(c == null) {
-			return out;
-		}
-		
-		int candidateId = (c.getCandidateId() > 0) ? c.getCandidateId() : 0;
-		
-		out += "<input type=\"hidden\" name=\"candidate_ids[]\" value=\"" + c.getCandidateId() + "\">";
-		out += "<input type=\"hidden\" name=\"candidate_status" + candidateId + "\" value=\"" + c.getStatus() + "\">";
-		
-		return out;
-	}
+
 	
 	public String drawElectionAction(ElectionDto e) {
 		String out = "";
@@ -519,7 +522,7 @@ public class ElectionServlet extends HttpServlet {
 		String candRowName       = "rowEditCandName";
 		String candHolderId      = "rowEditCandHolder";
 		String funcNewCandAdd    = "addEditCandRow";
-		String funcNewCandRemove = "removeEditCandRow";
+		String funcNewCandRemove = "removeEditExistingCandRow";
 		
 		// draw election info
 		out += "<form action=\"election\" method=\"post\">";
@@ -542,19 +545,17 @@ public class ElectionServlet extends HttpServlet {
 		out += "<legend>Add candidates</legend>";
 		out += "<div id=\"" + candHolderId + "\">";
 		
-		int i = 1;
-	    for (CandidateDto c : e.getCandidateList()) {
-	    	
-			out += "<div id=\"" + candRowId + i + "\">";
+		
+	    for (CandidateDto c : e.getCandidateList()) {	    	
+			out += "<div id=\"" + candRowId + c.getCandidateId() + "\">";
 	    	out += "<label>Candidate Name</label>";
-	    	if(c.getCandidateId() > 0) {
-	    		out += drawHiddenFieldsForCandidate(c);
-	    	}
-	    	out += "<input type=\"text\" name=\"" + candRowName + "\" value=\"" + c.getCandidateName() + "\" />";
-	    	out += "<a class=\"button tiny radius alert\" href=\"javascript:void(0)\" onclick=\"" + funcNewCandRemove + "(" + i + ");\">Remove</a>";
-	    	out += "</div>";
+	    	
+			out += "<input type=\"hidden\" name=\"edit_candidate_ids\" value=\"" + c.getCandidateId() + "\">";
+			out += "<input type=\"hidden\" name=\"edit_candidate_status" + c.getCandidateId() + "\" value=\"" + c.getStatus() + "\">";
+	    	out += "<input type=\"text\" name=\"edit_candidate_name" + c.getCandidateId() + "\" value=\"" + c.getCandidateName() + "\" />";
 
-			i++;
+	    	out += "<a class=\"button tiny radius alert\" href=\"javascript:void(0)\" onclick=\"" + funcNewCandRemove + "(" + c.getCandidateId() + ");\">Remove</a>";
+	    	out += "</div>";
 	    }
 		        
 		out += "</div>";
