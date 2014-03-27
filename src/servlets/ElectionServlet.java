@@ -16,11 +16,14 @@ import service.CandidateService;
 import service.DrawHtmlService;
 import service.ElectionService;
 import service.HeaderService;
+import service.TallyingService;
+import service.VotingService;
 
 import com.sun.xml.internal.messaging.saaj.packaging.mime.Header;
 
 import dto.CandidateDto;
 import dto.ElectionDto;
+import dto.ElectionProgressDto;
 import dto.Validator;
 import enumeration.ElectionStatus;
 import enumeration.Status;
@@ -283,7 +286,7 @@ public class ElectionServlet extends HttpServlet {
 	 */
 	public String drawExistingElections(ArrayList<ElectionDto> elections) {
 		String out = "";
-		
+				
 		if(elections != null && elections.size() != 0) {
 			out += "<h5>Existing elections</h5>";
 			out += "<form action=\"election\" method=\"post\">";
@@ -293,16 +296,25 @@ public class ElectionServlet extends HttpServlet {
 			out += "<th>Status</th>";
 			out += "<th>Action</th>";
 			out += "<th>Edit</th>";
+			out += "<th>Voting Progress</th>";
 			out += "</tr></thead><tbody>";
 			
-			int i = 1;
+			int i = 1, voted = -1;
 			for (ElectionDto e : elections) {
+				
+				Validator v2 = TallyingService.voteProgressStatusForElection(e.getElectionId());
+				if(v2.isVerified()) {
+					ElectionProgressDto epd = (ElectionProgressDto) v2.getObject();
+					voted = epd.getTotalVotes();
+				}
+				
 				out += "<tr>";
 				out += "<td>" + e.getElectionId() + "</td>";
 				out += "<td>" + e.getElectionName() + "</td>";
 				out += "<td>" + e.getStatusDescription() + "</td>";
 				out += "<td>" + drawElectionAction(e) + "</td>";
 				out += "<td><button class=\"label secondary\" type=\"submit\" name=\"election\" value=\"" + e.getElectionId() + "\">edit</button></td>";
+				out += "<td>"+ voted + "</td>";
 				out += "</tr>";
 				i++;
 			}
