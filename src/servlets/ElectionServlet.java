@@ -70,7 +70,6 @@ public class ElectionServlet extends HttpServlet {
 			}
 			
 			outElections = drawExistingElections(allElections);
-			outModal = drawNewElection(null);
 			
 			request.setAttribute("mode", mode);
 			request.setAttribute("message_alert", messageAlert);
@@ -91,107 +90,143 @@ public class ElectionServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		if(HeaderService.isAuthenticated()) {
-			// mode = "1";
-			// messageAlert = "";
-			// messageLabel = "";
-			// outElections = "";
-			// outModal = "";
-
-			
-			
-			
-			mode = "2";
+			mode = "1";
 			messageAlert = "";
-			messageLabel = DrawHtmlService.drawMessageLabel(
-					"Please fill in required labels", "secondary");
-			String editMessage = "";
+			messageLabel = "";
+			outElections = "";
+			outModal = "";
 
-			ElectionDto newElection = new ElectionDto();
-			ArrayList<CandidateDto> newCandidates = new ArrayList<CandidateDto>();
-			ElectionDto editElection = null;
-			ArrayList<CandidateDto> editElectionCandidates = null;
-
-			// get information for election
-			newElection.setElectionName(request
-					.getParameter("new_election_name"));
-
-			System.out.println("1: " + HeaderService.getUserId());
-			newElection.setOwnerId(HeaderService.getUserId());
-			System.out.println("2: " + newElection.getOwnerId());
-
-			if (request.getParameter("election_id") != null) {
-				newElection.setElectionId(Integer.parseInt(request
-						.getParameter("election_id")));
+			
+			// ADD NEW ELECTION BUTTON PRESSED
+			if (request.getParameter("button_add_election") != null
+					&& request.getParameter("button_add_election").equals(
+							"new")) {
+				mode = "2";
+				messageAlert = "";
+				messageLabel = DrawHtmlService.drawMessageLabel("Please fill in required labels", "secondary");
+				outModal = drawNewElection(null);
 			}
 
+			
 			// ADDING A NEW ELECTION
 			if (request.getParameter("save_new_election") != null
 					&& request.getParameter("save_new_election").equals(
 							"Save Election")) {
-
+				
+				ElectionDto newElection = new ElectionDto();
+				ArrayList<CandidateDto> newCandidates = new ArrayList<CandidateDto>();
+				// get information for election
+				newElection.setOwnerId(0);
+				newElection.setElectionName(request
+						.getParameter("new_election_name"));
+				newElection.setOwnerId(HeaderService.getUserId());
 				newCandidates = getCandidateListFromNames(request,
-						"rowNewCandName", "rowNewCandIdHid");
-				// save election with candidates
-				newElection.setCandidateList(newCandidates);
-				System.out.println("3" + newElection);
+						"rowNewCandName", "rowNewCandIdHid"); // get candidates list
+				newElection.setCandidateList(newCandidates); // save candidates list
 
 				Validator vElection = ElectionService
 						.addElectionWithCandidates(newElection);
 
 				if (vElection.isVerified()) {
 					// insert of candidates was successful
-					// change mode of the screen
 					mode = "1";
 					messageAlert = DrawHtmlService.drawMessageAlert(
 							vElection.getStatus(), "success");
-
-					newElection = null;
+					messageLabel = "";
+					outModal = "";
 				} else {
+					// send the user back to screen
+					mode = "2";
+					messageAlert = "";
 					messageLabel = DrawHtmlService.drawMessageLabel(
 							vElection.getStatus(), "alert");
+					outModal = drawNewElection(newElection);
 				}
 			}
+			
+			
+			// SHOW ELECTION FOR EDITING
+			if (request.getParameter("election") != null) {
+				int electionId = Integer.parseInt(request
+						.getParameter("election"));
 
-			// EDIT EXISTING ELECTION
+				ElectionDto editElection = null;
+				ArrayList<CandidateDto> editElectionCandidates = null;
+				Validator vEditElection = ElectionService
+						.selectElection(electionId);
+
+				if (vEditElection.isVerified()) {
+					Validator vEditElectionCandidates = CandidateService
+							.selectCandidatesForElection(electionId,
+									Status.ENABLED);
+
+					if (vEditElectionCandidates != null
+							&& vEditElectionCandidates.isVerified()) {
+						editElection = (ElectionDto) vEditElection.getObject();
+						editElectionCandidates = (ArrayList<CandidateDto>) vEditElectionCandidates
+								.getObject();
+						editElection.setCandidateList(editElectionCandidates);
+
+						mode = "2";
+						messageAlert = "";
+						messageLabel = "";
+						outModal = drawEditElection(editElection);
+					} else {
+						DrawHtmlService.drawMessageAlert(vEditElectionCandidates.getStatus(), "alert");
+					}
+				} else {
+					DrawHtmlService.drawMessageAlert(vEditElection.getStatus(), "alert");
+				}
+			} else {
+				DrawHtmlService.drawMessageAlert("Incorrect election_id", "alert");
+			}
+
+			
+			// SAVE EDITED ELECTION
 			if (request.getParameter("save_edited_election") != null
 					&& request.getParameter("save_edited_election").equals(
 							"Save Election")) {
-
-				newCandidates = getCandidateListFromNames(request,
+				
+				ElectionDto editElection = new ElectionDto();
+				editElection.setElectionId(Integer.parseInt(request.getParameter("election_id")));
+				editElection.setOwnerId(HeaderService.getUserId());
+				editElection.setElectionName(request.getParameter("new_election_name"));
+				ArrayList<CandidateDto> editElectionCandidates = new ArrayList<CandidateDto>();
+				editElectionCandidates = getCandidateListFromNames(request,
 						"rowEditCandName", "rowEditCandIdHid");
 				// save election with candidates
-				newElection.setCandidateList(newCandidates);
-
-				System.out.println("Inside editing");
-				System.out.println(newElection.toString());
+				editElection.setCandidateList(editElectionCandidates);
 
 				// update existing election
 				Validator vEditElection = ElectionService
-						.editElectionWithCandidates(newElection);
+						.editElectionWithCandidates(editElection);
 
 				if (vEditElection.isVerified()) {
 					// insert of candidates was successful
-					// change mode of the screen
 					mode = "1";
 					messageAlert = DrawHtmlService.drawMessageAlert(
 							vEditElection.getStatus(), "success");
-
-					newElection = null;
+					messageLabel = "";
+					outModal = "";
 				} else {
+					mode = "2";
+					messageAlert = "";
 					messageLabel = DrawHtmlService.drawMessageLabel(
 							vEditElection.getStatus(), "alert");
+					outModal = drawEditElection(editElection);
 				}
 			}
-
+			
+			
 			// PERFORM ACTION ON ELECTION
 			if (request.getParameter("button_election_action") != null) {
 				int electionId = Integer.parseInt(request
 						.getParameter("button_election_action"));
-				Validator v = ElectionService.selectElection(electionId);
+				Validator v1 = ElectionService.selectElection(electionId);
 
-				if (v.isVerified()) {
+				if (v1.isVerified()) {
 					// get election object
-					ElectionDto e = (ElectionDto) v.getObject();
+					ElectionDto e = (ElectionDto) v1.getObject();
 
 					if (e.getStatus() == ElectionStatus.NEW.getCode()) {
 						// open election
@@ -210,45 +245,25 @@ public class ElectionServlet extends HttpServlet {
 				}
 			}
 
-			if (request.getParameter("election") != null) {
-
-				int electionId = Integer.parseInt(request
-						.getParameter("election"));
-				Validator vEditElection = ElectionService
-						.selectElection(electionId);
-
-				if (vEditElection.isVerified()) {
-					Validator vEditElectionCandidates = CandidateService
-							.selectCandidatesForElection(electionId,
-									Status.ENABLED);
-
-					if (vEditElectionCandidates != null
-							&& vEditElectionCandidates.isVerified()) {
-						editElection = (ElectionDto) vEditElection.getObject();
-						editElectionCandidates = (ArrayList<CandidateDto>) vEditElectionCandidates
-								.getObject();
-						editElection.setCandidateList(editElectionCandidates);
-						request.setAttribute("edit_election",
-								drawNewElection(editElection));
-
-						mode = "3";
-					} else {
-						editMessage = "1" + vEditElectionCandidates.getStatus();
-					}
-				} else {
-					editMessage = "2" + vEditElection.getStatus();
-				}
+			
+			// 1. get the list of all elections this user owns
+			ArrayList<ElectionDto> allElections = new ArrayList<ElectionDto>();
+			Validator v = ElectionService.selectElectionsOwnedByUser(HeaderService.getUserId());
+			
+			if(v.isVerified()) {
+				allElections = (ArrayList<ElectionDto>) v.getObject();	
 			} else {
-				editMessage = "Incorrect election_id";
+				messageAlert = DrawHtmlService.drawMessageAlert(v.getStatus(), "alert") ;
 			}
+			
+			outElections = drawExistingElections(allElections);
+			
 
 			request.setAttribute("mode", mode);
-			// request.setAttribute("existing_elections",
-			// drawExistingElections());
-			request.setAttribute("new_election", drawNewElection(newElection));
 			request.setAttribute("message_alert", messageAlert);
 			request.setAttribute("message_label", messageLabel);
-
+			request.setAttribute("out_elections", outElections);
+			request.setAttribute("out_modal", outModal);
 			RequestDispatcher rd = getServletContext().getRequestDispatcher(
 					"/election.jsp");
 			rd.forward(request, response);
@@ -323,13 +338,14 @@ public class ElectionServlet extends HttpServlet {
 			// set at least one empty candidate
 			ArrayList<CandidateDto> candidates = new ArrayList<CandidateDto>();
 			CandidateDto c = new CandidateDto();
+			c.setCandidateName("");
 			candidates.add(c);
 			e.setCandidateList(candidates);
 		}
 		
 		// draw election info
+		out += "<h5>Add new election</h5>";
 		out += "<form action=\"election\" method=\"post\">";
-
 		out += "<div class=\"row\">";
 		out += "<div class=\"large-6 medium-6 columns\">";
 		
@@ -496,41 +512,14 @@ public class ElectionServlet extends HttpServlet {
 	
 	public String drawEditElection(ElectionDto e) {
 		String out = "";
-		// new candidate mode by default;
-		String editingMode       = "save_new_election";
-		String candRowId         = "rowNewCandId";
-		String candRowIdHid		 = "rowNewCandIdHid";
-		String candRowName       = "rowNewCandName";
-		String candHolderId      = "rowNewCandHolder";
-		String funcNewCandAdd    = "addNewCandRow";
-		String funcNewCandRemove = "removeNewCandRow";
 
-		int electionId = 0;
-		
-		ArrayList<CandidateDto> candidates =  new ArrayList<CandidateDto>();
-
-		if(e == null) {
-			e = new ElectionDto();
-			e.setCandidateList(candidates);
-		} else {
-			candidates = e.getCandidateList();
-		}
-		
-		if(e.getElectionName() == null)
-			e.setElectionName("");
-		
-		if(e.getElectionId() > 0) {
-			// editing existing candidate mode
-			editingMode       = "save_edited_election";
-			candRowId         = "rowEditCandId";
-			candRowIdHid      = "rowEditCandIdHid";
-			candRowName       = "rowEditCandName";
-			candHolderId      = "rowEditCandHolder";
-			funcNewCandAdd    = "addEditCandRow";
-			funcNewCandRemove = "removeEditCandRow";
-			electionId = e.getElectionId();
-		}
-		
+		String editingMode       = "save_edited_election";
+		String candRowId         = "rowEditCandId";
+		String candRowIdHid      = "rowEditCandIdHid";
+		String candRowName       = "rowEditCandName";
+		String candHolderId      = "rowEditCandHolder";
+		String funcNewCandAdd    = "addEditCandRow";
+		String funcNewCandRemove = "removeEditCandRow";
 		
 		// draw election info
 		out += "<form action=\"election\" method=\"post\">";
@@ -554,9 +543,9 @@ public class ElectionServlet extends HttpServlet {
 		out += "<div id=\"" + candHolderId + "\">";
 		
 		int i = 1;
-	    for (CandidateDto c : candidates) {
+	    for (CandidateDto c : e.getCandidateList()) {
 	    	
-			out += "<div id=\"" + candRowId +  + i + "\">";
+			out += "<div id=\"" + candRowId + i + "\">";
 	    	out += "<label>Candidate Name</label>";
 	    	if(c.getCandidateId() > 0) {
 	    		out += drawHiddenFieldsForCandidate(c);
@@ -567,11 +556,6 @@ public class ElectionServlet extends HttpServlet {
 
 			i++;
 	    }
-		           
-		if(candidates.size() == 0) {
-			out += "<label>Candidate Name</label>";
-			out += "<input type=\"text\" name=\"" + candRowName + "\" value=\" \" />";
-		}
 		        
 		out += "</div>";
 		out += "<input onclick=\"" + funcNewCandAdd + "(this.form);\" type=\"button\" value=\"Add more candidates\" class=\"button tiny radius\" />";
@@ -587,7 +571,7 @@ public class ElectionServlet extends HttpServlet {
 		out += "</div>";
 		out += "</div>";
 		
-		out += "<input type=\"hidden\" name=\"election_id\" value=\"" + electionId + "\">";
+		out += "<input type=\"hidden\" name=\"election_id\" value=\"" + e.getElectionId() + "\">";
 		out += "</form>";
 		out += "<a class=\"close-reveal-modal\">&#215;</a>";
 
