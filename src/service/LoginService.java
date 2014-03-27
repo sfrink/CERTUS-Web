@@ -11,13 +11,25 @@ public class LoginService {
 		Validator v = new Validator();
 		v.setStatus("Authentication Failed");
 		v.setVerified(false);
-		
-		System.out.println(username + " " +password);
-		
+				
 		try {
-			v = Initializer.rmi.checkIfUsernamePasswordMatch(username, password);
+			// check if RMI is initially down
+			if(Initializer.rmi != null) {
+				v = Initializer.rmi.checkIfUsernamePasswordMatch(username, password);
+			} else {
+				v.setVerified(false);
+				v.setStatus("Error. The server is down. Please try to reconnect later.");			
+				Initializer i = new Initializer();
+
+			}
 		} catch (RemoteException e) {
+			v.setVerified(false);
+			v.setStatus("The application has encountered problem establishing RMI connection");
+		
+			
+			Initializer i = new Initializer();
 			e.printStackTrace();
+
 		}
 		
 		return v;

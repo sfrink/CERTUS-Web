@@ -1,28 +1,14 @@
 <jsp:include page="headerDefault.jsp" /> 
 <jsp:include page="headerTopBarDefault.jsp" /> 
 
-
 <%
+String messageAlert = (String) request.getAttribute("message_alert");
 
 String username = request.getAttribute("username") != null ? (String) request.getAttribute("username") : "user@certus.org";
 String password = "password";
-
-
-String state = (String) request.getAttribute("state");
-String message = "Welcome to CERTUS! Please login or register before using the system";
-String styleAlertBox = "alert-box radius";
-
-if(state != null && state.equals("fail")) {
-	styleAlertBox = "alert-box alert radius";
-	message = (String) request.getAttribute("message");
-}
 %>
 
-
-<div data-alert class="<%=styleAlertBox %>">
-    <b><%=message %></b>
-  <a href="" class="close">×</a>
-</div>
+<%=messageAlert %>
   
   
 <div class="row">

@@ -10,13 +10,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import service.DrawHtmlService;
+import service.ElectionService;
+import service.HeaderService;
+import service.VotingService;
 import dto.CandidateDto;
 import dto.ElectionDto;
 import dto.Validator;
 import dto.VoteDto;
-import service.ElectionService;
-import service.HeaderService;
-import service.VotingService;
 
 /**
  * Servlet implementation class VotingServlet
@@ -50,19 +51,17 @@ public class VotingServlet extends HttpServlet {
 			messageLabel = "";
 			outModal = "";
 			
-			ArrayList<ElectionDto> allElections = new ArrayList<ElectionDto>();
-			
 			// 1. get the list of all elections this user can vote in
+			ArrayList<ElectionDto> allElections = new ArrayList<ElectionDto>();			
 			Validator vAllElections = ElectionService.selectAllElectionsForVoter(HeaderService.getUserId());
 			if(vAllElections.isVerified()) {
 				allElections = (ArrayList<ElectionDto>) vAllElections.getObject();
 			} else {
-				messageAlert = drawMessageAlert(vAllElections.getStatus(), "alert") ;
+				messageAlert = DrawHtmlService.drawMessageAlert(vAllElections.getStatus(), "alert") ;
 			}
-			
+			// 2. draw output
 			outElections = drawElectionsTableForVoting(allElections);
-			
-			
+				
 			// Redirect
 			request.setAttribute("mode", mode);
 			request.setAttribute("message_alert", messageAlert);
@@ -72,15 +71,9 @@ public class VotingServlet extends HttpServlet {
 			RequestDispatcher rd = getServletContext().getRequestDispatcher("/voting.jsp");
 			rd.forward(request, response);			
 		} else {
-			RequestDispatcher rd = getServletContext().getRequestDispatcher("/login.jsp");
+			RequestDispatcher rd = getServletContext().getRequestDispatcher("/login");
 			rd.forward(request, response);
 		}
-
-		
-	
-	
-	
-	
 	}
 
 	/**
@@ -88,7 +81,6 @@ public class VotingServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		
 		if(HeaderService.isAuthenticated()) {
 			mode = "1";
 			messageAlert = "";
@@ -139,20 +131,20 @@ public class VotingServlet extends HttpServlet {
 							mode = "2";
 						} else {
 							mode = "2";					
-							messageLabel = drawMessageLabel(vEnc.getStatus(), "alert");
+							messageLabel = DrawHtmlService.drawMessageLabel(vEnc.getStatus(), "alert");
 							outModal = drawVotingInterfaceForElection(e, null);
 						}
 					} else {
 						mode = "2";
 						outModal = drawVotingInterfaceForElection(e, null);
-						messageLabel = drawMessageLabel("Please select candidate", "alert");
+						messageLabel = DrawHtmlService.drawMessageLabel("Please select candidate", "alert");
 					}
 					
 				} else {
-					messageLabel = drawMessageLabel(v.getStatus(), "alert");
+					messageLabel = DrawHtmlService.drawMessageLabel(v.getStatus(), "alert");
 				}
 			} else {
-				messageLabel = drawMessageLabel("Click next to proceed", "secondary");
+				messageLabel = DrawHtmlService.drawMessageLabel("Click next to proceed", "secondary");
 			}
 
 			
@@ -184,26 +176,26 @@ public class VotingServlet extends HttpServlet {
 						Validator vVote = VotingService.saveVote(vote);
 						if (vVote.isVerified()) {
 							mode = "1";
-							messageAlert = drawMessageAlert(vVote.getStatus(),
+							messageAlert = DrawHtmlService.drawMessageAlert(vVote.getStatus(),
 									"success");
 						} else {
 							mode = "2";
-							messageLabel = drawMessageLabel(vVote.getStatus(),
+							messageLabel = DrawHtmlService.drawMessageLabel(vVote.getStatus(),
 									"alert");
 							outModal = drawVotingInterfaceForElection(e, vote);
 						}
 					} else {
-						messageLabel = drawMessageLabel(v.getStatus(), "alert");
+						messageLabel = DrawHtmlService.drawMessageLabel(v.getStatus(), "alert");
 					}
 				} else {
-					messageLabel = drawMessageLabel(
+					messageLabel = DrawHtmlService.drawMessageLabel(
 							"Signature cannot be empty", "alert");
 				}
 			}
 			
 			
 			// 1. get the list of all elections this user can vote in
-			Validator vAllElections = ElectionService.selectElections();
+			Validator vAllElections = ElectionService.selectAllElectionsForVoter(HeaderService.getUserId());
 			if(vAllElections.isVerified()) {
 				allElections = (ArrayList<ElectionDto>) vAllElections.getObject();
 			} else {
@@ -221,7 +213,7 @@ public class VotingServlet extends HttpServlet {
 			RequestDispatcher rd = getServletContext().getRequestDispatcher("/voting.jsp");
 			rd.forward(request, response);
 		} else {
-			RequestDispatcher rd = getServletContext().getRequestDispatcher("/login.jsp");
+			RequestDispatcher rd = getServletContext().getRequestDispatcher("/login");
 			rd.forward(request, response);
 		}
 	}
@@ -337,49 +329,6 @@ public class VotingServlet extends HttpServlet {
 			
 			return out;
 		}
-
-	/**
-	 * This function returns HTML code for alert
-	 * @param message
-	 * @param mode
-	 * @return
-	 */
-	public String drawMessageAlert(String message, String mode) {
-		String out = "";
-
-		if(!message.equals("")) {
-			out += "<div data-alert class=\"alert-box radius " + mode + "\">";
-			out += "<b>" + message + "</b>";
-			out += "<a href=\"\" class=\"close\">x</a>";
-			out += "</div>";
-		}
-		
-		return out;
-	}
-	
-	/**
-	 * This function returns HTML code for label
-	 * @param message
-	 * @param mode
-	 * @return
-	 */
-	public String drawMessageLabel(String message, String mode) {
-		String out = "";
-
-		if(!message.equals("")) {
-		  out += "<span class=\"label " + mode + "\">" + message + "</span>";
-		}
-		
-		return out;
-	}
-
-		
-		
-		
-		
-		
-		
-		
 	}
 	
 	

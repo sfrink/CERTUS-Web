@@ -177,5 +177,43 @@ public class ElectionService {
 		}
 		return validator;
     }
+
+
     
+    public static Validator selectElectionsForVotingForUser(int userId) {
+    	Validator validator = new Validator();
+    	
+    	try {
+			validator  = Initializer.rmi.selectAllElectionsForVoter(userId);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+    	
+		return validator;  
+    }
+    
+    public static Validator selectElectionsForResultsForUser(int userId) {
+    	Validator validator = new Validator();
+    	
+    	try {
+			validator  = Initializer.rmi.selectElections(ElectionStatus.PUBLISHED);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+    	
+		return validator;  
+    }
+
+    public static Validator selectResults(int electionId) {
+    	Validator validator = new Validator();
+    	
+    	try {
+			validator  = Initializer.rmi.selectResults(electionId);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+    	
+		return validator;  
+    }
+
 }

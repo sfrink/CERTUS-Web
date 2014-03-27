@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import dto.UserDto;
 import dto.Validator;
+import service.DrawHtmlService;
 import service.HeaderService;
 import service.LoginService;
 
@@ -24,7 +25,8 @@ import service.LoginService;
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	private String messageAlert = "";   
+	
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -36,8 +38,18 @@ public class LoginServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		RequestDispatcher rd = getServletContext().getRequestDispatcher("/login.jsp");		
-		rd.forward(request, response);
+	
+		if(HeaderService.isAuthenticated()) {
+			messageAlert = DrawHtmlService.drawMessageAlert("Select option to proceed", "");
+			request.setAttribute("message_alert", messageAlert);
+			RequestDispatcher rd = getServletContext().getRequestDispatcher("/main.jsp");		
+			rd.forward(request, response);
+		} else {
+			messageAlert = DrawHtmlService.drawMessageAlert("Welcome to CERTUS! Please login or register before using the system", "");
+			request.setAttribute("message_alert", messageAlert);
+			RequestDispatcher rd = getServletContext().getRequestDispatcher("/login.jsp");		
+			rd.forward(request, response);
+		}
 	}
 
 	/**
@@ -53,18 +65,17 @@ public class LoginServlet extends HttpServlet {
 		
 		if(v.isVerified()) {
 			UserDto u = (UserDto) v.getObject();
-			request.setAttribute("message", v.getStatus() + ", " + u.getFirstName() + " " + u.getLastName());
-
 			HeaderService.authenticate();
 			HeaderService.setUserId(u.getUserId());
-			
-			request.setAttribute("state", "success" );
+
+			messageAlert = DrawHtmlService.drawMessageAlert(v.getStatus() + ", " + u.getFirstName() + " " + u.getLastName() + " uid: " + u.getUserId(), "success");
+			request.setAttribute("message_alert", messageAlert);
 			RequestDispatcher rd = request.getRequestDispatcher("main.jsp");
 			rd.forward(request, response);
 			return;
 		} else {
-			request.setAttribute("state", "fail" );
-			request.setAttribute("message", v.getStatus());
+			messageAlert = DrawHtmlService.drawMessageAlert(v.getStatus(), "alert");
+			request.setAttribute("message_alert", messageAlert);
 			RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
 			rd.forward(request, response);
 			return;

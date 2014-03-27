@@ -23,6 +23,12 @@ public class Initializer {
 	}
 	
 	
+//	public static ServerInterface getRmi() {
+//		
+//		
+//		
+//	}
+	
 	
 	
 	public void connectRmiServer () {
@@ -48,6 +54,7 @@ public class Initializer {
 			System.out.println("RMI connection established");
 			this.rmi = serverInterface;
 		} catch (Exception e) {
+			this.rmi = null;
 			System.out.println("RMI connection exception: " + e.getMessage());
 			e.printStackTrace();
 		}

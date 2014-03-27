@@ -1,22 +1,19 @@
+<%@page import="service.HeaderService"%>
+<%
+if(!HeaderService.isAuthenticated()) {
+ 	RequestDispatcher rd = getServletContext().getRequestDispatcher("/login");
+	rd.forward(request, response);		
+}
+%>
+
 <jsp:include page="headerDefault.jsp" /> 
 <jsp:include page="headerTopBarAuthenticated.jsp" /> 
 
 <%
-String state = (String) request.getAttribute("state");
-String message = "";
-String styleAlertBox = "alert-box radius";
-
-if(state != null && state.equals("success")) {
-	styleAlertBox = "alert-box success radius";
-	message = (String) request.getAttribute("message");
-}
+String messageAlert = (String) request.getAttribute("message_alert");
 %>
 
-<div data-alert class="<%=styleAlertBox %>">
-    <b><%=message %></b>
-  <a href="" class="close">×</a>
-</div>
-
+<%=messageAlert %>
 
 
 <div class="row">
@@ -33,13 +30,10 @@ if(state != null && state.equals("success")) {
 	</div>
 	
 	<div class="row">
-		<a href="tallying" class="button radius">Tallying</a>
+		<a href="results" class="button radius">Elections Results</a>
 	</div>
 	
   </div>
 </div>
-
-
-
 
 <jsp:include page="footer.jsp" />
