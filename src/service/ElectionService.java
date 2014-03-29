@@ -159,11 +159,22 @@ public class ElectionService {
     	Validator validator = new Validator();
     	
 		try {
-			validator  = Initializer.rmi.closeElectionAndPublishResults(electionId);
+			validator  = Initializer.rmi.editElectionStatus(electionId, ElectionStatus.CLOSED);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
 		return validator;
+    }
+    
+    public static Validator publishResults(int electionId){
+    	Validator val=new Validator();
+    	
+    	try{
+    		val=Initializer.rmi.publishResults(electionId);
+    	} catch(RemoteException e){
+    		e.printStackTrace();
+    	}
+    	return val;
     }
     
     public static Validator disableElection(int electionId)
