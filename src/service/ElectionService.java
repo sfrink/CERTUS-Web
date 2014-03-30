@@ -118,36 +118,37 @@ public class ElectionService {
 		return validator;
     }
     
-    public static Validator addElectionWithCandidates(ElectionDto electionDto)
+    public static Validator addElection(ElectionDto electionDto)
     {
     	Validator validator = new Validator();
     	
 		try {
-			validator  = Initializer.rmi.addElectionWithCandidates(electionDto);
+			validator  = Initializer.rmi.addElection(electionDto);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
 		return validator;
     }
-    
-    public static Validator editElectionWithCandidates(ElectionDto election)
-    {
-    	Validator validator = new Validator();
-    	
-		try {
-			validator  = Initializer.rmi.editElectionWithCandidates(election);
-		} catch (RemoteException e) {
-			e.printStackTrace();
-		}
-		return validator;
-    }
+//    
+//    public static Validator editElectionWithCandidates(ElectionDto election)
+//    {
+//    	Validator validator = new Validator();
+//    	
+//		try {
+//			validator  = Initializer.rmi.editElectionWithCandidates(election);
+//		} catch (RemoteException e) {
+//			e.printStackTrace();
+//		}
+//		return validator;
+//    }
     
     public static Validator openElection(int electionId)
     {
     	Validator validator = new Validator();
     	
 		try {
-			validator  = Initializer.rmi.editElectionStatus(electionId, ElectionStatus.OPEN);
+			//validator  = Initializer.rmi.editElectionStatus(electionId, ElectionStatus.OPEN);
+			validator  = Initializer.rmi.openElectionAndPopulateCandidates(electionId);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
