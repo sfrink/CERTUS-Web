@@ -130,7 +130,7 @@ public class ElectionService {
 		return validator;
     }
     
-    public static Validator editElectionWithCandidates(ElectionDto electionDto)
+    public static Validator editElection(ElectionDto electionDto)
     {
     	Validator validator = new Validator();
     	
