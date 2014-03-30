@@ -33,6 +33,10 @@ String messageAlert = (String) request.getAttribute("message_alert");
 		<a href="results" class="button radius">Elections Results</a>
 	</div>
 	
+	<div class="row">
+		<a href="adminElection" class="button radius">Delete Elections</a>
+	</div>
+	
   </div>
 </div>
 
