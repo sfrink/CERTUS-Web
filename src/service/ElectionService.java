@@ -130,12 +130,12 @@ public class ElectionService {
 		return validator;
     }
     
-    public static Validator editElection(ElectionDto electionDto)
+    public static Validator editElection(ElectionDto election)
     {
     	Validator validator = new Validator();
     	
 		try {
-			validator  = Initializer.rmi.editElection(electionDto);
+			validator  = Initializer.rmi.editElection(election);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
