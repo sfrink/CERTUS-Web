@@ -1,0 +1,25 @@
+@CHARSET "US-ASCII";
+.class_new_election_description {
+	height: 8em;	
+	overflow:auto;
+	resize:vertical;
+}
+
+.class_new_election_candidates {
+	height: 14em;	
+	overflow:auto;
+	resize:vertical;
+}
+
+.class_edit_election_description {
+	height: 8em;	
+	overflow:auto;
+	resize:vertical;
+}
+
+.class_edit_election_candidates {
+	height: 14em;	
+	overflow:auto;
+	resize:vertical;
+}
+
