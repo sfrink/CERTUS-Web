@@ -15,7 +15,7 @@ import enumeration.UserStatus;
 public class UserService
 {
 	/**
-	 * @param userDto
+	 * @param userDto - user object
 	 * @return Validator with the userDto including the primary key assigned by the db.
 	 */
 	public static Validator addUser(UserDto userDto) {
@@ -46,7 +46,7 @@ public class UserService
 	}
 	
 	/**
-	 * @param userDto
+	 * @param userId - user identification number 
 	 * @return Validator with status true upon successful update of user status, false otherwise
 	 */
 	public static Validator activateUser(int userId) {
@@ -62,7 +62,7 @@ public class UserService
 	}
 	
 	/**
-	 * @param userDto
+	 * @param userId - user identification number 
 	 * @return Validator with status true upon successful update of user status, false otherwise
 	 */
 	public static Validator lockUser(int userId) {
