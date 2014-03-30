@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import service.DrawHtmlService;
+import service.HtmlService;
 import service.ElectionService;
 import service.HeaderService;
 import service.VotingService;
@@ -57,7 +57,7 @@ public class VotingServlet extends HttpServlet {
 			if(vAllElections.isVerified()) {
 				allElections = (ArrayList<ElectionDto>) vAllElections.getObject();
 			} else {
-				messageAlert = DrawHtmlService.drawMessageAlert(vAllElections.getStatus(), "alert") ;
+				messageAlert = HtmlService.drawMessageAlert(vAllElections.getStatus(), "alert") ;
 			}
 			// 2. draw output
 			outElections = drawElectionsTableForVoting(allElections);
@@ -131,20 +131,20 @@ public class VotingServlet extends HttpServlet {
 							mode = "2";
 						} else {
 							mode = "2";					
-							messageLabel = DrawHtmlService.drawMessageLabel(vEnc.getStatus(), "alert");
+							messageLabel = HtmlService.drawMessageLabel(vEnc.getStatus(), "alert");
 							outModal = drawVotingInterfaceForElection(e, null);
 						}
 					} else {
 						mode = "2";
 						outModal = drawVotingInterfaceForElection(e, null);
-						messageLabel = DrawHtmlService.drawMessageLabel("Please select candidate", "alert");
+						messageLabel = HtmlService.drawMessageLabel("Please select candidate", "alert");
 					}
 					
 				} else {
-					messageLabel = DrawHtmlService.drawMessageLabel(v.getStatus(), "alert");
+					messageLabel = HtmlService.drawMessageLabel(v.getStatus(), "alert");
 				}
 			} else {
-				messageLabel = DrawHtmlService.drawMessageLabel("Click next to proceed", "secondary");
+				messageLabel = HtmlService.drawMessageLabel("Click next to proceed", "secondary");
 			}
 
 			
@@ -176,19 +176,19 @@ public class VotingServlet extends HttpServlet {
 						Validator vVote = VotingService.saveVote(vote);
 						if (vVote.isVerified()) {
 							mode = "1";
-							messageAlert = DrawHtmlService.drawMessageAlert(vVote.getStatus(),
+							messageAlert = HtmlService.drawMessageAlert(vVote.getStatus(),
 									"success");
 						} else {
 							mode = "2";
-							messageLabel = DrawHtmlService.drawMessageLabel(vVote.getStatus(),
+							messageLabel = HtmlService.drawMessageLabel(vVote.getStatus(),
 									"alert");
 							outModal = drawVotingInterfaceForElection(e, vote);
 						}
 					} else {
-						messageLabel = DrawHtmlService.drawMessageLabel(v.getStatus(), "alert");
+						messageLabel = HtmlService.drawMessageLabel(v.getStatus(), "alert");
 					}
 				} else {
-					messageLabel = DrawHtmlService.drawMessageLabel(
+					messageLabel = HtmlService.drawMessageLabel(
 							"Signature cannot be empty", "alert");
 				}
 			}

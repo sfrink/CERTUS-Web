@@ -9,11 +9,6 @@
 	String messageLabel = (String) request.getAttribute("message_label");
 	String outElections = (String) request.getAttribute("out_elections");
 	String outModal = (String) request.getAttribute("out_modal");
-
-	/* String editElection = (String) request.getAttribute("edit_election");
-	String existingElections = (String) request.getAttribute("existing_elections"); */
-
-	
  %>
 
 <jsp:include page="headerDefault.jsp" />
