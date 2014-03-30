@@ -167,6 +167,18 @@ public class ElectionService {
 		return validator;
     }
     
+    public static Validator reOpenElection(int electionId)
+    {
+    	Validator validator = new Validator();
+    	
+		try {
+			validator  = Initializer.rmi.editElectionStatus(electionId, ElectionStatus.OPEN);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		return validator;
+    }
+    
     public static Validator closeElection(int electionId)
     {
     	Validator validator = new Validator();
