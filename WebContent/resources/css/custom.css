@@ -23,3 +23,35 @@
 	resize:vertical;
 }
 
+
+.label.election_new {
+	background-color: white;
+	color: black; 	
+}
+
+.label.election_open {
+	background-color: #85ad33;
+	color: white; 	
+}
+
+.label.election_closed {
+	background-color: #ff5959;
+	color: white; 	
+}
+
+.label.election_published {
+	background-color: #b2d1f0;
+	color: black; 	
+}
+
+.label.button_link {
+	background-color: transparent;
+	color: #008cba;
+}
+
+.label.button_link:hover {
+	background-color: #008cba;
+	color: white;
+}
+
+

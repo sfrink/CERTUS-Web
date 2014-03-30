@@ -41,7 +41,7 @@ public class ElectionServlet extends HttpServlet {
 	private String outElections = "";
 	private String placeHoldElecName = "Enter election name here";
 	private String placeHoldElecDesc = "Enter election description here";
-	private String placeHoldElecCand = "Enter candidates names, one per line";
+	private String placeHoldElecCand = "Enter candidates names, one per line, candidates will appear in the same order as you specify.";
 	
        
     /**
@@ -93,7 +93,9 @@ public class ElectionServlet extends HttpServlet {
 			} else if (request.getParameter("save_edit_election") != null) {
 				// SAVE EDITED ELECTION
 				routineEditElectionSave(request);
-			} else if (request.getParameter("button_election_action") != null) {
+			} else if (request.getParameter("btn_elec_open") != null ||
+					   request.getParameter("btn_elec_close") != null ||
+				       request.getParameter("btn_elec_publish") != null ) {
 				// PERFORM ACTION ON ELECTION
 				routineActionOnElection(request);
 			}
@@ -144,11 +146,9 @@ public class ElectionServlet extends HttpServlet {
 				
 				out += "<tr>";
 				out += "<td>" + e.getElectionName() + "</td>";
-				out += "<td>";
-				out += drawElectionStatusColored(e.getStatus(), e.getStatusDescription()) + " ";
-				out += drawElectionAction(e.getElectionId(), e.getStatus());
-				out += "</td>";
-				out += "<td>"+ voted + " votes</td>";
+				out += "<td>" + drawElectionStatusColored(e.getStatus(), e.getStatusDescription()) + " ";
+				out += drawElectionAction(e.getElectionId(), e.getStatus()) + "</td>";
+				out += "<td>" + voted + " votes</td>";
 				out += "<td>" + drawElectionEdit(e.getElectionId(), e.getStatus()) + "</td>";
 				out += "</tr>";
 			}
@@ -273,13 +273,15 @@ public class ElectionServlet extends HttpServlet {
 		String out = "";
 		
 		if(statusId == ElectionStatus.NEW.getCode()) {
-			out = "<button class=\"label success radius\" type=\"submit\" name=\"button_election_action\" value=\"" + electionId + "\">" + ElectionStatus.OPEN.getLabel() + "</button>";
+			out += "<button class=\"label button_link radius\" type=\"submit\" name=\"btn_elec_open\" value=\"" + electionId + "\">Open</button>";
 		} else if(statusId == ElectionStatus.OPEN.getCode()) {
-			out = "<button class=\"label alert radius\" type=\"submit\" name=\"button_election_action\" value=\"" + electionId + "\">" + ElectionStatus.CLOSED.getLabel() + "</button>";
+			out += "<button class=\"label button_link radius\" type=\"submit\" name=\"btn_elec_close\" value=\"" + electionId + "\">Close</button>";
 		} else if(statusId == ElectionStatus.CLOSED.getCode()) {
-			out = "";
+			out += "<button class=\"label button_link radius\" type=\"submit\" name=\"btn_elec_open\" value=\"" + electionId + "\">Reopen</button>";
+			out += " / ";
+			out += "<button class=\"label button_link radius\" type=\"submit\" name=\"btn_elec_publish\" value=\"" + electionId + "\">Publish</button>";
 		} else if(statusId == ElectionStatus.PUBLISHED.getCode()) {
-			out = "";
+			out += "";
 		}
 
 		return out;
@@ -296,13 +298,13 @@ public class ElectionServlet extends HttpServlet {
 		String out = "", outClass="";
 		
 		if(status == ElectionStatus.NEW.getCode()) {
-			outClass = "";
+			outClass = "label election_new";
 		} else if(status == ElectionStatus.OPEN.getCode()) {
-			outClass = "label success";
+			outClass = "label election_open";
 		} else if(status == ElectionStatus.CLOSED.getCode()) {
-			outClass = "label alert";
+			outClass = "label election_closed";
 		} else if(status == ElectionStatus.PUBLISHED.getCode()) {
-			outClass = "label";
+			outClass = "label election_published";
 		} else {
 			return out;
 		}
@@ -320,7 +322,7 @@ public class ElectionServlet extends HttpServlet {
 		String out = "";
 		
 		if(statusId == ElectionStatus.NEW.getCode()) {
-			out += "<button class=\"label radius\" type=\"submit\" name=\"election\" value=\"" + electionId + "\">edit</button></td>";
+			out += "<button class=\"label button_link radius\" type=\"submit\" name=\"election\" value=\"" + electionId + "\">Edit</button></td>";
 		}
 	
 		return out;
@@ -371,7 +373,7 @@ public class ElectionServlet extends HttpServlet {
 		ElectionDto newElection = new ElectionDto();
 		newElection.setElectionName(request.getParameter("new_election_name"));
 		newElection.setElectionDescription(request.getParameter("new_election_description"));
-		newElection.setCandidatesListString(request.getParameter("new_election_candidates"));				
+		newElection.setCandidatesListString(request.getParameter("new_election_candidates"));
 		newElection.setOwnerId(HeaderService.getUserId());
 		// insert attempt
 		Validator vElection = ElectionService.addElection(newElection);
@@ -426,7 +428,7 @@ public class ElectionServlet extends HttpServlet {
 		editElection.setOwnerId(HeaderService.getUserId());
 
 		// update existing election
-		Validator vEditElection = ElectionService.addElection(editElection); // TBF
+		Validator vEditElection = ElectionService.editElection(editElection);
 
 		if (vEditElection.isVerified()) {
 			// insert of candidates was successful
@@ -462,10 +464,19 @@ public class ElectionServlet extends HttpServlet {
 	 */
 	public void routineActionOnElection(HttpServletRequest request) {
 		resetGlobals();
-		// Select election
-		int electionId = Integer.parseInt(request.getParameter("button_election_action"));
-		Validator v1 = ElectionService.selectElection(electionId);
-
+		// get election id
+		int electionId = 0, action = -1;
+		if(request.getParameter("btn_elec_open") != null) {
+			electionId = Integer.parseInt(request.getParameter("btn_elec_open"));
+			action = ElectionStatus.OPEN.getCode();
+		} else if(request.getParameter("btn_elec_close") != null) {
+			electionId = Integer.parseInt(request.getParameter("btn_elec_close"));
+		} else if(request.getParameter("btn_elec_publish") != null) {
+			electionId = Integer.parseInt(request.getParameter("btn_elec_publish"));
+			action = ElectionStatus.PUBLISHED.getCode();
+		}
+		
+		Validator v1 = ElectionService.selectElection(electionId);		
 		if (v1.isVerified()) {
 			ElectionDto e = (ElectionDto) v1.getObject();
 
@@ -474,13 +485,26 @@ public class ElectionServlet extends HttpServlet {
 				Validator v2 = ElectionService.openElection(electionId);
 				messageAlert = HtmlService.drawMessageAlert(
 						v2.getStatus(), "success");
-			} else if (e.getStatus() == ElectionStatus.OPEN.getCode()) {
+			} else if (e.getStatus() == ElectionStatus.OPEN.getCode()) {			
 				// close election
 				Validator v3 = ElectionService
 						.closeElection(electionId);
 				messageAlert = HtmlService.drawMessageAlert(
 						v3.getStatus(), "success");
+			} else if (e.getStatus() == ElectionStatus.CLOSED.getCode() && action == ElectionStatus.OPEN.getCode()) {
+				// reopen
+				Validator v4 = ElectionService.reOpenElection(electionId);
+				messageAlert = HtmlService.drawMessageAlert(
+						v4.getStatus(), "success");
+			} else if (e.getStatus() == ElectionStatus.CLOSED.getCode() && action == ElectionStatus.PUBLISHED.getCode()) {
+				// publish
+				Validator v5 = ElectionService.publishResults(electionId);
+				messageAlert = HtmlService.drawMessageAlert(
+						v5.getStatus(), "success");
 			}
+		} else {
+			messageAlert = HtmlService.drawMessageAlert(
+					v1.getStatus(), "alert");
 		}
 	}
 }
