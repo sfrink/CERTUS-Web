@@ -83,6 +83,18 @@ public class ElectionService {
 		return validator;
     }
     
+    public static Validator selectElectionsNotDeleted() {
+    	Validator validator = null;
+    	
+		try {
+			validator  = Initializer.rmi.selectElectionsNotInStatus(ElectionStatus.DELETED);
+			
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		return validator;
+    }
+    
     public static Validator selectElections() {
     	Validator validator = null;
 		try {
