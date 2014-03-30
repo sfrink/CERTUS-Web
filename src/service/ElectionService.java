@@ -129,18 +129,18 @@ public class ElectionService {
 		}
 		return validator;
     }
-//    
-//    public static Validator editElectionWithCandidates(ElectionDto election)
-//    {
-//    	Validator validator = new Validator();
-//    	
-//		try {
-//			validator  = Initializer.rmi.editElectionWithCandidates(election);
-//		} catch (RemoteException e) {
-//			e.printStackTrace();
-//		}
-//		return validator;
-//    }
+    
+    public static Validator editElectionWithCandidates(ElectionDto electionDto)
+    {
+    	Validator validator = new Validator();
+    	
+		try {
+			validator  = Initializer.rmi.editElection(electionDto);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		return validator;
+    }
     
     public static Validator openElection(int electionId)
     {
