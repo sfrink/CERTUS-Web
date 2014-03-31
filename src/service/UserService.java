@@ -12,6 +12,10 @@ import enumeration.UserStatus;
  * @author Hirosh Wickramasuriya
  *
  */
+/**
+ * @author sulo
+ *
+ */
 public class UserService
 {
 	/**
@@ -38,6 +42,22 @@ public class UserService
 
 		try {
 			val = Initializer.rmi.editUser(userDto);
+		} catch (RemoteException e) {
+			val.setVerified(false);
+			val.setStatus("RMI call failed");
+		}
+		return val;
+	}
+	
+	/**
+	 * @param userId - user identification number (pk) 
+	 * @return Validator with UserDto containing user information for the given user id 
+	 */ 
+	public static Validator selectUser(int userId) {
+		Validator val = new Validator();
+
+		try {
+			val = Initializer.rmi.selectUser(userId);
 		} catch (RemoteException e) {
 			val.setVerified(false);
 			val.setStatus("RMI call failed");
