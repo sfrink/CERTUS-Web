@@ -29,6 +29,21 @@ public class UserService
 		}
 		return val;
 	}
+	/**
+	 * @param userDto - user object
+	 * @return Validator with the verified status true upon successful update, false otherwise.
+	 */
+	public static Validator editUser(UserDto userDto) {
+		Validator val = new Validator();
+
+		try {
+			val = Initializer.rmi.editUser(userDto);
+		} catch (RemoteException e) {
+			val.setVerified(false);
+			val.setStatus("RMI call failed");
+		}
+		return val;
+	}
 	
 	/**
 	 * @return - Validator with ArrayList<UserDto> all the users in the system
