@@ -157,7 +157,7 @@ public class AdminUserServlet extends HttpServlet {
 		if(status == UserStatus.ACTIVE.getCode()) {
 			outClass = "";
 		} else if(status == UserStatus.LOCKED.getCode()) {
-			outClass = "label success";
+			outClass = "";
 		}
 		
 		out = "<span class=\"" + outClass + "\">" + value + "</span>";		
@@ -205,7 +205,7 @@ public class AdminUserServlet extends HttpServlet {
 		out += HtmlService.drawInputTextAlphanumeric("edit_user_last_name", "Last Name", "Enter Last Name", valUserLastName);
 		out += HtmlService.drawInputTextEmail("edit_user_email", "Email", "Enter Email", valUserEmail);
 		//out += HtmlService.drawInputTextAlphanumeric("edit_user_status", "Status", "Enter Status", ""+valUserStatus);
-		out += HtmlService.drawStatusDropdownList(valUserStatus);
+		out += HtmlService.drawStatusDropdownList(valUserStatus, "edit_user_status");
 		out += "</fieldset>";
 		out += "</div>";
 		// button

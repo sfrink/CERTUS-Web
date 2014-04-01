@@ -94,13 +94,28 @@ public class HtmlService {
 		return out;
 	}
 	
-	public static String drawStatusDropdownList(String currentStatus){
+	public static String drawStatusDropdownList(String currentStatus, String field_name){
 		String out="";
-		out += "<a href=\"#\" data-dropdown=\"drop1\" class=\"button dropdown\">Status: "+currentStatus+"</a><br>";
-		out += "<ul id=\"dropdownStatus\" data-dropdown-content class=\"f-dropdown\">";
-		out += "<li>Activate</li>";
-		out += "<li>Lock</li>";
-		out += "</ul>";
+		System.out.println(currentStatus);
+		out +="<div>";
+		out += "<label>Current Status <small>required</small></label>";
+		out += "<select name=\""+field_name+"\">";
+		if(currentStatus.equals("Active")){
+			out += "<option value=\"1\" selected>Activated</option>";
+			out += "<option value=\"2\">Locked</option>";
+		}
+		else if(currentStatus.equals("Locked")){
+			out += "<option value=\"1\">Activated</option>";
+			out += "<option value=\"2\" selected>Locked</option>";
+		}
+		//out += "<option selected>Current Status: "+currentStatus+" </option>";
+		out += "</select>";
+		out += "</div>";
+		/*out += "<a href=\"#\" data-dropdown=\"dropdownStatus\" class=\"button dropdown\">Status: "+currentStatus+"</a><br>";
+		out += "<ul name = "+field_name+" id=\"dropdownStatus\" data-dropdown-content class=\"f-dropdown\">";
+		out += "<li value=\"1\">Activate</li>";
+		out += "<li value=\"2\">Lock</li>";
+		out += "</ul>";*/
 		return out;
 	}
 }
