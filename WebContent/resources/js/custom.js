@@ -21,12 +21,18 @@ $(document).ready(function() {
 
 $(document).ready(function() {
 	$("#close-reveal-modal-modified").click(function () {
-	    var message = "Stop! Closing this windows will dismiss all data. Are you sure you want to proceed?";
+	    var message = "Warning! Information you have entered will not be saved. Are you sure you want to proceed?";
         if (confirm(message)) { 
         	$('#modal_window').foundation('reveal', 'close');
         	return true;
         } else {
         	return false;
         }
+	});
+});
+
+$(document).ready(function() {
+	$("#close-reveal-modal-modified-force").click(function () {
+    	$('#modal_window').foundation('reveal', 'close');
 	});
 });
