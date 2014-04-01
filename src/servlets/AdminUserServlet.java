@@ -125,7 +125,7 @@ public class AdminUserServlet extends HttpServlet {
 			out += "<h5>Existing users</h5>";
 			out += "<form action=\"adminUser\" method=\"post\">";
 			out += "<table><thead><tr>";
-			out += "<th>User ID</th>";
+//			out += "<th>User ID</th>";
 			out += "<th>User Name</th>";
 			out += "<th>User Email</th>";
 			out += "<th>Status</th>";
@@ -135,7 +135,7 @@ public class AdminUserServlet extends HttpServlet {
 			for (UserDto u : users) {
 				
 				out += "<tr>";
-				out += "<td>"+ u.getUserId() + "</td>";
+				//out += "<td>"+ u.getUserId() + "</td>";
 				out += "<td>" + u.getFirstName() +" "+u.getLastName()+ "</td>";
 				out += "<td>" + u.getEmail() + "</td>";
 				out += "<td>"+ drawUserStatusColored(u.getStatus(), u.getStatusDescription()) + " </td>";
@@ -182,7 +182,7 @@ public class AdminUserServlet extends HttpServlet {
 	public String drawEditUser(UserDto u) {
 		String out = "";
 		int valUserId = 0;
-		int valUserStatus=0;
+		String valUserStatus="";
 		String valUserFirstName = "", valUserLastName="", valUserEmail="";
 		// checking null case
 		if(u != null) {
@@ -190,7 +190,7 @@ public class AdminUserServlet extends HttpServlet {
 			valUserFirstName = u.getFirstName();
 			valUserLastName = u.getLastName();
 			valUserEmail=u.getEmail();
-			valUserStatus=u.getStatus();
+			valUserStatus=u.getStatusDescription();
 			//System.out.println("User not null");
 		}
 
@@ -204,7 +204,8 @@ public class AdminUserServlet extends HttpServlet {
 		out += HtmlService.drawInputTextAlphanumeric("edit_user_first_name", "First Name", "Enter First Name", valUserFirstName);
 		out += HtmlService.drawInputTextAlphanumeric("edit_user_last_name", "Last Name", "Enter Last Name", valUserLastName);
 		out += HtmlService.drawInputTextEmail("edit_user_email", "Email", "Enter Email", valUserEmail);
-		out += HtmlService.drawInputTextAlphanumeric("edit_user_status", "Status", "Enter Status", ""+valUserStatus);
+		//out += HtmlService.drawInputTextAlphanumeric("edit_user_status", "Status", "Enter Status", ""+valUserStatus);
+		out += HtmlService.drawStatusDropdownList(valUserStatus);
 		out += "</fieldset>";
 		out += "</div>";
 		// button

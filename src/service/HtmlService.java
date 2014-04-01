@@ -94,4 +94,13 @@ public class HtmlService {
 		return out;
 	}
 	
+	public static String drawStatusDropdownList(String currentStatus){
+		String out="";
+		out += "<a href=\"#\" data-dropdown=\"drop1\" class=\"button dropdown\">Status: "+currentStatus+"</a><br>";
+		out += "<ul id=\"dropdownStatus\" data-dropdown-content class=\"f-dropdown\">";
+		out += "<li>Activate</li>";
+		out += "<li>Lock</li>";
+		out += "</ul>";
+		return out;
+	}
 }

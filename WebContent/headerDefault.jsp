@@ -13,6 +13,7 @@
 <script src="resources/js/foundation/foundation.alert.js"></script>
 <script src="resources/js/foundation/foundation.reveal.js"></script>
 <script src="resources/js/foundation/foundation.abide.js"></script>
+<script src="resources/js/foundation/foundation.dropdown.js"></script>
 <script src="resources/js/vendor/jquery.cookie.js"></script>
 <script src="resources/js/custom.js"></script>
 <link rel="stylesheet" href="resources/css/foundation.css" />
