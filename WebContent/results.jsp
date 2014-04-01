@@ -25,7 +25,7 @@ String outModal = (String) request.getAttribute("out_modal");
 		</div>
 		
 		<%=outModal %>
-		<a class="close-reveal-modal">&#215;</a>
+		<a id="close-reveal-modal-modified" class="close-reveal-modal">&#215;</a>
 	</div>
 </div>
 
