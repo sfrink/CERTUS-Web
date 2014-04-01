@@ -18,15 +18,13 @@ String outModal = (String) request.getAttribute("out_modal");
 		<%=outElections %>	
 	</div>	
 
-	<div id="voting_modal" class="reveal-modal" data-reveal>
+	<div id="modal_window" class="reveal-modal" data-reveal>
 		<div class="row">
-			<div class="large-6 large-centered medium-6 large-centered columns">
-				<%=messageLabel %>
-			</div>
+			<%=messageLabel %>
 		</div>
 		
 		<%=outModal %>
-		<a class="close-reveal-modal">&#215;</a>
+	<a id="close-reveal-modal-modified" class="close-reveal-modal">&#215;</a>
 	</div>
 </div>
 
@@ -34,7 +32,7 @@ String outModal = (String) request.getAttribute("out_modal");
 <jsp:include page="footer.jsp" />
 
 <% if(mode.equals("2")) { %>
-  <script>$('#voting_modal').foundation('reveal', 'open');</script>
+  <script>$('#modal_window').foundation('reveal', 'open');</script>
 <% } %>
 
 

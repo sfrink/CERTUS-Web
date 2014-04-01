@@ -11,9 +11,9 @@
     settings : {
       animation: 'fadeAndPop',
       animation_speed: 250,
-      close_on_background_click: true,
-      close_on_esc: true,
-      dismiss_modal_class: 'close-reveal-modal',
+      close_on_background_click: false,
+      close_on_esc: false,
+      dismiss_modal_class: 'close-reveal-modal-mod',
       bg_class: 'reveal-modal-bg',
       open: function(){},
       opened: function(){},

@@ -206,9 +206,8 @@ public class ElectionServlet extends HttpServlet {
 		out += "</div>";
 		out += "</div>";
 		out += "</form>";
-		out += "<a class=\"close-reveal-modal\">&#215;</a>";
-
-		return out;
+		
+		return out; 
 	}
 
 	
@@ -256,7 +255,6 @@ public class ElectionServlet extends HttpServlet {
 		out += "</div>";
 		out += "</div>";
 		out += "</form>";
-		out += "<a class=\"close-reveal-modal\">&#215;</a>";
 
 		return out;
 	}
