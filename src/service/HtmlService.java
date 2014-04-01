@@ -96,7 +96,6 @@ public class HtmlService {
 	
 	public static String drawStatusDropdownList(String currentStatus, String field_name){
 		String out="";
-		System.out.println(currentStatus);
 		out +="<div>";
 		out += "<label>Current Status <small>required</small></label>";
 		out += "<select name=\""+field_name+"\">";
