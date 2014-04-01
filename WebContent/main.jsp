@@ -37,6 +37,9 @@ String messageAlert = (String) request.getAttribute("message_alert");
 		<a href="adminElection" class="button radius">Delete Elections</a>
 	</div>
 	
+	<div class="row">
+		<a href="adminUser" class="button radius">Edit Users</a>
+	</div>
   </div>
 </div>
 
