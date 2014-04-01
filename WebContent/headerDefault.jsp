@@ -8,8 +8,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <script src="resources/js/vendor/jquery.js"></script>
-<script src="resources/js/vendor/jquery-ui.js"></script>
-
 <script src="resources/js/foundation/foundation.js"></script>
 <script src="resources/js/vendor/modernizr.js"></script>
 <script src="resources/js/foundation/foundation.alert.js"></script>
