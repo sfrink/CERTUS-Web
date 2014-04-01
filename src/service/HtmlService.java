@@ -67,13 +67,13 @@ public class HtmlService {
 		return out;		
 	}
 
-<<<<<<< HEAD
+
 	public static String drawInputTextEmail(String field_name, String label, String placeholder, String value) {
 		String out = "";
 		
 		out += "<div class=\"" + field_name + "\">";
 		out += "<label>" + label + " <small>required</small>";
-		out += "<input type=\"email\" name=\""+ field_name + "\" placeholder=\"" + placeholder + "\" value=\"" + value + "\" required pattern=\"\b[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}\b\">";
+		out += "<input type=\"email\" name=\""+ field_name + "\" placeholder=\"" + placeholder + "\" value=\"" + value + "\" required \">";
 		out += "</label>";
 		out += "<small class=\"error\">" + label + " field can only contain letters and numbers and cannot be empty</small>";
 		out += "</div>";
@@ -82,7 +82,7 @@ public class HtmlService {
 	}
 	
 	
-=======
+
 	public static String drawInputTextareaReadonly(String field_name, String label, String placeholder, String value) {
 		String out = "";
 
@@ -93,6 +93,5 @@ public class HtmlService {
 
 		return out;
 	}
->>>>>>> d49e7f538e7aecf62a18fff14d47b77b0e42732f
 	
 }

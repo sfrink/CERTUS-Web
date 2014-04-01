@@ -175,7 +175,7 @@ public class AdminUserServlet extends HttpServlet {
 		mode = "2";
 		messageLabel = HtmlService.drawMessageLabel("", "secondary");
 		UserDto u = new UserDto();
-		u.setUserId(Integer.parseInt(request.getParameter("edit")));
+		u=(UserDto)(UserService.selectUser(Integer.parseInt(request.getParameter("edit")))).getObject();
 		outModal = drawEditUser(u);
 	}
 	
@@ -190,19 +190,20 @@ public class AdminUserServlet extends HttpServlet {
 			valUserFirstName = u.getFirstName();
 			valUserLastName = u.getLastName();
 			valUserEmail=u.getEmail();
-			valUserStatus=u.getStatus();	
+			valUserStatus=u.getStatus();
+			//System.out.println("User not null");
 		}
 
 		out += "<h5>Edit user</h5>";
 		out += "<form id=\"form_user_edit\" action=\"adminUser\" method=\"post\" data-abide>";
 		out += "<div class=\"row\">";
-		// draw election info
+		// draw user info
 		out += "<div class=\"large-6 medium-6 columns\">";
 		out += "<fieldset>";
 		out += "<legend>User Information</legend>";
 		out += HtmlService.drawInputTextAlphanumeric("edit_user_first_name", "First Name", "Enter First Name", valUserFirstName);
 		out += HtmlService.drawInputTextAlphanumeric("edit_user_last_name", "Last Name", "Enter Last Name", valUserLastName);
-		out += HtmlService.drawInputTextareaAlphanumeric("edit_user_email", "Email", "Enter Email", valUserEmail);
+		out += HtmlService.drawInputTextEmail("edit_user_email", "Email", "Enter Email", valUserEmail);
 		out += HtmlService.drawInputTextAlphanumeric("edit_user_status", "Status", "Enter Status", ""+valUserStatus);
 		out += "</fieldset>";
 		out += "</div>";
@@ -213,7 +214,7 @@ public class AdminUserServlet extends HttpServlet {
 		out += "</div>";
 		out += "</div>";
 		out += "</form>";
-		out += "<a class=\"close-reveal-modal\">&#215;</a>";
+		//out += "<a class=\"close-reveal-modal\">&#215;</a>";
 
 		return out;
 	}

@@ -29,7 +29,7 @@
 	<div class="row"><%=messageLabel %></div>
 		
 	<%=outModal %>
-	<a class="close-reveal-modal">&#215;</a>
+	<a id="close-reveal-modal-modified" class="close-reveal-modal">&#215;</a>
 </div>
 
 <jsp:include page="footer.jsp" />
