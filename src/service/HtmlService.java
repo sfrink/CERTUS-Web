@@ -67,8 +67,15 @@ public class HtmlService {
 		return out;		
 	}
 
-	
-	
-	
+	public static String drawInputTextareaReadonly(String field_name, String label, String placeholder, String value) {
+		String out = "";
+
+		out += "<div>";
+		out += "<label>" + label + "</label>";
+		out += "<textarea name=\"" + field_name + "\" class=\"class_" + field_name + "\" readonly>" + value + "</textarea>";
+		out += "</div>";
+
+		return out;
+	}
 	
 }

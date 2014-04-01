@@ -32,40 +32,17 @@
 	</div>
 </div>
 
-
-
-<%-- <div id="add_new_election" class="reveal-modal" data-reveal>
-  <h2>Add new election</h2>
-  <%=messageLabel %>
-  <%=newElection %>
-</div>	
-				
-<div id="edit_election" class="reveal-modal" data-reveal>
-  <h2>Edit election</h2>
-  <%=messageLabel %>
-  <%=editElection %>
-</div>
- --%>
-
-
-<div id="election_modal" class="reveal-modal" data-reveal>
+<div id="modal_window" class="reveal-modal" data-reveal>
 	<div class="row"><%=messageLabel %></div>
 		
 	<%=outModal %>
-	<a class="close-reveal-modal">&#215;</a>
+	<a id="close-reveal-modal-modified" class="close-reveal-modal">&#215;</a>
 </div>
+
+
 
 <jsp:include page="footer.jsp" />
 
 <% if(mode.equals("2")) { %>
-  <script>$('#election_modal').foundation('reveal', 'open');</script>
+  <script>$('#modal_window').foundation('reveal', 'open');</script>
 <% } %>
-
-
-<%-- <% if(mode.equals("2")) { %>
-  <script>$('#add_new_election').foundation('reveal', 'open');</script>
-<% } else if(mode.equals("3")) { %>
-  <script>$('#edit_election').foundation('reveal', 'open');</script>	
-<% } %>
-
- --%>

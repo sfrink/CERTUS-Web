@@ -23,6 +23,17 @@
 	resize:vertical;
 }
 
+.class_text_cipher {
+	overflow:auto;
+	resize:vertical;
+}
+
+.class_text_signature {
+	height: 8em;
+	overflow:auto;
+	resize:vertical;	
+}
+
 
 .label.election_new {
 	background-color: white;
