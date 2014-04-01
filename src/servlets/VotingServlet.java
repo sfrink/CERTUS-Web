@@ -119,7 +119,7 @@ public class VotingServlet extends HttpServlet {
 			for (ElectionDto e : elections) {
 				out += "<tr>";
 				out += "<td>" + e.getElectionName() + "</td>";
-				out += "<td><button class=\"label success radius\" type=\"submit\" name=\"button_vote\" value=\"" + e.getElectionId() + "\">vote</button></td>";
+				out += "<td><button class=\"label radius\" type=\"submit\" name=\"button_vote\" value=\"" + e.getElectionId() + "\">vote</button></td>";
 				out += "</tr>";
 			}
 				
