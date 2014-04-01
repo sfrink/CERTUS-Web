@@ -119,7 +119,7 @@ public class VotingServlet extends HttpServlet {
 			for (ElectionDto e : elections) {
 				out += "<tr>";
 				out += "<td>" + e.getElectionName() + "</td>";
-				out += "<td><button class=\"label success radius\" type=\"submit\" name=\"button_vote\" value=\"" + e.getElectionId() + "\">vote</button></td>";
+				out += "<td><button class=\"label radius\" type=\"submit\" name=\"button_vote\" value=\"" + e.getElectionId() + "\">vote</button></td>";
 				out += "</tr>";
 			}
 				
@@ -294,7 +294,7 @@ public class VotingServlet extends HttpServlet {
 		// draw election info
 		out += "<div class=\"large-6 medium-6 columns\">";
 		out += "<fieldset>";
-		out += "<legend>Step 1: Please select candidate</legend>";
+		out += "<legend>Step 1 of 3: Please select candidate</legend>";
 
 		for (CandidateDto c : e.getCandidateList()) {
 			out += "<label for=\"" + c.getCandidateId() + "\">";			
@@ -340,7 +340,7 @@ public class VotingServlet extends HttpServlet {
 		//	Cipher and signature
 		out += "<div class=\"large-6 medium-6 columns\">";
 		out += "<fieldset>";
-		out += "<legend>Step 2: Please sign your vote</legend>";
+		out += "<legend>Step 2 of 3: Please sign your vote</legend>";
 		out += HtmlService.drawInputTextareaReadonly("text_cipher", "Encrypted Vote", "Cipher is supposed to be here", vote.getVoteEncrypted());
 		out += HtmlService.drawInputTextareaAlphanumeric("text_signature", "Signature", "Enter your signature here...", signature);
 		out += "</fieldset>";
@@ -378,7 +378,7 @@ public class VotingServlet extends HttpServlet {
 		out += "<div class=\"row\">";
 		out += "<div class=\"large-6 large-centered medium-6 large-centered columns\">";
 		out += "<fieldset>";
-//		out += "<legend>Thank you!</legend>";
+		out += "<legend>Step 3 of 3: Confirmation</legend>";
 		out += "Your vote has been successfully submitted!";
 		out += "</fieldset>";
 		out += "</div>";

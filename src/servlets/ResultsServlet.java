@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import service.ElectionService;
 import service.HeaderService;
+import service.HtmlService;
 import service.VotingService;
 import dto.CandidateDto;
 import dto.ElectionDto;
@@ -43,24 +44,8 @@ public class ResultsServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if(HeaderService.isAuthenticated()) {
-			mode = "1";
-			messageAlert = "";
-			messageLabel = "";
-			outModal = "";
-
-			ArrayList<ElectionDto> allElections = new ArrayList<ElectionDto>();
-
-			// 1. get the list of all elections this user voted in and which are closed
-			Validator vAllElections = ElectionService.selectElectionsForResultsForUser(HeaderService.getUserId());
-
-			if(vAllElections.isVerified()) {
-				allElections = (ArrayList<ElectionDto>) vAllElections.getObject();
-			} else {
-//				messageAlert = drawMessageAlert(vAllElections.getStatus(), "alert") ;
-			}
-				
-			outElections = drawElectionsTableForResults(allElections);
-				
+			resetGlobals();
+			routineExistingElections();
 				
 			// Redirect
 			request.setAttribute("mode", mode);
@@ -79,43 +64,16 @@ public class ResultsServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {		
 		if(HeaderService.isAuthenticated()) {
-			mode = "1";
-			messageAlert = "";
-			messageLabel = "";
-			outModal = "";
-
-			ArrayList<ElectionDto> allElections = new ArrayList<ElectionDto>();
-
-
+			resetGlobals();
+			
 			// OPEN RETULTS
 			if(request.getParameter("button_election_results") != null) {
-				int electionId = Integer.parseInt(request.getParameter("button_election_results"));
-				Validator v = ElectionService.selectResults(electionId);
-				
-				if(v.isVerified()) {
-					// get election object
-					ElectionDto e = (ElectionDto) v.getObject();
-					
-					
-					outModal = drawElectionResults(e);
-					mode = "2";
-				}
+				routineElectionResults(request);
 			}
 						
-			// 1. get the list of all elections this user can vote in
-			Validator vAllElections = ElectionService.selectElectionsForResultsForUser(HeaderService.getUserId());
-
-			if(vAllElections.isVerified()) {
-				allElections = (ArrayList<ElectionDto>) vAllElections.getObject();
-			} else {
-				messageAlert = vAllElections.getStatus();
-			}
-			
-			outElections = drawElectionsTableForResults(allElections);
-
+			routineExistingElections();
 
 			request.setAttribute("mode", mode);
 			request.setAttribute("message_alert", messageAlert);
@@ -130,19 +88,62 @@ public class ResultsServlet extends HttpServlet {
 		}
 	}
 
+		
+	/**
+	 * Dmitriy Karmazin
+	 * This function performs all the routines required for displaying existing elections
+	 */
+	public void routineExistingElections() {
+		ArrayList<ElectionDto> allElections = new ArrayList<ElectionDto>();
+
+		// 1. get the list of all elections this user voted in and which are closed
+		Validator vAllElections = ElectionService.selectElectionsForResultsForUser(HeaderService.getUserId());
+
+		if(vAllElections.isVerified()) {
+			allElections = (ArrayList<ElectionDto>) vAllElections.getObject();
+		} else {
+			messageAlert = HtmlService.drawMessageAlert(vAllElections.getStatus(), "alert") ;
+		}
+			
+		outElections = drawElectionsTableForResults(allElections);
+	}
 	
 	
+	/**
+	 * Dmitriy Karmazin
+	 * This function performs required routine to display election results
+	 * @param request
+	 */
+	public void routineElectionResults(HttpServletRequest request) {
+		resetGlobals();
+		int electionId = Integer.parseInt(request.getParameter("button_election_results"));
+		Validator v = ElectionService.selectResults(electionId);
+		
+		if(v.isVerified()) {
+			// get election object
+			ElectionDto e = (ElectionDto) v.getObject();
+			this.mode = "2";
+			this.outModal = drawElectionResults(e);
+		} else {
+			this.messageAlert = HtmlService.drawMessageAlert(v.getStatus(), "alert");
+		}
+	}
 	
 	
+	/**
+	 * Dmitriy Karmazin
+	 * This function returns HTML output for table of elections with available results
+	 * @param elections
+	 * @return
+	 */
 	
 	public String drawElectionsTableForResults(ArrayList<ElectionDto> elections) {
 		String out = "";
 
 		if(elections != null && elections.size() != 0) {
-			out += "<h5>List of finished elections</h5>";
+			out += "<h5>List of elections with published results</h5>";
 			out += "<h5><form action=\"results\" method=\"post\">";
 			out += "<table><thead><tr>";
-			out += "<th>ID</th>";
 			out += "<th>Election Name</th>";
 			out += "<th>Action</th>";
 			out += "</tr></thead><tbody>";
@@ -150,16 +151,14 @@ public class ResultsServlet extends HttpServlet {
 			int i = 1;
 			for (ElectionDto e : elections) {
 				out += "<tr>";
-				out += "<td>" + e.getElectionId() + "</td>";
 				out += "<td>" + e.getElectionName() + "</td>";
-				out += "<td><button class=\"label success\" type=\"submit\" name=\"button_election_results\" value=\"" + e.getElectionId() + "\">See results</button></td>";
+				out += "<td><button class=\"label radius\" type=\"submit\" name=\"button_election_results\" value=\"" + e.getElectionId() + "\">See results</button></td>";
 				out += "</tr>";
 				i++;
 			}
 			
 			out += "</tbody></table>";
 			out += "</form>";
-			
 		} else {
 			out += "<div class=\"label secondary\">No election results available yet</div>";
 		}
@@ -210,7 +209,18 @@ public class ResultsServlet extends HttpServlet {
 
 	
 	
-	
+	/**
+	 * Dmitriy Karmazin
+	 * This functions resets all global variables for this class
+	 */
+	private void resetGlobals() {
+		this.mode = "1";
+		this.messageAlert = "";
+		this.messageLabel = "";
+		this.outElections = "";
+		this.outModal = "";
+	}
+
 	
 	
 	
