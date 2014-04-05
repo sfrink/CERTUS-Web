@@ -22,6 +22,11 @@
           </ul>
         </li>
         <li class="divider"></li>
-        <li class="has-form"><a href="login" class="button">Logout</a></li>
+        <li class="has-form">
+	        <form action="login" method="post">
+    		    <button class="radius button" type="submit" name="logout">Logout</button>
+			</form>    		    
+    	</li>
+		<!-- <li class="has-form"><a href="login" class="button">Logout</a></li> -->
       </ul>
     </section></nav>

@@ -21,7 +21,7 @@ $(document).ready(function() {
 
 $(document).ready(function() {
 	$("#close-reveal-modal-modified").click(function () {
-	    var message = "Warning! Information you have entered will not be saved. Are you sure you want to proceed?";
+	    var message = "Warning!\n\nYou are about to close this window and all entered information will be lost.\n\nClick 'OK' to close this window and dismiss entered information.\n\nClick 'CANCEL' to stay on this window.\n\n";
         if (confirm(message)) { 
         	$('#modal_window').foundation('reveal', 'close');
         	return true;
@@ -30,6 +30,21 @@ $(document).ready(function() {
         }
 	});
 });
+
+$(document).ready(function() {
+	$("#close-reveal-modal-modified_election").click(function () {
+	    var message = "Warning!\n\nVOTING is not complete! You are about to close this window and your vote will not be saved.\n\nClick 'OK' to dismiss your vote.\n\nClick 'CANCEL' to stay on this window and complete the voting process\n\n";
+        if (confirm(message)) { 
+        	$('#modal_window').foundation('reveal', 'close');
+        	return true;
+        } else {
+        	return false;
+        }
+	});
+});
+
+
+
 
 $(document).ready(function() {
 	$("#close-reveal-modal-modified-force").click(function () {

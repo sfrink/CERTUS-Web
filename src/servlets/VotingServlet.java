@@ -346,7 +346,7 @@ public class VotingServlet extends HttpServlet {
 		out += "</fieldset>";
 		// buttons
 		out += "<div class=\"row\">";
-		out += "<div class=\"large-6 large-centered medium-6 large-centered columns\">";
+		out += "<div class=\"large-12 medium-12 small-12 large-centered medium-centered small-centered columns\">";
 		out += "<button id=\"button_vote_back\" class=\"button alert left\" type=\"button\" name=\"button_vote\" value=\"" + vote.getElectionId() + "\">Back</button>";
 		out += "<button class=\"button success right\" type=\"submit\" name=\"button_submit_vote\" value=\"" + vote.getElectionId() + "\">Vote!</button>";	
 		out += "</div>";

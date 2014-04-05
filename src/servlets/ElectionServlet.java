@@ -131,8 +131,8 @@ public class ElectionServlet extends HttpServlet {
 			out += "<table><thead><tr>";
 			out += "<th>Election Name</th>";
 			out += "<th>Election Status</th>";
-			out += "<th>Votes Collected</th>";
-			out += "<th>Edit</th>";
+			out += "<th>Votes Collected</th>";			
+			out += "<th>Action</th>";
 			out += "</tr></thead><tbody>";
 			
 			for (ElectionDto e : elections) {
@@ -144,12 +144,13 @@ public class ElectionServlet extends HttpServlet {
 					voted = epd.getTotalVotes();
 				}
 				
-				out += "<tr>";
-				out += "<td>" + e.getElectionName() + "</td>";
-				out += "<td>" + drawElectionStatusColored(e.getStatus(), e.getStatusDescription()) + " ";
-				out += drawElectionAction(e.getElectionId(), e.getStatus()) + "</td>";
-				out += "<td>" + voted + " votes</td>";
-				out += "<td>" + drawElectionEdit(e.getElectionId(), e.getStatus()) + "</td>";
+				String trClass = getElectionTableRowClass(e.getStatus());
+				
+				out += "<tr class =\"" + trClass + "\">";
+				out += "<td class =\"" + trClass + "\">" + e.getElectionName() + "</td>";
+				out += "<td class =\"" + trClass + "\">" + drawElectionStatus(e.getStatus(), e.getStatusDescription()) + "</td>";
+				out += "<td class =\"" + trClass + "\">" + voted + " votes</td>";
+				out += "<td class =\"" + trClass + "\">" + drawElectionAction(e.getElectionId(), e.getStatus()) + "</td>";
 				out += "</tr>";
 			}
 			
@@ -271,13 +272,15 @@ public class ElectionServlet extends HttpServlet {
 		String out = "";
 		
 		if(statusId == ElectionStatus.NEW.getCode()) {
-			out += "<button class=\"label button_link radius\" type=\"submit\" name=\"btn_elec_open\" value=\"" + electionId + "\">Open</button>";
-		} else if(statusId == ElectionStatus.OPEN.getCode()) {
-			out += "<button class=\"label button_link radius\" type=\"submit\" name=\"btn_elec_close\" value=\"" + electionId + "\">Close</button>";
-		} else if(statusId == ElectionStatus.CLOSED.getCode()) {
-			out += "<button class=\"label button_link radius\" type=\"submit\" name=\"btn_elec_open\" value=\"" + electionId + "\">Reopen</button>";
+			out += "<button class=\"label radius\" type=\"submit\" name=\"btn_elec_open\" value=\"" + electionId + "\">Open</button>";
 			out += " / ";
-			out += "<button class=\"label button_link radius\" type=\"submit\" name=\"btn_elec_publish\" value=\"" + electionId + "\">Publish</button>";
+			out += "<button class=\"label radius\" type=\"submit\" name=\"election\" value=\"" + electionId + "\">Edit</button>";
+		} else if(statusId == ElectionStatus.OPEN.getCode()) {
+			out += "<button class=\"label radius\" type=\"submit\" name=\"btn_elec_close\" value=\"" + electionId + "\">Close</button>";
+		} else if(statusId == ElectionStatus.CLOSED.getCode()) {
+			out += "<button class=\"label radius\" type=\"submit\" name=\"btn_elec_open\" value=\"" + electionId + "\">Reopen</button>";
+			out += " / ";
+			out += "<button class=\"label radius\" type=\"submit\" name=\"btn_elec_publish\" value=\"" + electionId + "\">Publish</button>";
 		} else if(statusId == ElectionStatus.PUBLISHED.getCode()) {
 			out += "";
 		}
@@ -285,6 +288,23 @@ public class ElectionServlet extends HttpServlet {
 		return out;
 	}
 
+	
+	public String getElectionTableRowClass(int statusId) {
+		String out = "";
+		
+		if(statusId == ElectionStatus.NEW.getCode()) {
+			out += "election_new";
+		} else if(statusId == ElectionStatus.OPEN.getCode()) {
+			out += "election_open";
+		} else if(statusId == ElectionStatus.CLOSED.getCode()) {
+			out += "election_closed";
+		} else if(statusId == ElectionStatus.PUBLISHED.getCode()) {
+			out += "election_published";
+		}
+		
+		return out;
+	}
+	
 		
 	/**
 	 * Dmitriy Karmazin
@@ -292,17 +312,17 @@ public class ElectionServlet extends HttpServlet {
 	 * @param value - string representation of status
 	 * @return
 	 */
-	public String drawElectionStatusColored(int status, String value) {
+	public String drawElectionStatus(int status, String value) {
 		String out = "", outClass="";
 		
 		if(status == ElectionStatus.NEW.getCode()) {
-			outClass = "label election_new";
+			outClass = "label clear";
 		} else if(status == ElectionStatus.OPEN.getCode()) {
-			outClass = "label election_open";
+			outClass = "label clear";
 		} else if(status == ElectionStatus.CLOSED.getCode()) {
-			outClass = "label election_closed";
+			outClass = "label clear";
 		} else if(status == ElectionStatus.PUBLISHED.getCode()) {
-			outClass = "label election_published";
+			outClass = "label clear";
 		} else {
 			return out;
 		}

@@ -117,4 +117,30 @@ public class HtmlService {
 		out += "</ul>";*/
 		return out;
 	}
+	
+	
+	
+	
+	public static String drawInputTextPassword(String field_name, String label, String placeholder, String value) {
+		String out = "";
+
+		out += "<div class=\"" + field_name + "\">";
+		out += "<label>" + label + " <small>required</small>";
+		out += "<input type=\"password\" name=\""+ field_name + "\" placeholder=\"" + placeholder + "\" value=\"" + value + "\" required pattern=\"[a-zA-Z]+\" \">";
+		out += "</label>";
+		out += "<small class=\"error\">" + label + " cannot be empty</small>";
+		out += "</div>";
+		
+		return out;		
+	}
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
 }

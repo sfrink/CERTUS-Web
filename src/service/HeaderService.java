@@ -4,7 +4,9 @@ public class HeaderService {
 	// dummy authentication mechanism
 	public static boolean auth = false;
 	public static int userId;
+	public static String userSessionId;
 	
+
 	public static boolean isAuthenticated() {
 		return auth;
 	}
@@ -24,7 +26,21 @@ public class HeaderService {
 	public static void setUserId(int userId) {
 		HeaderService.userId = userId;
 	}
+
+	public static String getUserSessionId() {
+		return userSessionId;
+	}
+
+	public static void setUserSessionId(String userSessionId) {
+		HeaderService.userSessionId = userSessionId;
+	}
 	
+	
+	public static void logout() {
+		deAuthenticate();
+		setUserId(0);
+		setUserSessionId("");
+	}
 	
 	
 }

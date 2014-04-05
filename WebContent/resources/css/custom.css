@@ -55,6 +55,12 @@
 	color: black; 	
 }
 
+.label.clear {
+	background-color: transparent;
+	color: black;
+}
+
+
 .label.button_link {
 	background-color: transparent;
 	color: #008cba;
@@ -65,4 +71,29 @@
 	color: white;
 }
 
+table tr.even, table tr.alt, table tr:nth-of-type(even) {
+    background-color: transparent;
+    background: transparent;
+}
+
+
+.class_type_bold {
+	font-weight: bold;
+}
+
+.election_new {
+	background-color: white;
+}
+
+.election_open {
+	background-color: #abdca4;
+}
+
+.election_closed {
+	background-color: #efb5ab;
+}
+
+.election_published {
+	background-color: #e0f2f7;
+}
 
