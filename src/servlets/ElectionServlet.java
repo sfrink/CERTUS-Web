@@ -41,6 +41,9 @@ public class ElectionServlet extends HttpServlet {
 	private String outElections = "";
 	private String placeHoldElecName = "Enter election name here";
 	private String placeHoldElecDesc = "Enter election description here";
+	private String placeHoldElecStartTime = "Enter election start time here";
+	private String placeHoldElecEndTime = "Enter election end time here";
+
 	private String placeHoldElecCand = "Enter candidates names, one per line, candidates will appear in the same order as you specify.";
 	
        
@@ -172,13 +175,15 @@ public class ElectionServlet extends HttpServlet {
 	public String drawNewElection(ElectionDto e) {
 		String out = "";
 		int valElecId = 0;
-		String valElecName = "", valElecDesc = "", valElecCand = "";
+		String valElecName = "", valElecDesc = "", valElecCand = "", valElecStartTime = "", valElecEndTime = "";
 		// checking null case
 		if(e != null) {
 			valElecId = e.getElectionId();
 			valElecName = e.getElectionName();
 			valElecDesc = e.getElectionDescription();
 			valElecCand = e.getCandidatesListString();
+			valElecStartTime = e.getStartDatetime();
+			valElecEndTime = e.getCloseDatetime();
 		}
 				
 		out += "<h5>Add new election</h5>";
@@ -190,6 +195,8 @@ public class ElectionServlet extends HttpServlet {
 		out += "<legend>Election Information</legend>";
 		out += HtmlService.drawInputTextAlphanumeric("new_election_name", "Election Name", placeHoldElecName, valElecName);
 		out += HtmlService.drawInputTextareaAlphanumeric("new_election_description", "Election Description", placeHoldElecDesc, valElecDesc, false, "");
+		out += HtmlService.drawInputTextAlphanumericOptional("new_election_start_time", "Start Time", placeHoldElecStartTime, valElecStartTime);
+		out += HtmlService.drawInputTextAlphanumericOptional("new_election_end_time", "End Time", placeHoldElecEndTime, valElecEndTime);		
 		out += "</fieldset>";
 		out += "</div>";
 		// draw candidates info
@@ -221,13 +228,15 @@ public class ElectionServlet extends HttpServlet {
 	public String drawEditElection(ElectionDto e) {
 		String out = "";
 		int valElecId = 0;
-		String valElecName = "", valElecDesc = "", valElecCand = "";
+		String valElecName = "", valElecDesc = "", valElecCand = "", valElecStartTime = "", valElecEndTime = "";
 		// checking null case
 		if(e != null) {
 			valElecId = e.getElectionId();
 			valElecName = e.getElectionName();
 			valElecDesc = e.getElectionDescription();
 			valElecCand = e.getCandidatesListString();
+			valElecStartTime = e.getStartDatetime();
+			valElecEndTime = e.getCloseDatetime();
 		}
 
 		out += "<h5>Edit election</h5>";
@@ -239,6 +248,8 @@ public class ElectionServlet extends HttpServlet {
 		out += "<legend>Election Information</legend>";
 		out += HtmlService.drawInputTextAlphanumeric("edit_election_name", "Election Name", placeHoldElecName, valElecName);
 		out += HtmlService.drawInputTextareaAlphanumeric("edit_election_description", "Election Description", placeHoldElecDesc, valElecDesc, false, "");
+		out += HtmlService.drawInputTextAlphanumericOptional("edit_election_start_time", "Start Time", placeHoldElecStartTime, valElecStartTime);
+		out += HtmlService.drawInputTextAlphanumericOptional("edit_election_end_time", "End Time", placeHoldElecEndTime, valElecEndTime);
 		out += "</fieldset>";
 		out += "</div>";
 		// draw candidates info
@@ -392,6 +403,8 @@ public class ElectionServlet extends HttpServlet {
 		newElection.setElectionName(request.getParameter("new_election_name"));
 		newElection.setElectionDescription(request.getParameter("new_election_description"));
 		newElection.setCandidatesListString(request.getParameter("new_election_candidates"));
+		newElection.setStartDatetime(request.getParameter("new_election_start_time"));
+		newElection.setCloseDatetime(request.getParameter("new_election_end_time"));
 		newElection.setOwnerId(HeaderService.getUserId());
 		// insert attempt
 		Validator vElection = ElectionService.addElection(newElection);
@@ -443,6 +456,8 @@ public class ElectionServlet extends HttpServlet {
 		editElection.setElectionName(request.getParameter("edit_election_name"));
 		editElection.setElectionDescription(request.getParameter("edit_election_description"));
 		editElection.setCandidatesListString(request.getParameter("edit_election_candidates"));
+		editElection.setStartDatetime(request.getParameter("edit_election_start_time"));
+		editElection.setCloseDatetime(request.getParameter("edit_election_end_time"));
 		editElection.setOwnerId(HeaderService.getUserId());
 
 		// update existing election

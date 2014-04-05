@@ -40,7 +40,15 @@ public class HtmlService {
 
 	
 	
-	
+	/**
+	 * Dmitriy Karmazin
+	 * This function generates HTML output for alphanumeric required text field
+	 * @param field_name - name property for input type tag
+	 * @param label - label will be visible to users
+	 * @param placeholder - will go inside empty text field 
+	 * @param value - will go inside text field as prefilled value
+	 * @return
+	 */	
 	public static String drawInputTextAlphanumeric(String field_name, String label, String placeholder, String value) {
 		String out = "";
 		
@@ -53,6 +61,32 @@ public class HtmlService {
 		
 		return out;		
 	}
+
+	
+	/**
+	 * Dmitriy Karmazin
+	 * This function generates HTML output for alphanumeric optional text field
+	 * @param field_name - name property for input type tag
+	 * @param label - label will be visible to users
+	 * @param placeholder - will go inside empty text field 
+	 * @param value - will go inside text field as prefilled value
+	 * @return
+	 */
+	public static String drawInputTextAlphanumericOptional(String field_name, String label, String placeholder, String value) {
+		String out = "";
+		
+		out += "<div class=\"" + field_name + "\">";
+		out += "<label>" + label + " <small>optional</small>";
+		out += "<input type=\"text\" name=\""+ field_name + "\" placeholder=\"" + placeholder + "\" value=\"" + value + "\" pattern=\"^[0-9a-zA-Z\\s\\r\\n]+$\"\">";
+		out += "</label>";
+		out += "<small class=\"error\">" + label + " field can only contain letters and numbers</small>";
+		out += "</div>";
+		
+		return out;		
+	}
+
+	
+	
 	
 	public static String drawInputTextareaAlphanumeric(String field_name, String label, String placeholder, String value, boolean error, String errorMessage) {
 		String out = "", errorClass = "";

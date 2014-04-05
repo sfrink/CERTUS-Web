@@ -308,8 +308,10 @@ public class VotingServlet extends HttpServlet {
 		out += "</div>";
 		// draw election description
 		out += "<div class=\"large-6 medium-6 columns\">";
-		out += "<fieldset>";
-		out += "<legend>Election Description</legend>";
+		out += "<fieldset><legend>Election Close Time</legend>";
+		out += (e.getStartDatetime() == null) ? "No closing time specified" : e.getStartDatetime();
+		out += "</fieldset>";
+		out += "<fieldset><legend>Election Description</legend>";
 		out += e.getElectionDescription();
 		out += "</fieldset>";
 		out += "</div>";
