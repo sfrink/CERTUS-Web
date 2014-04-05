@@ -54,14 +54,20 @@ public class HtmlService {
 		return out;		
 	}
 	
-	public static String drawInputTextareaAlphanumeric(String field_name, String label, String placeholder, String value) {
-		String out = "";
+	public static String drawInputTextareaAlphanumeric(String field_name, String label, String placeholder, String value, boolean error, String errorMessage) {
+		String out = "", errorClass = "";
+		String errorMessageToDisplay = label + " field can only contain letters and numbers and cannot be empty";
 		
-		out += "<div class=\"" + field_name + "\">";
+		if(error) {
+			errorClass = "error";
+			errorMessageToDisplay = errorMessage;
+		}
+		
+		out += "<div class=\"" + field_name + " " + errorClass + "\">";
 		out += "<label>" + label + " <small>required</small>";
 		out += "<textarea name=\"" + field_name + "\" class=\"class_" + field_name + "\" placeholder=\"" + placeholder + "\" required pattern=\"^[0-9a-zA-Z\\s\\r\\n]+$\">" + value + "</textarea>";
 		out += "</label>";
-		out += "<small class=\"error\">" + label + " field can only contain letters and numbers and cannot be empty</small>";
+		out += "<small class=\"error\">" + errorMessageToDisplay + "</small>";
 		out += "</div>";
 		
 		return out;		
@@ -133,9 +139,6 @@ public class HtmlService {
 		
 		return out;		
 	}
-	
-
-	
 	
 	
 	

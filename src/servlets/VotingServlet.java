@@ -199,6 +199,8 @@ public class VotingServlet extends HttpServlet {
 					vote.setUserId(HeaderService.getUserId());
 					vote.setElectionId(electionId);
 					vote.setVoteEncrypted(cipherText);
+					vote.setVoteSignatureError(false);
+					vote.setVoteSignatureErrorMessage("");
 
 					mode = "2";
 					outModal = drawVotingInterfaceForElectionStep2(e, vote);
@@ -251,7 +253,7 @@ public class VotingServlet extends HttpServlet {
 				} else {
 					mode = "2";
 					messageLabel = HtmlService.drawMessageLabel(vVote.getStatus(), "alert");
-					outModal = drawVotingInterfaceForElectionStep2(e, vote);
+					outModal = drawVotingInterfaceForElectionStep2(e, (VoteDto) vVote.getObject());
 				}
 			} else {
 				messageLabel = HtmlService.drawMessageLabel(v.getStatus(), "alert");
@@ -342,7 +344,7 @@ public class VotingServlet extends HttpServlet {
 		out += "<fieldset>";
 		out += "<legend>Step 2 of 3: Please sign your vote</legend>";
 		out += HtmlService.drawInputTextareaReadonly("text_cipher", "Encrypted Vote", "Cipher is supposed to be here", vote.getVoteEncrypted());
-		out += HtmlService.drawInputTextareaAlphanumeric("text_signature", "Signature", "Enter your signature here...", signature);
+		out += HtmlService.drawInputTextareaAlphanumeric("text_signature", "Signature", "Enter your signature here...", signature, vote.isVoteSignatureError(), vote.getVoteSignatureErrorMessage());
 		out += "</fieldset>";
 		// buttons
 		out += "<div class=\"row\">";

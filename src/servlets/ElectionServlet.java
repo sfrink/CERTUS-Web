@@ -189,14 +189,14 @@ public class ElectionServlet extends HttpServlet {
 		out += "<fieldset>";
 		out += "<legend>Election Information</legend>";
 		out += HtmlService.drawInputTextAlphanumeric("new_election_name", "Election Name", placeHoldElecName, valElecName);
-		out += HtmlService.drawInputTextareaAlphanumeric("new_election_description", "Election Description", placeHoldElecDesc, valElecDesc);
+		out += HtmlService.drawInputTextareaAlphanumeric("new_election_description", "Election Description", placeHoldElecDesc, valElecDesc, false, "");
 		out += "</fieldset>";
 		out += "</div>";
 		// draw candidates info
 		out += "<div class=\"large-6 medium-6 columns\">";
 		out += "<fieldset>";
 		out += "<legend>Add candidates</legend>";
-		out += HtmlService.drawInputTextareaAlphanumeric("new_election_candidates", "Candidates names", placeHoldElecCand, valElecCand);
+		out += HtmlService.drawInputTextareaAlphanumeric("new_election_candidates", "Candidates names", placeHoldElecCand, valElecCand, false, "");
 		out += "</fieldset>"; 
 		out += "</div>";
 		out += "</div>";
@@ -238,14 +238,14 @@ public class ElectionServlet extends HttpServlet {
 		out += "<fieldset>";
 		out += "<legend>Election Information</legend>";
 		out += HtmlService.drawInputTextAlphanumeric("edit_election_name", "Election Name", placeHoldElecName, valElecName);
-		out += HtmlService.drawInputTextareaAlphanumeric("edit_election_description", "Election Description", placeHoldElecDesc, valElecDesc);
+		out += HtmlService.drawInputTextareaAlphanumeric("edit_election_description", "Election Description", placeHoldElecDesc, valElecDesc, false, "");
 		out += "</fieldset>";
 		out += "</div>";
 		// draw candidates info
 		out += "<div class=\"large-6 medium-6 columns\">";
 		out += "<fieldset>";
 		out += "<legend>Add candidates</legend>";
-		out += HtmlService.drawInputTextareaAlphanumeric("edit_election_candidates", "Candidates names", placeHoldElecCand, valElecCand);
+		out += HtmlService.drawInputTextareaAlphanumeric("edit_election_candidates", "Candidates names", placeHoldElecCand, valElecCand, false, "");
 		out += "</fieldset>"; 
 		out += "</div>";
 		out += "</div>";
