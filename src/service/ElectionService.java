@@ -13,12 +13,13 @@ import enumeration.Status;
 
 public class ElectionService {
 
+	static String sessionID = ""; //to be changed with the real session ID
 	
 	public static Validator selectAllElectionsForVoter(int userId) {
 		Validator v1 = new Validator();
 
 		try {
-			v1 = Initializer.rmi.selectAllElectionsForVoter(userId);
+			v1 = Initializer.rmi.selectAllElectionsForVoter(userId, sessionID);
 		} catch (RemoteException e) {
 			v1.setVerified(false);
 			v1.setStatus("RMI call failed");
@@ -42,12 +43,12 @@ public class ElectionService {
 	public static Validator selectElection(int id) {
 		Validator v1 = new Validator(), v2 = new Validator(), v3 = new Validator();
 		try {
-			v1 = Initializer.rmi.selectElection(id);
+			v1 = Initializer.rmi.selectElection(id, sessionID);
 			
 			if(v1.isVerified()) {
 				ElectionDto e = (ElectionDto) v1.getObject();
 				
-				v2 = Initializer.rmi.selectCandidatesOfElection(e.getElectionId(), Status.ENABLED);
+				v2 = Initializer.rmi.selectCandidatesOfElection(e.getElectionId(), Status.ENABLED, sessionID);
 				
 				if(v2.isVerified()) {
 					ArrayList<CandidateDto> candidates = (ArrayList<CandidateDto>) v2.getObject();
@@ -75,7 +76,7 @@ public class ElectionService {
     	Validator validator = null;
     	
 		try {
-			validator  = Initializer.rmi.selectElections(electionStatus);
+			validator  = Initializer.rmi.selectElections(electionStatus, sessionID);
 			
 		} catch (RemoteException e) {
 			e.printStackTrace();
@@ -87,7 +88,7 @@ public class ElectionService {
     	Validator validator = null;
     	
 		try {
-			validator  = Initializer.rmi.selectElectionsNotInStatus(ElectionStatus.DELETED);
+			validator  = Initializer.rmi.selectElectionsNotInStatus(ElectionStatus.DELETED, sessionID);
 			
 		} catch (RemoteException e) {
 			e.printStackTrace();
@@ -98,7 +99,7 @@ public class ElectionService {
     public static Validator selectElections() {
     	Validator validator = null;
 		try {
-			validator = Initializer.rmi.selectElections();
+			validator = Initializer.rmi.selectElections(sessionID);
 			 
 		} catch (RemoteException e) {
 			e.printStackTrace();
@@ -110,7 +111,7 @@ public class ElectionService {
     	Validator validator = null;
     	
 		try {
-			validator  = Initializer.rmi.selectElectionsOwnedByUser(electionOwnerId, electionStatus);
+			validator  = Initializer.rmi.selectElectionsOwnedByUser(electionOwnerId, electionStatus, sessionID);
 			
 		} catch (RemoteException e) {
 			e.printStackTrace();
@@ -123,7 +124,7 @@ public class ElectionService {
     	Validator validator = new Validator();
     	
 		try {
-			validator  = Initializer.rmi.selectElectionsOwnedByUser(electionOwnerId);
+			validator  = Initializer.rmi.selectElectionsOwnedByUser(electionOwnerId, sessionID);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
@@ -135,7 +136,7 @@ public class ElectionService {
     	Validator validator = new Validator();
     	
 		try {
-			validator  = Initializer.rmi.addElection(electionDto);
+			validator  = Initializer.rmi.addElection(electionDto, sessionID);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
@@ -147,7 +148,7 @@ public class ElectionService {
     	Validator validator = new Validator();
     	
 		try {
-			validator  = Initializer.rmi.editElection(election);
+			validator  = Initializer.rmi.editElection(election, sessionID);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
@@ -160,7 +161,7 @@ public class ElectionService {
     	
 		try {
 			//validator  = Initializer.rmi.editElectionStatus(electionId, ElectionStatus.OPEN);
-			validator  = Initializer.rmi.openElectionAndPopulateCandidates(electionId);
+			validator  = Initializer.rmi.openElectionAndPopulateCandidates(electionId, sessionID);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
@@ -172,7 +173,7 @@ public class ElectionService {
     	Validator validator = new Validator();
     	
 		try {
-			validator  = Initializer.rmi.editElectionStatus(electionId, ElectionStatus.OPEN);
+			validator  = Initializer.rmi.editElectionStatus(electionId, ElectionStatus.OPEN, sessionID);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
@@ -184,7 +185,7 @@ public class ElectionService {
     	Validator validator = new Validator();
     	
 		try {
-			validator  = Initializer.rmi.editElectionStatus(electionId, ElectionStatus.CLOSED);
+			validator  = Initializer.rmi.editElectionStatus(electionId, ElectionStatus.CLOSED, sessionID);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
@@ -195,7 +196,7 @@ public class ElectionService {
     	Validator val=new Validator();
     	
     	try{
-    		val=Initializer.rmi.publishResults(electionId);
+    		val=Initializer.rmi.publishResults(electionId, sessionID);
     	} catch(RemoteException e){
     		e.printStackTrace();
     	}
@@ -207,7 +208,7 @@ public class ElectionService {
     	Validator validator = new Validator();
     	
 		try {
-			validator  = Initializer.rmi.editElectionStatus(electionId, ElectionStatus.DELETED);
+			validator  = Initializer.rmi.editElectionStatus(electionId, ElectionStatus.DELETED, sessionID);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
@@ -220,7 +221,7 @@ public class ElectionService {
     	Validator validator = new Validator();
     	
     	try {
-			validator  = Initializer.rmi.selectAllElectionsForVoter(userId);
+			validator  = Initializer.rmi.selectAllElectionsForVoter(userId, sessionID);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
@@ -232,7 +233,7 @@ public class ElectionService {
     	Validator validator = new Validator();
     	
     	try {
-			validator  = Initializer.rmi.selectElections(ElectionStatus.PUBLISHED);
+			validator  = Initializer.rmi.selectElections(ElectionStatus.PUBLISHED, sessionID);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
@@ -244,7 +245,7 @@ public class ElectionService {
     	Validator validator = new Validator();
     	
     	try {
-			validator  = Initializer.rmi.selectResults(electionId);
+			validator  = Initializer.rmi.selectResults(electionId, sessionID);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
