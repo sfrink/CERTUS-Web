@@ -79,7 +79,9 @@ public class LoginServlet extends HttpServlet {
 				u = (UserDto) v.getObject();
 				HeaderService.authenticate();
 				HeaderService.setUserId(u.getUserId());
-		
+				HeaderService.setUserSessionId(u.getSessionId());
+				
+				
 				messageAlert = HtmlService.drawMessageAlert(v.getStatus() + ", " + u.getFirstName() + " " + u.getLastName() + " uid: " + u.getUserId(), "success");
 				request.setAttribute("message_alert", messageAlert);
 				RequestDispatcher rd = getServletContext().getRequestDispatcher("/main.jsp");		
