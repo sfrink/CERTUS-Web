@@ -40,6 +40,7 @@ String messageAlert = (String) request.getAttribute("message_alert");
 	<div class="row">
 		<a href="adminUser" class="button radius">Edit Users</a>
 	</div>
+	
   </div>
 </div>
 

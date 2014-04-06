@@ -155,6 +155,7 @@ public class LoginServlet extends HttpServlet {
 		out += HtmlService.drawInputTextEmail("username", "Email", "your@email.address", u.getEmail());		
 		out += HtmlService.drawInputTextPassword("password", "Password", "password", u.getPassword());
 		out += "<input type=\"submit\" name=\"login\" class=\"small radius button\" value=\"Login\">";
+		out += "<p><a href=\"signup\">New User?</a></p>";
 		out += "</fieldset>";
 		out += "</form>";
 		

@@ -165,7 +165,7 @@ public class HtmlService {
 		String out = "";
 
 		out += "<div class=\"" + field_name + "\">";
-		out += "<label>" + label + " <small>required</small>";
+		out += "<label>" + label + " <small>Required</small>";
 		out += "<input type=\"password\" name=\""+ field_name + "\" placeholder=\"" + placeholder + "\" value=\"" + value + "\" required pattern=\"[a-zA-Z]+\" \">";
 		out += "</label>";
 		out += "<small class=\"error\">" + label + " cannot be empty</small>";
@@ -174,6 +174,27 @@ public class HtmlService {
 		return out;		
 	}
 	
+	public static String drawInputTextPasswordAndConfirmation(String pField_name, String pLabel, String cField_name, String cLabel) {
+		String out = "";
+		
+		//Password Field:
+		out += "<div class=\"" + pField_name + "\">";
+		out += "<label>" + pLabel + " <small>Required</small>";
+		out += "<input type=\"password\" name=\""+ pField_name + "\" id=\"" + pField_name + "\" required pattern=\"[a-zA-Z]+\">";
+		out += "</label>";
+		out += "<small class=\"error\">Your password must match the requirements</small>";
+		out += "</div>";
+
+		//Confirmation Field
+		out += "<div class=\"" + cField_name + "\">";
+		out += "<label>" + cLabel + " <small>Required</small>";
+		out += "<input type=\"password\" name=\""+ pField_name + "\" id=\"" + pField_name + "\" required pattern=\"[a-zA-Z]+\" data-equalto=\""+ pField_name +"\">";
+		out += "</label>";
+		out += "<small class=\"error\">The password did not match</small>";
+		out += "</div>";
+
+		return out;
+	}
 	
 	
 	
