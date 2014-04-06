@@ -26,6 +26,7 @@ public class VotingService {
 			} else {
 				v1.setVerified(false);
 				v1.setStatus(v2.getStatus());
+				v1.setObject(v2.getObject());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

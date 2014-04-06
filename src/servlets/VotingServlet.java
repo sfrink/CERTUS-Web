@@ -199,6 +199,8 @@ public class VotingServlet extends HttpServlet {
 					vote.setUserId(HeaderService.getUserId());
 					vote.setElectionId(electionId);
 					vote.setVoteEncrypted(cipherText);
+					vote.setVoteSignatureError(false);
+					vote.setVoteSignatureErrorMessage("");
 
 					mode = "2";
 					outModal = drawVotingInterfaceForElectionStep2(e, vote);
@@ -251,7 +253,7 @@ public class VotingServlet extends HttpServlet {
 				} else {
 					mode = "2";
 					messageLabel = HtmlService.drawMessageLabel(vVote.getStatus(), "alert");
-					outModal = drawVotingInterfaceForElectionStep2(e, vote);
+					outModal = drawVotingInterfaceForElectionStep2(e, (VoteDto) vVote.getObject());
 				}
 			} else {
 				messageLabel = HtmlService.drawMessageLabel(v.getStatus(), "alert");
@@ -306,8 +308,10 @@ public class VotingServlet extends HttpServlet {
 		out += "</div>";
 		// draw election description
 		out += "<div class=\"large-6 medium-6 columns\">";
-		out += "<fieldset>";
-		out += "<legend>Election Description</legend>";
+		out += "<fieldset><legend>Election Close Time</legend>";
+		out += (e.getStartDatetime() == null) ? "No closing time specified" : e.getStartDatetime();
+		out += "</fieldset>";
+		out += "<fieldset><legend>Election Description</legend>";
 		out += e.getElectionDescription();
 		out += "</fieldset>";
 		out += "</div>";
@@ -342,11 +346,11 @@ public class VotingServlet extends HttpServlet {
 		out += "<fieldset>";
 		out += "<legend>Step 2 of 3: Please sign your vote</legend>";
 		out += HtmlService.drawInputTextareaReadonly("text_cipher", "Encrypted Vote", "Cipher is supposed to be here", vote.getVoteEncrypted());
-		out += HtmlService.drawInputTextareaAlphanumeric("text_signature", "Signature", "Enter your signature here...", signature);
+		out += HtmlService.drawInputTextareaAlphanumeric("text_signature", "Signature", "Enter your signature here...", signature, vote.isVoteSignatureError(), vote.getVoteSignatureErrorMessage());
 		out += "</fieldset>";
 		// buttons
 		out += "<div class=\"row\">";
-		out += "<div class=\"large-6 large-centered medium-6 large-centered columns\">";
+		out += "<div class=\"large-12 medium-12 small-12 large-centered medium-centered small-centered columns\">";
 		out += "<button id=\"button_vote_back\" class=\"button alert left\" type=\"button\" name=\"button_vote\" value=\"" + vote.getElectionId() + "\">Back</button>";
 		out += "<button class=\"button success right\" type=\"submit\" name=\"button_submit_vote\" value=\"" + vote.getElectionId() + "\">Vote!</button>";	
 		out += "</div>";

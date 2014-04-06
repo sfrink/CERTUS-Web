@@ -183,24 +183,26 @@ public class ResultsServlet extends HttpServlet {
 		out += "<fieldset>";
 		out += "<legend>Election results</legend>";
 		out += "<div class=\"row\">";
+		out += "<h3>" + drawWinnerString(e.getCandidateList()) + "</h3>";
+		out += "</div>";
 		
+		out += "<div class=\"row\">";		
 		out += "<table><thead><tr>";
 		out += "<th>Candidate Name</th>";
 		out += "<th>Number of votes</th>";
 		out += "</tr></thead><tbody>";
 
 		for (CandidateDto c : e.getCandidateList()) {
+			String outClass = c.isWinner() ? "class_type_bold" : "";
 			out += "<tr>";
-			out += "<td>" + c.getCandidateName() + "</td>";
-			out += "<td>" + c.getVoteCount() + "</td>";			
+			out += "<td><span class=\"" + outClass + "\">" + c.getCandidateName() +  "<span></td>";
+			out += "<td><span class=\"" + outClass + "\">" + c.getVoteCount() + "<span></td>";			
 			out += "</tr>";
 		}
 		
 		out += "</tbody></table>";
 	    out += "</div>";
-		
 		out += "</fieldset>";
-
 	    out += "</div>";
 	    out += "</form>";		
 		
@@ -222,8 +224,33 @@ public class ResultsServlet extends HttpServlet {
 	}
 
 	
-	
-	
-	
-	
+	/**
+	 * This function returns string that declares the winner of election
+	 * @param candidates
+	 * @return
+	 */
+	public String drawWinnerString(ArrayList<CandidateDto> candidates) {
+		String outWinner1 = "", outWinner2 = "";
+		int winnerCount = 0;
+		
+		for (CandidateDto c : candidates) {
+			if(c.isWinner()) {
+				winnerCount++;
+				outWinner2 += c.getCandidateName() + ", ";
+			}
+		}
+
+		if(winnerCount == 0) {
+			outWinner1 = "No votes had been submitted";
+			outWinner2 = "";
+		} else if(winnerCount == 1) {
+			outWinner1 = "The winner of the election is: ";
+			outWinner2 = outWinner2.substring(0, outWinner2.length() - 2);
+		} else if(winnerCount > 1) {
+			outWinner1 = "There is a tie between: ";
+			outWinner2 = outWinner2.substring(0, outWinner2.length() - 2);
+		}
+
+		return outWinner1 + outWinner2;
+	}
 }
