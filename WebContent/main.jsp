@@ -41,6 +41,10 @@ String messageAlert = (String) request.getAttribute("message_alert");
 		<a href="adminUser" class="button radius">Edit Users</a>
 	</div>
 	
+	<div class="row">
+		<a href="newkey" class="button radius">Get New Signing Key</a>
+	</div>
+	
   </div>
 </div>
 
