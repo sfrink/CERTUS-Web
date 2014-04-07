@@ -15,4 +15,5 @@ String outForm = (String) request.getAttribute("out_form");
 	</div>
 </div>
 
+
 <jsp:include page="footer.jsp" />  

@@ -22,6 +22,9 @@ public class UserService
 	 * @param userDto - user object
 	 * @return Validator with the userDto including the primary key assigned by the db.
 	 */
+	
+	static String sessionID = ""; //to be changed with the real session ID
+	
 	public static Validator addUser(UserDto userDto) {
 		Validator val = new Validator();
 
@@ -41,7 +44,7 @@ public class UserService
 		Validator val = new Validator();
 
 		try {
-			val = Initializer.rmi.editUser(userDto);
+			val = Initializer.rmi.editUser(userDto, sessionID);
 		} catch (RemoteException e) {
 			val.setVerified(false);
 			val.setStatus("RMI call failed");
@@ -57,7 +60,7 @@ public class UserService
 		Validator val = new Validator();
 
 		try {
-			val = Initializer.rmi.selectUser(userId);
+			val = Initializer.rmi.selectUser(userId, sessionID);
 		} catch (RemoteException e) {
 			val.setVerified(false);
 			val.setStatus("RMI call failed");
@@ -72,7 +75,7 @@ public class UserService
 		Validator val = new Validator();
 
 		try {
-			val = Initializer.rmi.selectAllUsers();
+			val = Initializer.rmi.selectAllUsers(sessionID);
 		} catch (RemoteException e) {
 			val.setVerified(false);
 			val.setStatus("RMI call failed");
@@ -88,7 +91,7 @@ public class UserService
 		Validator val = new Validator();
 
 		try {
-			val = Initializer.rmi.editUserStatus(userId, UserStatus.ACTIVE);
+			val = Initializer.rmi.editUserStatus(userId, UserStatus.ACTIVE, sessionID);
 		} catch (RemoteException e) {
 			val.setVerified(false);
 			val.setStatus("RMI call failed");
@@ -104,7 +107,7 @@ public class UserService
 		Validator val = new Validator();
 
 		try {
-			val = Initializer.rmi.editUserStatus(userId, UserStatus.LOCKED);
+			val = Initializer.rmi.editUserStatus(userId, UserStatus.LOCKED, sessionID);
 		} catch (RemoteException e) {
 			val.setVerified(false);
 			val.setStatus("RMI call failed");

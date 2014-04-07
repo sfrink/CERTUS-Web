@@ -7,11 +7,13 @@ import enumeration.Status;
 import rmi.Initializer;
 
 public class CandidateService {
+	
+	static String sessionID = ""; //to be changed with the real session ID
 
 	public static Validator selectCandidate(int id){
 		Validator validator = new Validator();
 		try {
-			validator = Initializer.rmi.selectCandidate(id);
+			validator = Initializer.rmi.selectCandidate(id, sessionID);
 			
 		} catch (RemoteException e) {
 			e.printStackTrace();
@@ -23,7 +25,7 @@ public class CandidateService {
     public static Validator selectCandidatesForElection(int election_id){
     	Validator validator = new Validator();
     	try {
-    		validator = Initializer.rmi.selectCandidatesOfElection(election_id);
+    		validator = Initializer.rmi.selectCandidatesOfElection(election_id, sessionID);
     		
 		} catch (RemoteException e) {
 			e.printStackTrace();
@@ -34,7 +36,7 @@ public class CandidateService {
     public static Validator selectCandidatesForElection(int election_id, Status candidateStatus){
     	Validator validator = new Validator();
     	try {
-    		validator = Initializer.rmi.selectCandidatesOfElection(election_id, candidateStatus);
+    		validator = Initializer.rmi.selectCandidatesOfElection(election_id, candidateStatus, sessionID);
     		
 		} catch (RemoteException e) {
 			e.printStackTrace();
@@ -83,7 +85,7 @@ public class CandidateService {
     	Validator validator = new Validator();
     	
 		try {
-			validator  = Initializer.rmi.editCandidateStatus(candidateId, Status.ENABLED);
+			validator  = Initializer.rmi.editCandidateStatus(candidateId, Status.ENABLED, sessionID);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
@@ -95,7 +97,7 @@ public class CandidateService {
     	Validator validator = new Validator();
     	
 		try {
-			validator  = Initializer.rmi.editCandidateStatus(candidateId, Status.DISABLED);
+			validator  = Initializer.rmi.editCandidateStatus(candidateId, Status.DISABLED, sessionID);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
