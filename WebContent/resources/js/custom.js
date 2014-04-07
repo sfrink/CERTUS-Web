@@ -44,10 +44,25 @@ $(document).ready(function() {
 });
 
 
-
-
 $(document).ready(function() {
 	$("#close-reveal-modal-modified-force").click(function () {
     	$('#modal_window').foundation('reveal', 'close');
+	});
+});
+
+
+$(document).ready(function() {
+	$('#new_election_availability').on('change', function() {
+		var optionId = $(this).val();
+
+		$('#new_election_users_column').hide();
+		
+		if(optionId == 2) {
+			$('#new_election_users_column').show();
+			$('#new_election_users').val("");
+		} else if(optionId == 1) {
+			$('#new_election_users_column').hide();
+			$('#new_election_users').val("void");
+		}
 	});
 });

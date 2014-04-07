@@ -1,12 +1,12 @@
 @CHARSET "US-ASCII";
 .class_new_election_description {
-	height: 8em;	
+	height: 3em;	
 	overflow:auto;
 	resize:vertical;
 }
 
 .class_new_election_candidates {
-	height: 14em;	
+	height: 5em;	
 	overflow:auto;
 	resize:vertical;
 }

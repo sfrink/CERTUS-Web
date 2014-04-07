@@ -4,6 +4,7 @@ public class HtmlService {
 
 	
 	/**
+	 * Dmitriy Karmazin
 	 * This function returns HTML code for alert
 	 * @param message
 	 * @param mode
@@ -22,7 +23,9 @@ public class HtmlService {
 		return out;
 	}
 	
+	
 	/**
+	 * Dmitriy Karmazin
 	 * This function returns HTML code for label
 	 * @param message
 	 * @param mode
@@ -38,7 +41,6 @@ public class HtmlService {
 		return out;
 	}
 
-	
 	
 	/**
 	 * Dmitriy Karmazin
@@ -99,7 +101,7 @@ public class HtmlService {
 		
 		out += "<div class=\"" + field_name + " " + errorClass + "\">";
 		out += "<label>" + label + " <small>required</small>";
-		out += "<textarea name=\"" + field_name + "\" class=\"class_" + field_name + "\" placeholder=\"" + placeholder + "\" required pattern=\"^[0-9a-zA-Z\\s\\r\\n]+$\">" + value + "</textarea>";
+		out += "<textarea id=\"" + field_name + "\" name=\"" + field_name + "\" class=\"class_" + field_name + "\" placeholder=\"" + placeholder + "\" required pattern=\"^[0-9a-zA-Z\\s\\r\\n]+$\">" + value + "</textarea>";
 		out += "</label>";
 		out += "<small class=\"error\">" + errorMessageToDisplay + "</small>";
 		out += "</div>";
@@ -175,6 +177,28 @@ public class HtmlService {
 	}
 	
 	
+	public static String drawSelectBoxElectionPrivateOrPublic(int selectedId) {
+		String out = "", selected1 = "", selected2 = "";
+		String field_name = "new_election_availability";
+		if(selectedId == 1) {
+			selected1 = "selected";
+		} else if(selectedId == 2) {
+			selected2 = "selected";
+		}
+		
+		out += "<div class=\"" + field_name + "\">";
+		out += "<label>Who can vote <small>required</small>";
+        out += "<select id=\"" + field_name + "\" name=\"" + field_name + "\" required pattern=\"[12]\">";
+        out += "<option value=\"0\">Please select option</option>";  
+        out += "<option value=\"1\""+ selected1 + ">Public | everyone</option>";
+        out += "<option value=\"2\""+ selected2 + ">Private | specify users on next screen</option>";
+        out += "</select>";
+        out += "</label>";
+        out += "<small class=\"error\">please select either public or private type of election</small>";
+        out += "</div>";
+		
+		return out;
+	}
 	
 	
 	
