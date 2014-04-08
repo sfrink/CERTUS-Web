@@ -42,7 +42,11 @@ String messageAlert = (String) request.getAttribute("message_alert");
 	</div>
 	
 	<div class="row">
-		<a href="newkey" class="button radius">Get New Signing Key</a>
+		<a href="newkey" class="button radius">Key Management</a>
+	</div>
+
+	<div class="row">
+		<a href="profile" class="button radius">Edit Profile</a>
 	</div>
 	
   </div>

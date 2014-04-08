@@ -27,6 +27,7 @@ public class NewKeyServlet extends HttpServlet {
 	private String messageAlert = "";
 	private String messageLabel = "";
 	private String outModal = "";
+	private String outFile = "";
 	
 	private String keyPassword = "";
 	
@@ -46,10 +47,13 @@ public class NewKeyServlet extends HttpServlet {
 		if(HeaderService.isAuthenticated()) {
 			resetGlobals();
 			// Redirect
+			
+			routineKeyPage();
 			request.setAttribute("mode", mode);
 			request.setAttribute("message_alert", messageAlert);
 			request.setAttribute("message_label", messageLabel);
 			request.setAttribute("out_modal", outModal);
+			request.setAttribute("out_file", outFile);
 			RequestDispatcher rd = getServletContext().getRequestDispatcher("/newKey.jsp");
 			rd.forward(request, response);			
 		} else {
@@ -64,17 +68,28 @@ public class NewKeyServlet extends HttpServlet {
 		if(HeaderService.isAuthenticated()) {
 			resetGlobals();
 			
-			if(request.getParameter("button_start") != null) {
+			
+			if(request.getParameter("button_generate") != null) {
+				routineGenerateKeyPage();
+			}else if (request.getParameter("button_upload") != null) {
+				routineUploadPage();
+			}else if(request.getParameter("button_start") != null) {
 				routineNewKeysModal();
 			}else if (request.getParameter("button_generate") != null) {
 				keyPassword = request.getParameter("new_key_password");	
 				generateNewKey();
+			}else if (request.getParameter("button_show_upload") != null){
+				routineShowUploader();
+			}else if (request.getParameter("button_start_uploading") != null){
+				uploadPublicKey(request);
 			}
-
+			
+			
 			request.setAttribute("mode", mode);
 			request.setAttribute("message_alert", messageAlert);
 			request.setAttribute("message_label", messageLabel);
 			request.setAttribute("out_modal", outModal);
+			request.setAttribute("out_file", outFile);
 			RequestDispatcher rd = getServletContext().getRequestDispatcher("/newKey.jsp");
 			rd.forward(request, response);
 		} else {
@@ -84,12 +99,18 @@ public class NewKeyServlet extends HttpServlet {
 
 	}
 
+	
+	public void uploadPublicKey(HttpServletRequest request){
+		request.getParameter("uploadFile");
+	}
+	
 	/**
 	 * This function tries to generate new private key:
 	 */
 	public void generateNewKey(){
 		resetGlobals();
 		mode = "2";
+		routineKeyPage();
 		
 		int userID = HeaderService.getUserId();
 		String sessionID = HeaderService.getUserSessionId();
@@ -156,12 +177,119 @@ public class NewKeyServlet extends HttpServlet {
 
 	
 	
+	public void routineKeyPage(){
+		resetGlobals();
+		this.outFile = drawMainPage();
+	}
+	
+	public String drawMainPage(){
+		String out = "";
+		out += "<h5>";
+		out += "Welcome to your key management page, would you like to get a new protected private key?";
+		out += "or you want to upload your own public key?";
+		out += "</h5>";
+		
+		out += "<div class=\"row\">";
+		out += "<form action=\"newkey\" method=\"post\">	";
+		out += "<button class=\"button radius\" type=\"submit\" name=\"button_generate\" value=\"new\">Generate New Key</button>		";
+		out += "<button class=\"button radius\" type=\"submit\" name=\"button_upload\" value=\"new\">Upload Public Key</button>		";
+		out += "</form>";
+		out += "<a href=\"login\">No, get me out of here</a>";
+		out += "</div>";
+
+		return out;
+		
+	}
+	
+	
+	public void routineUploadPage(){
+		resetGlobals();
+		this.outFile = drawUploadPage();
+	}
+	
+	public String drawUploadPage(){
+		String out = "";
+		out += "<h5>";
+		out += "Warning: If you uploaded a new public key, all your voting in any un-closed elections will not be casted, ";
+		out += "and you will not be able to re-vote again in those un-closed elections.";
+		out += "One thing else, you have to use your own private key to sign your votes from now on.";
+		out += "</h5>";
+		out += "<h5>";
+		out += "<font color=\"#FF0000\">";
+		out += "Are you sure you want to upload a new public key?";
+		out += "</font>";
+		out += "</h5>";
+		out += "<div class=\"row\">";
+		out += "<form action=\"newkey\" method=\"post\">	";
+		out += "<button class=\"button radius\" type=\"submit\" name=\"button_show_upload\" value=\"new\">Yes, let's do it</button>		";
+		out += "</form>";
+		out += "<a href=\"newkey\">No, get me out of here</a>";
+		out += "</div>";
+
+		return out;
+	}
+	
+	public void routineShowUploader(){
+		resetGlobals();
+		this.outFile = drawUploadingPage();
+	}
+	
+
+	public String drawUploadingPage(){
+		String out = "";
+		
+		out += "<h5>";
+		out += "Your file size cannot be larger than 50 bytes.";
+		out += "</h5>";
+		out += "<h5>";
+		
+		out += "<div class=\"row\">";
+		out += "<form action=\"newkey\" method=\"post\" enctype=\"multipart/form-data\">";
+		
+		out += "Select a file: <input name=\"uploadFile\" type=\"file\" size=\"50\">";
+		out += "<button class=\"button radius\" type=\"submit\" name=\"button_start_uploading\">Upload</button>";
+		out += "</form>";
+		out += "</div>";
+
+		return out;
+	}
+
+	
+	public void routineGenerateKeyPage(){
+		resetGlobals();
+		this.outFile = drawGenerateKeyPage();
+	}
+	
+	
+	public String drawGenerateKeyPage(){
+		String out = "";
+		out += "<h5>";
+		out += "Warning: If you generate a new signing key, All your voting in any un-closed elections will not be casted, ";
+		out += "and you will not be able to re-vote again in those un-closed elections.";
+		out += "</h5>";
+		out += "<h5>";
+		out += "<font color=\"#FF0000\">";
+		out += "Are you sure you want to generate new signing key?";
+		out += "</font>";
+		out += "</h5>";
+		out += "<div class=\"row\">";
+		out += "<form action=\"newkey\" method=\"post\">	";
+		out += "<button class=\"button radius\" type=\"submit\" name=\"button_start\" value=\"new\">Yes, let's do it</button>		";
+		out += "</form>";
+		out += "<a href=\"login\">No, get me out of here</a>";
+		out += "</div>";
+
+		return out;
+	}
+	
+	
 	/**
 	 * This function performs all actions required to display new key protection password page:
 	 * @param 
 	 */
 	public void routineNewKeysModal(){
 		resetGlobals();
+		this.outFile = drawMainPage();
 		this.mode = "2";
 		this.outModal = drawNewKeyPassword();
 	}
@@ -203,6 +331,7 @@ public class NewKeyServlet extends HttpServlet {
 		this.messageAlert = "";
 		this.messageLabel = "";
 		this.outModal = "";
+		this.outFile = "";
 	}
 	
 

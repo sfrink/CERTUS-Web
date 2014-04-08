@@ -264,7 +264,7 @@ public class SignUpServlet extends HttpServlet {
 		// draw key protection fields:
 		out += "<div class=\"large-6 medium-6 columns\">";
 		out += "<fieldset>";
-		out += "<legend>Key Protecdtion Password</legend>";
+		out += "<legend>Key Protection Password</legend>";
 		out += HtmlService.drawInputTextPasswordAndConfirmation("new_key_password", "Password", "new_key_password_confirm", "Confirm Password");
 		// button
 		out += "<div class=\"row\"><h5>Once you hit the submit button, we will create an account for you and send your protected private key to your email address.</h5></div>";
