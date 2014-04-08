@@ -1,15 +1,17 @@
 package servlets;
 
 import java.io.IOException;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import dto.UserDto;
+
+
+
 import dto.Validator;
 import service.HeaderService;
 import service.HtmlService;
@@ -20,6 +22,7 @@ import service.NewKeyService;
  * Servlet implementation class NewKeysServlet
  */
 @WebServlet("/newkey")
+@MultipartConfig(maxFileSize = 51200)
 public class NewKeyServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -28,8 +31,9 @@ public class NewKeyServlet extends HttpServlet {
 	private String messageLabel = "";
 	private String outModal = "";
 	private String outFile = "";
-	
+	private String out_upload = "";
 	private String keyPassword = "";
+	private String uploadStatus = "";
 	
 	
     /**
@@ -54,6 +58,10 @@ public class NewKeyServlet extends HttpServlet {
 			request.setAttribute("message_label", messageLabel);
 			request.setAttribute("out_modal", outModal);
 			request.setAttribute("out_file", outFile);
+			request.setAttribute("out_upload", out_upload);
+			request.setAttribute("uploadStatus", uploadStatus);
+
+			
 			RequestDispatcher rd = getServletContext().getRequestDispatcher("/newKey.jsp");
 			rd.forward(request, response);			
 		} else {
@@ -68,8 +76,9 @@ public class NewKeyServlet extends HttpServlet {
 		if(HeaderService.isAuthenticated()) {
 			resetGlobals();
 			
-			
-			if(request.getParameter("button_generate") != null) {
+			if(request.getParameter("start_fresh") != null){
+				routineKeyPage();
+			}else if(request.getParameter("button_generate") != null) {
 				routineGenerateKeyPage();
 			}else if (request.getParameter("button_upload") != null) {
 				routineUploadPage();
@@ -80,8 +89,6 @@ public class NewKeyServlet extends HttpServlet {
 				generateNewKey();
 			}else if (request.getParameter("button_show_upload") != null){
 				routineShowUploader();
-			}else if (request.getParameter("button_start_uploading") != null){
-				uploadPublicKey(request);
 			}
 			
 			
@@ -90,6 +97,9 @@ public class NewKeyServlet extends HttpServlet {
 			request.setAttribute("message_label", messageLabel);
 			request.setAttribute("out_modal", outModal);
 			request.setAttribute("out_file", outFile);
+			request.setAttribute("out_upload", out_upload);
+			request.setAttribute("uploadStatus", uploadStatus);
+
 			RequestDispatcher rd = getServletContext().getRequestDispatcher("/newKey.jsp");
 			rd.forward(request, response);
 		} else {
@@ -99,11 +109,7 @@ public class NewKeyServlet extends HttpServlet {
 
 	}
 
-	
-	public void uploadPublicKey(HttpServletRequest request){
-		request.getParameter("uploadFile");
-	}
-	
+
 	/**
 	 * This function tries to generate new private key:
 	 */
@@ -112,10 +118,7 @@ public class NewKeyServlet extends HttpServlet {
 		mode = "2";
 		routineKeyPage();
 		
-		int userID = HeaderService.getUserId();
-		String sessionID = HeaderService.getUserSessionId();
-		
-		Validator v = NewKeyService.generateNewKeys(userID, keyPassword, sessionID);
+		Validator v = NewKeyService.generateNewKeys(keyPassword);
 		
 		if (v.isVerified()){
 			outModal = drawSuccessfullGenerating();
@@ -173,7 +176,8 @@ public class NewKeyServlet extends HttpServlet {
 		out += "</div>";
 		out += "</div>";
 		
-		return out;	}
+		return out;	
+	}
 
 	
 	
@@ -239,15 +243,13 @@ public class NewKeyServlet extends HttpServlet {
 		String out = "";
 		
 		out += "<h5>";
-		out += "Your file size cannot be larger than 50 bytes.";
+		out += "Your file size cannot be larger than 10 bytes.";
 		out += "</h5>";
 		out += "<h5>";
-		
 		out += "<div class=\"row\">";
-		out += "<form action=\"newkey\" method=\"post\" enctype=\"multipart/form-data\">";
-		
-		out += "Select a file: <input name=\"uploadFile\" type=\"file\" size=\"50\">";
-		out += "<button class=\"button radius\" type=\"submit\" name=\"button_start_uploading\">Upload</button>";
+		out += "<form action=\"uploadkey\" method=\"post\" enctype=\"multipart/form-data\">";
+		out += "Select a file: <input name=\"uploadFile\" id=\"FileInput\" type=\"file\" size=\"10240\">";
+		out += "<input type=\"submit\" value=\"Upload\" class=\"button radius\" name=\"button_start_uploading\">";
 		out += "</form>";
 		out += "</div>";
 
@@ -326,12 +328,14 @@ public class NewKeyServlet extends HttpServlet {
 		return out;
 	}
 	
-	private void resetGlobals() {
+	public void resetGlobals() {
 		this.mode = "1";
 		this.messageAlert = "";
 		this.messageLabel = "";
 		this.outModal = "";
 		this.outFile = "";
+		this.uploadStatus = "";
+		this.out_upload = "";
 	}
 	
 

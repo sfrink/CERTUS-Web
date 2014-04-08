@@ -5,10 +5,14 @@
 	String messageLabel = (String) request.getAttribute("message_label");
 	String outModal = (String) request.getAttribute("out_modal");
 	String outFile = (String) request.getAttribute("out_file");
+	String status = (String) request.getAttribute("uploadStatus");
+	String outUpload = (String) request.getAttribute("out_upload");
  %>
 
 <jsp:include page="headerDefault.jsp" />
 <jsp:include page="headerTopBarAuthenticated.jsp" />
+
+   
 <!-- display a message -->
 <%=messageAlert %> 
 
@@ -16,7 +20,7 @@
 
 	<h3>Manage Your Keys</h3>
 	<%=outFile %>
-		
+	
 	<div id="modal_window" class="reveal-modal" data-reveal>
 		<div class="row">
 			<%=messageLabel %>
