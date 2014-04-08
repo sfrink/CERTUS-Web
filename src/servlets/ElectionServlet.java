@@ -486,7 +486,7 @@ public class ElectionServlet extends HttpServlet {
 		newElection.setCandidatesListString(request.getParameter("new_election_candidates"));
 		newElection.setCloseDatetime(request.getParameter("new_election_end_time"));
 		newElection.setElectionType(Integer.parseInt(request.getParameter("new_election_availability")));
-		newElection.setRegisteredEmailList(request.getParameter("new_election_users"));
+		newElection.setEmailList(request.getParameter("new_election_users"));
 		String password = request.getParameter("new_election_password");
 		Validator vPass = LoginService.authenticate(HeaderService.getUserName(), password);
 		
