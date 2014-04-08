@@ -21,6 +21,7 @@
 
       <div class="row">
 	    <%=outUsers %>
+	  </div>
 	</div>
 </div>
 

@@ -25,15 +25,15 @@
 </div>
 
 
-<div id="election_modal" class="reveal-modal" data-reveal>
+<div id="modal_window" class="reveal-modal" data-reveal>
 	<div class="row"><%=messageLabel %></div>
 		
 	<%=outModal %>
-	<a id="close-reveal-modal-modified" class="close-reveal-modal">&#215;</a>
+	<a id="close-reveal-modal-modified-force" class="close-reveal-modal">&#215;</a>
 </div>
 
 <jsp:include page="footer.jsp" />
 
 <% if(mode.equals("2")) { %>
-  <script>$('#election_modal').foundation('reveal', 'open');</script>
+  <script>$('#modal_window').foundation('reveal', 'open');</script>
 <% } %>

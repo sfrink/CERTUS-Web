@@ -136,14 +136,14 @@ public class AdminServlet extends HttpServlet {
 					ElectionProgressDto epd = (ElectionProgressDto) v2.getObject();
 					voted = epd.getTotalVotes();
 				}
-				
-				out += "<tr>";
-				out += "<td>" + e.getElectionName() + "</td>";
-				out += "<td>";
-				out += drawElectionStatusColored(e.getStatus(), e.getStatusDescription()) + " ";
-				out += "</td>";
-				out += "<td>"+ voted + " votes</td>";
-				out += "<td>" + drawElectionDelete(e.getElectionId()) + "</td>";
+				String trClass=getElectionTableRowClass(e.getStatus());
+				out += "<tr class =\"" + trClass + "\">";
+				out += "<td class =\"" + trClass + "\">" + e.getElectionName() + "</td>";
+				out += "<td class =\"" + trClass + "\">";
+				out += drawElectionStatus(e.getStatus(), e.getStatusDescription()) + " ";
+				out += "</td class =\"" + trClass + "\">";
+				out += "<td class =\"" + trClass + "\">"+ voted + " votes</td>";
+				out += "<td class =\"" + trClass + "\">" + drawElectionDelete(e.getElectionId()) + "</td>";
 				out += "</tr>";
 			}
 			
@@ -152,6 +152,25 @@ public class AdminServlet extends HttpServlet {
 			out += "<div class=\"label secondary\">No elections exist yet</div>";
 		}
 		
+		return out;
+	}
+	
+	public String drawElectionStatus(int status, String value) {
+		String out = "", outClass="";
+		
+		if(status == ElectionStatus.NEW.getCode()) {
+			outClass = "label clear";
+		} else if(status == ElectionStatus.OPEN.getCode()) {
+			outClass = "label clear";
+		} else if(status == ElectionStatus.CLOSED.getCode()) {
+			outClass = "label clear";
+		} else if(status == ElectionStatus.PUBLISHED.getCode()) {
+			outClass = "label clear";
+		} else {
+			return out;
+		}
+		
+		out = "<span class=\"" + outClass + "\">" + value + "</span>";		
 		return out;
 	}
 	
@@ -229,5 +248,21 @@ public class AdminServlet extends HttpServlet {
 			e.setElectionId(elec_id);
 			outModal = drawDeleteElection(e);
 		}
+	}
+	
+	public String getElectionTableRowClass(int statusId) {
+		String out = "";
+		
+		if(statusId == ElectionStatus.NEW.getCode()) {
+			out += "election_new";
+		} else if(statusId == ElectionStatus.OPEN.getCode()) {
+			out += "election_open";
+		} else if(statusId == ElectionStatus.CLOSED.getCode()) {
+			out += "election_closed";
+		} else if(statusId == ElectionStatus.PUBLISHED.getCode()) {
+			out += "election_published";
+		}
+		
+		return out;
 	}
 }
