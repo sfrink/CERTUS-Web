@@ -120,7 +120,7 @@ public class EditPorfileServlet extends HttpServlet {
 		out += "<fieldset>";
 		out += "<legend>Authorization</legend>";
 		out += HtmlService.drawInputTextEmail("username", "Email", "your@email.address", u.getEmail());		
-		out += HtmlService.drawInputTextPassword("password", "Password", "password", u.getPassword());
+		out += HtmlService.drawInputTextPassword("password", "Password", "password", u.getPassword(), false, "");
 		out += "<input type=\"submit\" name=\"login\" class=\"small radius button\" value=\"Login\">";
 		out += "<p><a href=\"signup\">New User?</a></p>";
 		out += "</fieldset>";
@@ -278,7 +278,7 @@ public class EditPorfileServlet extends HttpServlet {
 		// draw key protection fields:
 		out += "<div class=\"large-6 medium-6 columns\">";
 		out += "<fieldset>";
-		out += HtmlService.drawInputTextPassword("current_password", "Current Password", "", "");
+		out += HtmlService.drawInputTextPassword("current_password", "Current Password", "", "", false, "");
 		out += HtmlService.drawInputTextPasswordAndConfirmation("new_password", "New Password", "new_password_confirm", "Confirm New Password");
 		
 		// button

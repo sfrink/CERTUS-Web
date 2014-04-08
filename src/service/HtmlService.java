@@ -101,7 +101,7 @@ public class HtmlService {
 		
 		out += "<div class=\"" + field_name + " " + errorClass + "\">";
 		out += "<label>" + label + " <small>required</small>";
-		out += "<textarea id=\"" + field_name + "\" name=\"" + field_name + "\" class=\"class_" + field_name + "\" placeholder=\"" + placeholder + "\" required pattern=\"^[0-9a-zA-Z\\s\\r\\n]+$\">" + value + "</textarea>";
+		out += "<textarea id=\"" + field_name + "\" name=\"" + field_name + "\" class=\"class_" + field_name + "\" placeholder=\"" + placeholder + "\" required pattern=\"^[0-9a-zA-Z@.\\s\\r\\n]+$\">" + value + "</textarea>";
 		out += "</label>";
 		out += "<small class=\"error\">" + errorMessageToDisplay + "</small>";
 		out += "</div>";
@@ -163,14 +163,20 @@ public class HtmlService {
 	
 	
 	
-	public static String drawInputTextPassword(String field_name, String label, String placeholder, String value) {
-		String out = "";
+	public static String drawInputTextPassword(String field_name, String label, String placeholder, String value, boolean error, String errorMessage) {
+		String out = "", errorClass = "";
+		String errorMessageToDisplay = label + " cannot be empty";
 
-		out += "<div class=\"" + field_name + "\">";
+		if(error) {
+			errorClass = "error";
+			errorMessageToDisplay = errorMessage;
+		}
+
+		out += "<div class=\"" + field_name + " " + errorClass + "\">";
 		out += "<label>" + label + " <small>Required</small>";
 		out += "<input type=\"password\" name=\""+ field_name + "\" placeholder=\"" + placeholder + "\" value=\"" + value + "\" required pattern=\"[a-zA-Z]+\" \">";
 		out += "</label>";
-		out += "<small class=\"error\">" + label + " cannot be empty</small>";
+		out += "<small class=\"error\">" + errorMessageToDisplay + "</small>";
 		out += "</div>";
 		
 		return out;		
@@ -198,9 +204,9 @@ public class HtmlService {
 		return out;
 	}
 	
-	public static String drawSelectBoxElectionPrivateOrPublic(int selectedId) {
+	public static String drawSelectBoxElectionPrivateOrPublic(String field_name, int selectedId) {
 		String out = "", selected1 = "", selected2 = "";
-		String field_name = "new_election_availability";
+
 		if(selectedId == 1) {
 			selected1 = "selected";
 		} else if(selectedId == 2) {

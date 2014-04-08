@@ -66,3 +66,23 @@ $(document).ready(function() {
 		}
 	});
 });
+
+$(document).ready(function() {
+	$('#edit_election_availability').on('change', function() {
+		var optionId = $(this).val();
+
+		$('#edit_election_users_column').hide();
+		
+		if(optionId == 2) {
+			$('#edit_election_users_column').show();
+			$('#edit_election_users').val("");
+		} else if(optionId == 1) {
+			$('#edit_election_users_column').hide();
+			$('#edit_election_users').val("void");
+		}
+	});
+});
+
+
+
+

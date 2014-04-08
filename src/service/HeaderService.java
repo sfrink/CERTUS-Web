@@ -5,7 +5,7 @@ public class HeaderService {
 	public static boolean auth = false;
 	public static int userId;
 	public static String userSessionId;
-	
+	public static String userName;
 
 	public static boolean isAuthenticated() {
 		return auth;
@@ -35,6 +35,15 @@ public class HeaderService {
 		HeaderService.userSessionId = userSessionId;
 	}
 	
+	public static String getUserName() {
+		return userName;
+	}
+
+	public static void setUserName(String userName) {
+		HeaderService.userName = userName;
+	}
+
+
 	
 	public static void logout() {
 		deAuthenticate();

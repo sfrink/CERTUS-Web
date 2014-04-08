@@ -1,29 +1,23 @@
 @CHARSET "US-ASCII";
-.class_new_election_description {
-	height: 3em;	
-	overflow:auto;
-	resize:vertical;
-}
-
-.class_new_election_candidates {
-	height: 5em;	
-	overflow:auto;
-	resize:vertical;
-}
-
-.class_edit_election_description {
-	height: 8em;	
-	overflow:auto;
-	resize:vertical;
-}
-
-.class_edit_election_candidates {
+.class_edit_election_users, .class_new_election_users {
 	height: 14em;	
 	overflow:auto;
 	resize:vertical;
 }
 
-.class_text_cipher {
+.class_new_election_description, .class_edit_election_description {
+	height: 5em;	
+	overflow:auto;
+	resize:vertical;
+}
+
+.class_new_election_candidates, .class_edit_election_candidates {
+	height: 5em;	
+	overflow:auto;
+	resize:vertical;
+}
+
+.class_text_cipher, .class_edit_election_users {
 	overflow:auto;
 	resize:vertical;
 }
@@ -33,7 +27,6 @@
 	overflow:auto;
 	resize:vertical;	
 }
-
 
 .label.election_new {
 	background-color: white;
@@ -76,7 +69,6 @@ table tr.even, table tr.alt, table tr:nth-of-type(even) {
     background: transparent;
 }
 
-
 .class_type_bold {
 	font-weight: bold;
 }
@@ -96,4 +88,3 @@ table tr.even, table tr.alt, table tr:nth-of-type(even) {
 .election_published {
 	background-color: #e0f2f7;
 }
-

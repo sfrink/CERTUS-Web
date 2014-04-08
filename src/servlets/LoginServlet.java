@@ -80,7 +80,7 @@ public class LoginServlet extends HttpServlet {
 				HeaderService.authenticate();
 				HeaderService.setUserId(u.getUserId());
 				HeaderService.setUserSessionId(u.getSessionId());
-				
+				HeaderService.setUserName(username);
 				
 				messageAlert = HtmlService.drawMessageAlert(v.getStatus() + ", " + u.getFirstName() + " " + u.getLastName() + " uid: " + u.getUserId(), "success");
 				request.setAttribute("message_alert", messageAlert);
@@ -153,7 +153,7 @@ public class LoginServlet extends HttpServlet {
 		out += "<fieldset>";
 		out += "<legend>Authorization</legend>";
 		out += HtmlService.drawInputTextEmail("username", "Email", "your@email.address", u.getEmail());		
-		out += HtmlService.drawInputTextPassword("password", "Password", "password", u.getPassword());
+		out += HtmlService.drawInputTextPassword("password", "Password", "password", u.getPassword(), false, "");
 		out += "<input type=\"submit\" name=\"login\" class=\"small radius button\" value=\"Login\">";
 		out += "<p><a href=\"signup\">New User?</a></p>";
 		out += "</fieldset>";
