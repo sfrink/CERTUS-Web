@@ -1,3 +1,12 @@
+<%@page import="service.HeaderService"%>
+<%
+if(!HeaderService.isAuthenticated() ||
+   !HeaderService.hasAccess("adminUser")) {
+	RequestDispatcher rd = getServletContext().getRequestDispatcher("/login");
+	rd.forward(request, response);
+}
+%>
+
 <%
 	// get all data from previous screen
 	String mode = (String) request.getAttribute("mode");

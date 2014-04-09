@@ -1,5 +1,11 @@
-<jsp:include page="headerDefault.jsp" /> 
-<jsp:include page="headerTopBarAuthenticated.jsp" />
+<%@page import="service.HeaderService"%>
+<%
+if(!HeaderService.isAuthenticated() ||
+   !HeaderService.hasAccess("results")) {
+	RequestDispatcher rd = getServletContext().getRequestDispatcher("/login");
+	rd.forward(request, response);
+}
+%>
 <%
 String mode = (String) request.getAttribute("mode");
 String messageAlert = (String) request.getAttribute("message_alert");
@@ -7,6 +13,9 @@ String messageLabel = (String) request.getAttribute("message_label");
 String outElections = (String) request.getAttribute("out_elections");
 String outModal = (String) request.getAttribute("out_modal");
 %>
+
+<jsp:include page="headerDefault.jsp" /> 
+<jsp:include page="headerTopBarAuthenticated.jsp" />
 
 <%=messageAlert %>
 

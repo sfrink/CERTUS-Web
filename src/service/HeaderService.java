@@ -1,4 +1,8 @@
 package service;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class HeaderService {
 
 	// dummy authentication mechanism
@@ -6,6 +10,7 @@ public class HeaderService {
 	public static int userId;
 	public static String userSessionId;
 	public static String userName;
+	public static int userType;
 
 	public static boolean isAuthenticated() {
 		return auth;
@@ -42,9 +47,15 @@ public class HeaderService {
 	public static void setUserName(String userName) {
 		HeaderService.userName = userName;
 	}
-
-
 	
+	public static int getUserType() {
+		return userType;
+	}
+
+	public static void setUserType(int userType) {
+		HeaderService.userType = userType;
+	}
+
 	public static void logout() {
 		deAuthenticate();
 		setUserId(0);
@@ -52,4 +63,25 @@ public class HeaderService {
 	}
 	
 	
-}
+	/**
+	 * Dmitriy Karmazin
+	 * This function checks whether this user has access to servlet
+	 * NOTE: this local platform restriction
+	 * @param servletName
+	 * @return
+	 */
+	public static boolean hasAccess(String servletName) {
+		String[] adminServlets = {"adminElection", "adminUser"};
+		String[] userServlets = {"election", "voting", "results", "newkey", "profile"};
+
+		if(getUserType() == 1) {
+			// ADMIN
+			return Arrays.asList(adminServlets).contains(servletName); 
+		} else if(getUserType() == 0) {
+			// USER
+			return Arrays.asList(userServlets).contains(servletName); 
+		}
+
+		return false;
+	}
+}	

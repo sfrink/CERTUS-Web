@@ -1,15 +1,18 @@
-<%@page import="java.util.ArrayList"%>
-<%@page import="dto.ElectionDto"%>
-<%@page import="dto.CandidateDto"%>
-
+<%@page import="service.HeaderService"%>
 <%
-	// get all data from previous screen
-	String mode = (String) request.getAttribute("mode");
-	String messageAlert = (String) request.getAttribute("message_alert");
-	String messageLabel = (String) request.getAttribute("message_label");
-	String outElections = (String) request.getAttribute("out_elections");
-	String outModal = (String) request.getAttribute("out_modal");
- %>
+if(!HeaderService.isAuthenticated() ||
+   !HeaderService.hasAccess("election")) {
+	RequestDispatcher rd = getServletContext().getRequestDispatcher("/login");
+	rd.forward(request, response);
+}
+
+// get all data from previous screen
+String mode = (String) request.getAttribute("mode");
+String messageAlert = (String) request.getAttribute("message_alert");
+String messageLabel = (String) request.getAttribute("message_label");
+String outElections = (String) request.getAttribute("out_elections");
+String outModal = (String) request.getAttribute("out_modal");
+%>
 
 <jsp:include page="headerDefault.jsp" />
 <jsp:include page="headerTopBarAuthenticated.jsp" />

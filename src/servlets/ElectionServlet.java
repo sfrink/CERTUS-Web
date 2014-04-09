@@ -504,7 +504,7 @@ public class ElectionServlet extends HttpServlet {
 				// errors, send back to add election screen
 				mode = "2";
 				messageLabel = HtmlService.drawMessageLabel(vElection.getStatus(), "alert");
-				outModal = drawNewElection(newElection);
+				outModal = drawNewElection((ElectionDto)vElection.getObject());
 			}
 		} else {
 			// password check failed

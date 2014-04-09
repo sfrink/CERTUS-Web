@@ -1,13 +1,20 @@
+<%@page import="service.HeaderService"%>
 <%
-	// get all data from previous screen
-	String mode = (String) request.getAttribute("mode");
-	String messageAlert = (String) request.getAttribute("message_alert");
-	String messageLabel = (String) request.getAttribute("message_label");
-	String outModal = (String) request.getAttribute("out_modal");
-	String outFile = (String) request.getAttribute("out_file");
-	String status = (String) request.getAttribute("uploadStatus");
-	String outUpload = (String) request.getAttribute("out_upload");
- %>
+if(!HeaderService.isAuthenticated() ||
+   !HeaderService.hasAccess("newkey")) {
+	RequestDispatcher rd = getServletContext().getRequestDispatcher("/login");
+	rd.forward(request, response);
+}
+
+// get all data from previous screen
+String mode = (String) request.getAttribute("mode");
+String messageAlert = (String) request.getAttribute("message_alert");
+String messageLabel = (String) request.getAttribute("message_label");
+String outModal = (String) request.getAttribute("out_modal");
+String outFile = (String) request.getAttribute("out_file");
+String status = (String) request.getAttribute("uploadStatus");
+String outUpload = (String) request.getAttribute("out_upload");
+%>
 
 <jsp:include page="headerDefault.jsp" />
 <jsp:include page="headerTopBarAuthenticated.jsp" />
