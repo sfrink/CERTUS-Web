@@ -204,11 +204,11 @@ public class ElectionService {
 		return validator;
     }
     
-    public static Validator publishResults(int electionId){
+    public static Validator publishResults(int electionId, String password){
     	Validator val=new Validator();
     	
     	try{
-    		val=Initializer.rmi.publishResults(electionId, sessionID);
+    		val=Initializer.rmi.publishResults(electionId, password, sessionID);
     	} catch(RemoteException e){
     		e.printStackTrace();
     	}

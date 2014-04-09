@@ -181,7 +181,7 @@ public class ElectionServlet extends HttpServlet {
 	public String drawNewElection(ElectionDto e) {
 		String out = "", valElecName = "", valElecDesc = "", valElecCand = "", 
 			   valElecEndTime = "", valRegEmails = "void", valUnRegEmails = "", 
-			   valPasswordErrorMessage = "", usersStyle = "";
+			   valPasswordErrorMessage = "", usersFieldStyle = "";
 		boolean valEmailListError = false, valPasswordError = false;
 		int valElecId = 0, valElecAvailability = 0;
 		
@@ -200,7 +200,11 @@ public class ElectionServlet extends HttpServlet {
 			valPasswordErrorMessage = e.getPasswordErrorMessage();
 		}
 		
-		usersStyle = (valElecAvailability == ElectionType.PRIVATE.getCode()) ? "" : "display: none;";
+		if(valElecAvailability != ElectionType.PRIVATE.getCode()) {
+			usersFieldStyle = "style=\"display: none;\"";
+			valRegEmails = "void";
+		}
+		
 		out += "<h5>Add new election</h5>";
 		out += "<form id=\"form_elec_new\" action=\"election\" method=\"post\" data-abide>";
 		out += "<div class=\"row\">";
@@ -216,7 +220,7 @@ public class ElectionServlet extends HttpServlet {
 		out += HtmlService.drawInputTextPasswordAndConfirmation("new_election_password", "Election Password", "new_election_password_confirm", "Confirm Election Password");		
 		out += "</fieldset>"; 
 		out += "</div>";
-
+		// column 2
 		out += "<div class=\"large-6 medium-6 columns\">";
 		// candidates
 		out += "<fieldset><legend>Add candidates</legend>";
@@ -226,7 +230,7 @@ public class ElectionServlet extends HttpServlet {
 		out += "<fieldset><legend>Election avalability</legend>";
 		out += HtmlService.drawSelectBoxElectionPrivateOrPublic("new_election_availability", valElecAvailability);
 		// draw allowed users info
-		out += "<div id=\"new_election_users_column\" style=\"" + usersStyle + "\">";
+		out += "<div id=\"new_election_users_column\" " + usersFieldStyle + ">";
 		out += HtmlService.drawInputTextareaAlphanumeric("new_election_users", "Users emails", placeHoldElecUsers, valRegEmails, valEmailListError, valUnRegEmails);
 		out += "</div>";
 		out += "</fieldset>"; 
@@ -252,7 +256,7 @@ public class ElectionServlet extends HttpServlet {
 	 */
 	public String drawEditElection(ElectionDto e) {
 		String out = "", valElecName = "", valElecDesc = "", valElecCand = "", 
-			   valElecEndTime = "", valRegEmails = "", valUnRegEmails = "", usersStyle = "";
+			   valElecEndTime = "", valRegEmails = "void", valUnRegEmails = "", usersStyle = "";
 		int valElecId = 0, valElecAvailability = 0;
 		boolean valEmailListError = false;
 		// checking null case
@@ -268,7 +272,11 @@ public class ElectionServlet extends HttpServlet {
 			valUnRegEmails = (valEmailListError) ? "The following users could not be added: " + e.getUnregisteredEmailList() : "";
 		}
 
-		usersStyle = (valElecAvailability == ElectionType.PRIVATE.getCode()) ? "" : "display: none;";
+		if(valElecAvailability != ElectionType.PRIVATE.getCode()) {
+			usersStyle = "style=\"display: none;\"";
+			valRegEmails = "void";
+		}
+		
 		out += "<h5>Edit election</h5>";
 		out += "<form id=\"form_elec_edit\" action=\"election\" method=\"post\" data-abide>";
 		out += "<div class=\"row\">";
@@ -278,18 +286,20 @@ public class ElectionServlet extends HttpServlet {
 		out += HtmlService.drawInputTextAlphanumeric("edit_election_name", "Election Name", placeHoldElecName, valElecName);
 		out += HtmlService.drawInputTextareaAlphanumeric("edit_election_description", "Election Description", placeHoldElecDesc, valElecDesc, false, "");
 		out += HtmlService.drawInputTextAlphanumericOptional("edit_election_end_time", "Election Closing Time", placeHoldElecEndTime, valElecEndTime);
-		out += HtmlService.drawSelectBoxElectionPrivateOrPublic("edit_election_availability", valElecAvailability);
 		out += "</fieldset>";
 		out += "<fieldset><legend>Add candidates</legend>";
 		out += HtmlService.drawInputTextareaAlphanumeric("edit_election_candidates", "Candidates names", placeHoldElecCand, valElecCand, false, "");
-		out += "</fieldset>"; 
-
+		out += "</fieldset>";
 		out += "</div>";
 		// draw allowed users info
-		out += "<div id=\"edit_election_users_column\" style=\"" + usersStyle + "\" class=\"large-6 medium-6 columns\">";
-		out += "<fieldset><legend>Invite users to vote</legend>";
+		out += "<div class=\"large-6 medium-6 columns\">";
+		out += "<fieldset><legend>Election avalability</legend>";
+		out += HtmlService.drawSelectBoxElectionPrivateOrPublic("edit_election_availability", valElecAvailability);
+		// draw allowed users info
+		out += "<div id=\"edit_election_users_column\" " + usersStyle + ">";
 		out += HtmlService.drawInputTextareaAlphanumeric("edit_election_users", "Users emails", placeHoldElecUsers, valRegEmails, valEmailListError, valUnRegEmails);
-		out += "</fieldset>"; 
+		out += "</div>";
+		out += "</fieldset>";
 		out += "</div>";
 		out += "</div>";
 		// button
@@ -493,9 +503,7 @@ public class ElectionServlet extends HttpServlet {
 		newElection.setCloseDatetime(request.getParameter("new_election_end_time"));
 		newElection.setElectionType(Integer.parseInt(request.getParameter("new_election_availability")));
 		newElection.setEmailList(request.getParameter("new_election_users"));
-		String password = request.getParameter("new_election_password");
-
-		// password checked
+		newElection.setPassword(request.getParameter("new_election_password"));
 		newElection.setOwnerId(HeaderService.getUserId());
 		// insert attempt
 		Validator vElection = ElectionService.addElection(newElection);
@@ -549,7 +557,7 @@ public class ElectionServlet extends HttpServlet {
 		editElection.setCandidatesListString(request.getParameter("edit_election_candidates"));
 		editElection.setCloseDatetime(request.getParameter("edit_election_end_time"));
 		editElection.setElectionType(Integer.parseInt(request.getParameter("edit_election_availability")));
-		editElection.setRegisteredEmailList(request.getParameter("edit_election_users"));
+		editElection.setEmailList(request.getParameter("edit_election_users"));
 		editElection.setOwnerId(HeaderService.getUserId());
 
 		// update existing election
@@ -565,7 +573,7 @@ public class ElectionServlet extends HttpServlet {
 			this.mode = "2";
 			this.messageLabel = HtmlService.drawMessageLabel(
 					vEditElection.getStatus(), "alert");
-			this.outModal = drawEditElection(editElection);
+			this.outModal = drawEditElection((ElectionDto) vEditElection.getObject());
 		}
 	}
 	
@@ -609,7 +617,7 @@ public class ElectionServlet extends HttpServlet {
 				// open election
 				Validator v2 = ElectionService.openElection(electionId);
 				messageAlert = HtmlService.drawMessageAlert(
-						v2.getStatus(), "success");
+						v2.getStatus(), "");
 			} else if (e.getStatus() == ElectionStatus.OPEN.getCode()) {			
 				// close election
 				Validator v3 = ElectionService
@@ -623,7 +631,7 @@ public class ElectionServlet extends HttpServlet {
 						v4.getStatus(), "success");
 			} else if (e.getStatus() == ElectionStatus.CLOSED.getCode() && action == ElectionStatus.PUBLISHED.getCode()) {
 				// publish
-				Validator v5 = ElectionService.publishResults(electionId);
+				Validator v5 = ElectionService.publishResults(electionId, "password");
 				messageAlert = HtmlService.drawMessageAlert(
 						v5.getStatus(), "success");
 			}
@@ -666,7 +674,7 @@ public class ElectionServlet extends HttpServlet {
 		}
 
 		// prepare new election
-		ElectionDto newElection = new ElectionDto();		
+		ElectionDto newElection = new ElectionDto();
 		newElection.setRegisteredEmailList(request.getParameter("edit_election_new_users"));
 
 		// password checked

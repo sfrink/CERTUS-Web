@@ -59,10 +59,14 @@ $(document).ready(function() {
 		
 		if(optionId == 2) {
 			$('#new_election_users_column').show();
-			$('#new_election_users').val("");
+			if($('#new_election_users').val() == "void") {
+				$('#new_election_users').val("");				
+			}
 		} else if(optionId == 1) {
 			$('#new_election_users_column').hide();
-			$('#new_election_users').val("void");
+			if($('#new_election_users').val() == "") {
+				$('#new_election_users').val("void");				
+			}
 		}
 	});
 });
@@ -75,10 +79,14 @@ $(document).ready(function() {
 		
 		if(optionId == 2) {
 			$('#edit_election_users_column').show();
-			$('#edit_election_users').val("");
+			if($('#edit_election_users').val() == "void") {
+				$('#edit_election_users').val("");				
+			}
 		} else if(optionId == 1) {
 			$('#edit_election_users_column').hide();
-			$('#edit_election_users').val("void");
+			if($('#edit_election_users').val() == "") {
+				$('#edit_election_users').val("void");				
+			}
 		}
 	});
 });
