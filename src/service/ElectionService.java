@@ -72,6 +72,18 @@ public class ElectionService {
 		return v3;
 	}
 	
+	public static Validator selectElectionFullDetail(int electionId) {
+		Validator validator = null;
+    	
+		try {
+			validator  = Initializer.rmi.selectElectionFullDetail(electionId, sessionID);
+			
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		return validator;
+	}
+	
     public static Validator selectElections(ElectionStatus electionStatus) {
     	Validator validator = null;
     	
