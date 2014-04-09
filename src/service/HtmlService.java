@@ -198,7 +198,7 @@ public class HtmlService {
 		out += "<label>" + cLabel + " <small>Required</small>";
 		out += "<input type=\"password\" name=\""+ pField_name + "\" id=\"" + pField_name + "\" required pattern=\"[a-zA-Z]+\" data-equalto=\""+ pField_name +"\">";
 		out += "</label>";
-		out += "<small class=\"error\">The password did not match</small>";
+		out += "<small class=\"error\">Passwords don't match</small>";
 		out += "</div>";
 
 		return out;
@@ -216,9 +216,9 @@ public class HtmlService {
 		out += "<div class=\"" + field_name + "\">";
 		out += "<label>Who can vote <small>required</small>";
         out += "<select id=\"" + field_name + "\" name=\"" + field_name + "\" required pattern=\"[12]\">";
-        out += "<option value=\"0\">Please select option</option>";  
-        out += "<option value=\"1\""+ selected1 + ">Public | everyone</option>";
-        out += "<option value=\"2\""+ selected2 + ">Private | specify users on next screen</option>";
+        //out += "<option value=\"0\">Please select option</option>";  
+        out += "<option value=\"1\""+ selected1 + ">Public | any user can vote</option>";
+        out += "<option value=\"2\""+ selected2 + ">Private | manualy specify users</option>";
         out += "</select>";
         out += "</label>";
         out += "<small class=\"error\">please select either public or private type of election</small>";
