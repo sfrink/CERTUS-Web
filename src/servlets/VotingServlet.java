@@ -190,7 +190,7 @@ public class VotingServlet extends HttpServlet {
 			// get selected option
 			if(request.getParameter("voting_choice") != null) {
 				int candidateId = Integer.parseInt(request.getParameter("voting_choice"));
-				Validator vEnc = VotingService.encryptCandidateId(candidateId);
+				Validator vEnc = VotingService.encryptCandidateId(candidateId, electionId);
 
 				if(vEnc.isVerified()) {
 					String cipherText = (String) vEnc.getObject();

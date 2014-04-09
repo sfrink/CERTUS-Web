@@ -39,13 +39,13 @@ public class VotingService {
 
 	
 	
-	public static Validator encryptCandidateId(int candidateId) {
+	public static Validator encryptCandidateId(int candidateId, int electionId) {
 		Validator v1 = new Validator();
 		Validator v2 = new Validator();
 
 		// get public key from the server
 		try {
-			v2 = Initializer.rmi.getTallierPublicKey();
+			v2 = Initializer.rmi.getTallierPublicKey(electionId);
 		
 			if(v2.isVerified()) {
 				String cipherText = "";
