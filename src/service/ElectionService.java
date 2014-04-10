@@ -155,6 +155,18 @@ public class ElectionService {
 		return validator;
     }
     
+    public static Validator addAdditionalUsersToElection(ElectionDto electionDto)
+    {
+    	Validator validator = new Validator();
+    	
+		try {
+			validator  = Initializer.rmi.addAdditionalUsersToElection(electionDto, sessionID);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		return validator;
+    }
+    
     public static Validator editElection(ElectionDto election)
     {
     	Validator validator = new Validator();
