@@ -83,7 +83,7 @@ public class LoginServlet extends HttpServlet {
 				HeaderService.setUserName(username);
 				HeaderService.setUserType(u.getAdministratorFlag());
 				
-				messageAlert = HtmlService.drawMessageAlert(v.getStatus() + ", " + u.getFirstName() + " " + u.getLastName() + " uid: " + u.getUserId(), "success");
+				messageAlert = HtmlService.drawMessageAlert(v.getStatus() + ", " + u.getFirstName() + " " + u.getLastName(), "success");
 				request.setAttribute("message_alert", messageAlert);
 				RequestDispatcher rd = getServletContext().getRequestDispatcher("/main.jsp");		
 				rd.forward(request, response);

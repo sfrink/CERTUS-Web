@@ -779,6 +779,7 @@ public class ElectionServlet extends HttpServlet {
 		} else {
 			mode = "2";
 			outModal = drawPasswordWithConfirmForElection((ElectionDto) v1.getObject());
+			messageLabel = HtmlService.drawMessageLabel(v1.getStatus(), "alert");
 		}
 	}
 }
