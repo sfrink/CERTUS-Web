@@ -765,8 +765,8 @@ public class ElectionServlet extends HttpServlet {
 
 		int electionId = 0;
 		String password = "";
-		if(request.getParameter("button_election_publish") != null) {
-			electionId = Integer.parseInt(request.getParameter("button_election_publish"));
+		if(request.getParameter("btn_elec_publish_with_password") != null) {
+			electionId = Integer.parseInt(request.getParameter("btn_elec_publish_with_password"));
 		}
 		if(request.getParameter("election_publish_password") != null) {
 			password = request.getParameter("election_publish_password");
