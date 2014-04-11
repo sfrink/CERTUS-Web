@@ -203,7 +203,7 @@ public class AdminUserServlet extends HttpServlet {
 		out += "<legend>User Information</legend>";
 		out += HtmlService.drawInputTextAlphanumeric("edit_user_first_name", "First Name", "Enter First Name", valUserFirstName);
 		out += HtmlService.drawInputTextAlphanumeric("edit_user_last_name", "Last Name", "Enter Last Name", valUserLastName);
-		out += HtmlService.drawInputTextEmail("edit_user_email", "Email", "Enter Email", valUserEmail);
+		//out += HtmlService.drawInputTextEmail("edit_user_email", "Email", "Enter Email", valUserEmail);
 		//out += HtmlService.drawInputTextAlphanumeric("edit_user_status", "Status", "Enter Status", ""+valUserStatus);
 		out += HtmlService.drawStatusDropdownList(valUserStatus, "edit_user_status");
 		out += "</fieldset>";
@@ -226,7 +226,7 @@ public class AdminUserServlet extends HttpServlet {
 		u.setUserId(Integer.parseInt(request.getParameter("save_edit_user")));
 		u.setFirstName(request.getParameter("edit_user_first_name"));
 		u.setLastName(request.getParameter("edit_user_last_name"));
-		u.setEmail(request.getParameter("edit_user_email"));
+		//u.setEmail(request.getParameter("edit_user_email"));
 		u.setStatus(Integer.parseInt(request.getParameter("edit_user_status")));
 		Validator vUser = UserService.editUser(u);
 

@@ -124,25 +124,16 @@ public class AdminServlet extends HttpServlet {
 			out += "<table><thead><tr>";
 			out += "<th>Election Name</th>";
 			out += "<th>Election Status</th>";
-			out += "<th>Votes Collected</th>";
 			out += "<th>Delete</th>";
 			out += "</tr></thead><tbody>";
 			
 			for (ElectionDto e : elections) {
-				int voted = 0;
-				
-				Validator v2 = TallyingService.voteProgressStatusForElection(e.getElectionId());
-				if(v2.isVerified()) {
-					ElectionProgressDto epd = (ElectionProgressDto) v2.getObject();
-					voted = epd.getTotalVotes();
-				}
 				String trClass=getElectionTableRowClass(e.getStatus());
 				out += "<tr class =\"" + trClass + "\">";
 				out += "<td class =\"" + trClass + "\">" + e.getElectionName() + "</td>";
 				out += "<td class =\"" + trClass + "\">";
 				out += drawElectionStatus(e.getStatus(), e.getStatusDescription()) + " ";
 				out += "</td class =\"" + trClass + "\">";
-				out += "<td class =\"" + trClass + "\">"+ voted + " votes</td>";
 				out += "<td class =\"" + trClass + "\">" + drawElectionDelete(e.getElectionId()) + "</td>";
 				out += "</tr>";
 			}
