@@ -63,7 +63,17 @@ public class ElectionService {
 	}
 	
 	
-	
+	public static Validator deleteElection(int electionID){
+		Validator val=new Validator();
+		try{
+			val=Initializer.rmi.deleteElection(electionID, sessionID);
+		}
+		catch (RemoteException e){
+			val.setVerified(false);
+			val.setStatus("RMI call failed");
+		}
+		return val;
+	}
 	
 	
 	
