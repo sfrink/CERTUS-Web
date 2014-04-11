@@ -15,20 +15,11 @@ public class Initializer {
 
 	
 	public Initializer() {
-		
-		
+
 		loadProperties();
 		connectRmiServer();
 		
 	}
-	
-	
-//	public static ServerInterface getRmi() {
-//		
-//		
-//		
-//	}
-	
 	
 	
 	public void connectRmiServer () {
@@ -61,14 +52,9 @@ public class Initializer {
 	}
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
+	public void dummy() {
+		// just to get rid of the bug
+	}
 	
 	public void loadProperties() {
 		Properties prop = new Properties();

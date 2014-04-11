@@ -21,6 +21,7 @@ public class Listener implements javax.servlet.ServletContextListener {
 	public void contextInitialized(ServletContextEvent arg0) {
 		// triggered on app start
 		Initializer i = new Initializer();
+		i.dummy();
 	}
 	
 	

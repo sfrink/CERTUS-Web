@@ -20,12 +20,14 @@ public class LoginService {
 				v.setVerified(false);
 				v.setStatus("Error. The server is down. Please try to reconnect later.");			
 				Initializer i = new Initializer();
+				i.dummy();
 			}
 		} catch (RemoteException e) {
 			v.setVerified(false);
 			v.setStatus("The application has encountered problem establishing RMI connection");
 			
 			Initializer i = new Initializer();
+			i.dummy();
 		}
 		
 		return v;
