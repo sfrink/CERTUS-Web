@@ -182,7 +182,7 @@ public class AdminUserServlet extends HttpServlet {
 	public String drawEditUser(UserDto u) {
 		String out = "";
 		int valUserId = 0;
-		String valUserStatus="";
+		int valUserStatus = 1;
 		String valUserFirstName = "", valUserLastName="", valUserEmail="";
 		// checking null case
 		if(u != null) {
@@ -190,7 +190,7 @@ public class AdminUserServlet extends HttpServlet {
 			valUserFirstName = u.getFirstName();
 			valUserLastName = u.getLastName();
 			valUserEmail=u.getEmail();
-			valUserStatus=u.getStatusDescription();
+			valUserStatus = u.getStatus();
 			//System.out.println("User not null");
 		}
 

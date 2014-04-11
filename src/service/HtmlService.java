@@ -1,5 +1,7 @@
 package service;
 
+import enumeration.UserStatus;
+
 public class HtmlService {
 
 	
@@ -136,16 +138,16 @@ public class HtmlService {
 		return out;
 	}
 	
-	public static String drawStatusDropdownList(String currentStatus, String field_name){
+	public static String drawStatusDropdownList(int currentStatus, String field_name){
 		String out="";
 		out +="<div>";
 		out += "<label>Current Status <small>required</small></label>";
 		out += "<select name=\""+field_name+"\">";
-		if(currentStatus.equals("Active")){
+		if(currentStatus == UserStatus.ACTIVE.getCode()){
 			out += "<option value=\"1\" selected>Activated</option>";
 			out += "<option value=\"2\">Locked</option>";
 		}
-		else if(currentStatus.equals("Locked")){
+		else if(currentStatus == UserStatus.LOCKED.getCode()){
 			out += "<option value=\"1\">Activated</option>";
 			out += "<option value=\"2\" selected>Locked</option>";
 		}
