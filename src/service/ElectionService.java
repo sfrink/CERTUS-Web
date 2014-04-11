@@ -219,7 +219,7 @@ public class ElectionService {
     	
 		try {
 			String sessionID = HeaderService.getUserSessionId();
-			validator  = Initializer.rmi.editElectionStatus(electionId, ElectionStatus.DELETED, sessionID);
+			validator  = Initializer.rmi.deleteElection(electionId, sessionID);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}

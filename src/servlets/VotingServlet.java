@@ -168,7 +168,7 @@ public class VotingServlet extends HttpServlet {
 			this.mode = "2";
 			this.outModal = drawVotingInterfaceForElectionStep1(e);
 		} else {
-			this.messageLabel = HtmlService.drawMessageLabel(v.getStatus(), "alert");
+			this.messageAlert = HtmlService.drawMessageAlert(v.getStatus(), "alert");
 		}
 	}
 	
@@ -215,7 +215,7 @@ public class VotingServlet extends HttpServlet {
 				messageLabel = HtmlService.drawMessageLabel("Please select candidate", "alert");
 			}
 		} else {
-			messageLabel = HtmlService.drawMessageLabel(v.getStatus(), "alert");
+			messageAlert = HtmlService.drawMessageAlert(v.getStatus(), "alert");
 		}
 	}
 	
@@ -256,10 +256,10 @@ public class VotingServlet extends HttpServlet {
 					outModal = drawVotingInterfaceForElectionStep2(e, (VoteDto) vVote.getObject());
 				}
 			} else {
-				messageLabel = HtmlService.drawMessageLabel(v.getStatus(), "alert");
+				messageAlert = HtmlService.drawMessageAlert(v.getStatus(), "alert");
 			}
 		} else {
-			messageLabel = HtmlService.drawMessageLabel("Signature cannot be empty", "alert");
+			messageAlert = HtmlService.drawMessageAlert("Signature cannot be empty", "alert");
 		}
 	}	
 	

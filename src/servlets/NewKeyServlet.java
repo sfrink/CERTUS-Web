@@ -84,7 +84,7 @@ public class NewKeyServlet extends HttpServlet {
 				routineUploadPage();
 			}else if(request.getParameter("button_start") != null) {
 				routineNewKeysModal();
-			}else if (request.getParameter("button_generate") != null) {
+			}else if (request.getParameter("button_do_generate") != null) {
 				keyPassword = request.getParameter("new_key_password");	
 				generateNewKey();
 			}else if (request.getParameter("button_show_upload") != null){
@@ -316,7 +316,7 @@ public class NewKeyServlet extends HttpServlet {
 		out += "</font></h5></div>";
 		out += "<div class=\"row\">";
 		out += "<div class=\"large-3 large-centered medium-3 medium-centered columns\">";
-		out += "<button class=\"radius button right\" type=\"submit\" name=\"button_generate\">Generate</button>";
+		out += "<button class=\"radius button right\" type=\"submit\" name=\"button_do_generate\">Generate</button>";
 		out += "<a class=\"radius button right\" href=\"login\">Cancel</a>";
 		out += "</div>";
 		out += "</div>";
