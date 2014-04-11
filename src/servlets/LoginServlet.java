@@ -146,8 +146,8 @@ public class LoginServlet extends HttpServlet {
 		String out = "";
 		if(u == null) {
 			u = new UserDto();
-			u.setEmail("user@certus.org");
-			u.setPassword("password");
+			u.setEmail("");
+			u.setPassword("");
 		}
 		
 		out += "<form action=\"login\" method=\"post\" data-abide>";
