@@ -19,7 +19,6 @@ public class SignUpService {
 			res.setStatus("RMI failure.");
 		}
 		
-		
 		return res;
 	}
 	

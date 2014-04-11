@@ -22,9 +22,7 @@ public class UserService
 	 * @param userDto - user object
 	 * @return Validator with the userDto including the primary key assigned by the db.
 	 */
-	
-	static String sessionID = ""; //to be changed with the real session ID
-	
+		
 	/**
 	 * @param userDto - user object
 	 * @return Validator with the verified status true upon successful update, false otherwise.
@@ -33,6 +31,7 @@ public class UserService
 		Validator val = new Validator();
 
 		try {
+			String sessionID = HeaderService.getUserSessionId();
 			val = Initializer.rmi.editUser(userDto, sessionID);
 		} catch (RemoteException e) {
 			val.setVerified(false);
@@ -49,6 +48,7 @@ public class UserService
 		Validator val = new Validator();
 
 		try {
+			String sessionID = HeaderService.getUserSessionId();
 			val = Initializer.rmi.selectUser(userId, sessionID);
 		} catch (RemoteException e) {
 			val.setVerified(false);
@@ -64,6 +64,7 @@ public class UserService
 		Validator val = new Validator();
 
 		try {
+			String sessionID = HeaderService.getUserSessionId();
 			val = Initializer.rmi.selectAllUsers(sessionID);
 		} catch (RemoteException e) {
 			val.setVerified(false);
@@ -80,6 +81,7 @@ public class UserService
 		Validator val = new Validator();
 
 		try {
+			String sessionID = HeaderService.getUserSessionId();
 			val = Initializer.rmi.editUserStatus(userId, UserStatus.ACTIVE, sessionID);
 		} catch (RemoteException e) {
 			val.setVerified(false);
@@ -96,6 +98,7 @@ public class UserService
 		Validator val = new Validator();
 
 		try {
+			String sessionID = HeaderService.getUserSessionId();
 			val = Initializer.rmi.editUserStatus(userId, UserStatus.LOCKED, sessionID);
 		} catch (RemoteException e) {
 			val.setVerified(false);

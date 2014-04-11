@@ -11,13 +11,13 @@ import dto.VoteDto;
 
 public class VotingService {
 
-	static String sessionID = ""; //to be changed with the real session ID
 	
 	public static Validator saveVote(VoteDto vote) {
 		Validator v1 = new Validator();
 		Validator v2 = new Validator();
 		
 		try {
+			String sessionID = HeaderService.getUserSessionId();
 			v2 = Initializer.rmi.vote(vote, sessionID);
 
 			if(v2.isVerified()) {
@@ -45,7 +45,8 @@ public class VotingService {
 
 		// get public key from the server
 		try {
-			v2 = Initializer.rmi.getTallierPublicKey(electionId);
+			String sessionID = HeaderService.getUserSessionId();
+			v2 = Initializer.rmi.getTallierPublicKey(electionId, sessionID);
 		
 			if(v2.isVerified()) {
 				String cipherText = "";

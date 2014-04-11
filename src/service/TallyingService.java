@@ -18,13 +18,12 @@ public class TallyingService
 	 * @param electionId
 	 * @return Validator with ElectionDto
 	 */
-	
-	static String sessionID = ""; //to be changed with the real session ID
-	
+		
 	public static Validator results(int electionId) {
 		Validator validator = new Validator();
 
 		try {
+			String sessionID = HeaderService.getUserSessionId();
 			validator = Initializer.rmi.selectResults(electionId, sessionID);
 		} catch (RemoteException e) {
 			e.printStackTrace();
@@ -41,6 +40,7 @@ public class TallyingService
 		Validator validator = new Validator();
 
 		try {
+			String sessionID = HeaderService.getUserSessionId();
 			validator = Initializer.rmi.voteProgressStatusForElection(electionId, sessionID);
 		} catch (RemoteException e) {
 			e.printStackTrace();
