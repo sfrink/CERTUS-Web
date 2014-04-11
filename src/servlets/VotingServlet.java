@@ -140,7 +140,7 @@ public class VotingServlet extends HttpServlet {
 	public void routineExistingElectionsToVote() {
 		// 1. get the list of all elections this user can vote in
 		ArrayList<ElectionDto> allElections = new ArrayList<ElectionDto>();
-		Validator vAllElections = ElectionService.selectAllElectionsForVoter(HeaderService.getUserId());
+		Validator vAllElections = ElectionService.selectElectionsForVoter(HeaderService.getUserId());
 		if(vAllElections.isVerified()) {
 			allElections = (ArrayList<ElectionDto>) vAllElections.getObject();
 		} else {
@@ -159,7 +159,7 @@ public class VotingServlet extends HttpServlet {
 	public void routineVoteModalStep1(HttpServletRequest request) {
 		resetGlobals();
 		int electionId = Integer.parseInt(request.getParameter("button_vote"));
-		Validator v = ElectionService.selectElection(electionId);
+		Validator v = ElectionService.selectElectionForVoter(electionId);
 		
 		if(v.isVerified()) {
 			// get election object
@@ -181,7 +181,7 @@ public class VotingServlet extends HttpServlet {
 	public void routineVoteModalStep2(HttpServletRequest request) {
 		resetGlobals();
 		int electionId = Integer.parseInt(request.getParameter("button_next"));
-		Validator v = ElectionService.selectElection(electionId);
+		Validator v = ElectionService.selectElectionForVoter(electionId);
 		
 		if(v.isVerified()) {
 			// extract election object
@@ -231,7 +231,7 @@ public class VotingServlet extends HttpServlet {
 		if (request.getParameter("text_cipher") != null && request.getParameter("text_signature") != null) {
 			// get election
 			int electionId = Integer.parseInt(request.getParameter("button_submit_vote"));
-			Validator v = ElectionService.selectElection(electionId);
+			Validator v = ElectionService.selectElectionForVoter(electionId);
 
 			if (v.isVerified()) {
 				// get election object

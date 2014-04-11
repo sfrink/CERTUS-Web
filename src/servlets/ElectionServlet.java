@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import rmi.Initializer;
-import service.CandidateService;
 import service.HtmlService;
 import service.ElectionService;
 import service.HeaderService;
@@ -483,7 +482,7 @@ public class ElectionServlet extends HttpServlet {
 	public void routineExistingElections() {
 		// get the list of elections from DB
 		ArrayList<ElectionDto> allElections = new ArrayList<ElectionDto>();
-		Validator v = ElectionService.selectElectionsOwnedByUser(HeaderService.getUserId());
+		Validator v = ElectionService.selectElectionsForOwner(HeaderService.getUserId());
 		
 		if(v.isVerified()) {
 			allElections = (ArrayList<ElectionDto>) v.getObject();	
@@ -538,7 +537,7 @@ public class ElectionServlet extends HttpServlet {
 		resetGlobals();
 		// get election by provided election id
 		int electionId = Integer.parseInt(request.getParameter("election"));
-		Validator vEditElection = ElectionService.selectElection(electionId);
+		Validator vEditElection = ElectionService.selectElectionForOwner(electionId);
 
 		if (vEditElection.isVerified()) {
 			ElectionDto editElection = (ElectionDto) vEditElection.getObject();
@@ -617,7 +616,7 @@ public class ElectionServlet extends HttpServlet {
 			action = ElectionStatus.PUBLISHED.getCode();
 		}
 		
-		Validator v1 = ElectionService.selectElection(electionId);		
+		Validator v1 = ElectionService.selectElectionForOwner(electionId);		
 		if (v1.isVerified()) {
 			ElectionDto e = (ElectionDto) v1.getObject();
 
@@ -710,7 +709,7 @@ public class ElectionServlet extends HttpServlet {
 			electionId = Integer.parseInt(request.getParameter("btn_elec_publish"));
 		}
 
-		Validator vEditElection = ElectionService.selectElection(electionId);
+		Validator vEditElection = ElectionService.selectElectionForOwner(electionId);
 		if (vEditElection.isVerified()) {
 			this.mode = "2";
 			this.outModal = drawPasswordWithConfirmForElection((ElectionDto) vEditElection.getObject());
