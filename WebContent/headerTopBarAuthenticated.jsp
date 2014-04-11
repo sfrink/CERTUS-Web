@@ -27,6 +27,5 @@
     		    <button class="radius button" type="submit" name="logout">Logout</button>
 			</form>    		    
     	</li>
-		<!-- <li class="has-form"><a href="login" class="button">Logout</a></li> -->
       </ul>
     </section></nav>

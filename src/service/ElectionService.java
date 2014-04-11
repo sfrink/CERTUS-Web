@@ -15,11 +15,11 @@ public class ElectionService {
 
 	static String sessionID = ""; //to be changed with the real session ID
 	
-	public static Validator selectAllElectionsForVoter(int userId) {
+	public static Validator selectElectionsForVoter(int userId) {
 		Validator v1 = new Validator();
 
 		try {
-			v1 = Initializer.rmi.selectAllElectionsForVoter(userId, sessionID);
+			v1 = Initializer.rmi.selectElectionsForVoter(userId, sessionID);
 		} catch (RemoteException e) {
 			v1.setVerified(false);
 			v1.setStatus("RMI call failed");
@@ -38,39 +38,49 @@ public class ElectionService {
 		
 		return v1;
 	}
-
-
-	public static Validator selectElection(int id) {
-		Validator v1 = new Validator(), v2 = new Validator(), v3 = new Validator();
+	
+	
+	public static Validator selectElectionForOwner(int id) {
+		Validator v1 = new Validator();
 		try {
-			v1 = Initializer.rmi.selectElection(id, sessionID);
-			
-			if(v1.isVerified()) {
-				ElectionDto e = (ElectionDto) v1.getObject();
-				
-				v2 = Initializer.rmi.selectCandidatesOfElection(e.getElectionId(), Status.ENABLED, sessionID);
-				
-				if(v2.isVerified()) {
-					ArrayList<CandidateDto> candidates = (ArrayList<CandidateDto>) v2.getObject();
-					e.setCandidateList(candidates);					
-
-					v3.setVerified(true);
-					v3.setObject(e);
-				} else {
-					v3.setVerified(false);
-					v3.setStatus(v2.getStatus());
-				}
-			} else {
-				v3.setVerified(false);
-				v3.setStatus(v1.getStatus());
-			}
+			v1 = Initializer.rmi.selectElectionForOwner(id, sessionID);
 		} catch (RemoteException e) {
-			v3.setVerified(false);
-			v3.setStatus("RMI call failed");
+			v1.setVerified(false);
+			v1.setStatus("RMI call failed");
 		}
-		
-		return v3;
+		return v1;
 	}
+
+	public static Validator selectElectionForVoter(int id) {
+		Validator v1 = new Validator();
+		try {
+			v1 = Initializer.rmi.selectElectionForVoter(id, sessionID);
+		} catch (RemoteException e) {
+			v1.setVerified(false);
+			v1.setStatus("RMI call failed");
+		}
+		return v1;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	public static Validator selectElectionFullDetail(int electionId) {
 		Validator validator = null;
@@ -84,11 +94,12 @@ public class ElectionService {
 		return validator;
 	}
 	
-    public static Validator selectElections(ElectionStatus electionStatus) {
+    
+	public static Validator selectElectionsForAdmin() {
     	Validator validator = null;
     	
 		try {
-			validator  = Initializer.rmi.selectElections(electionStatus, sessionID);
+			validator  = Initializer.rmi.selectElectionsForAdmin(sessionID);
 			
 		} catch (RemoteException e) {
 			e.printStackTrace();
@@ -96,52 +107,22 @@ public class ElectionService {
 		return validator;
     }
     
-    public static Validator selectElectionsNotDeleted() {
-    	Validator validator = null;
-    	
-		try {
-			validator  = Initializer.rmi.selectElectionsNotInStatus(ElectionStatus.DELETED, sessionID);
-			
-		} catch (RemoteException e) {
-			e.printStackTrace();
-		}
-		return validator;
-    }
-    
-    public static Validator selectElections() {
-    	Validator validator = null;
-		try {
-			validator = Initializer.rmi.selectElections(sessionID);
-			 
-		} catch (RemoteException e) {
-			e.printStackTrace();
-		}
-		return validator;
-    }
 
-    public static Validator selectElectionsOwnedByUser(int electionOwnerId, ElectionStatus electionStatus) {
-    	Validator validator = null;
-    	
-		try {
-			validator  = Initializer.rmi.selectElectionsOwnedByUser(electionOwnerId, electionStatus, sessionID);
-			
-		} catch (RemoteException e) {
-			e.printStackTrace();
-		}
-		return validator;
-    }
     
-    public static Validator selectElectionsOwnedByUser(int electionOwnerId) {
+    public static Validator selectElectionsForOwner(int electionOwnerId) {
     	
     	Validator validator = new Validator();
     	
 		try {
-			validator  = Initializer.rmi.selectElectionsOwnedByUser(electionOwnerId, sessionID);
+			validator  = Initializer.rmi.selectElectionsForOwner(electionOwnerId, sessionID);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
 		return validator;
     }
+    
+
+    
     
     public static Validator addElection(ElectionDto electionDto)
     {
@@ -245,7 +226,7 @@ public class ElectionService {
     	Validator validator = new Validator();
     	
     	try {
-			validator  = Initializer.rmi.selectAllElectionsForVoter(userId, sessionID);
+			validator  = Initializer.rmi.selectElectionsForVoter(userId, sessionID);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
@@ -253,11 +234,13 @@ public class ElectionService {
 		return validator;  
     }
     
-    public static Validator selectElectionsForResultsForUser(int userId) {
+    
+    
+    public static Validator selectElectionsForResults(int userId) {
     	Validator validator = new Validator();
     	
     	try {
-			validator  = Initializer.rmi.selectElections(ElectionStatus.PUBLISHED, sessionID);
+			validator  = Initializer.rmi.selectElectionsForResults(userId, sessionID);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
@@ -265,6 +248,7 @@ public class ElectionService {
 		return validator;  
     }
 
+    
     public static Validator selectResults(int electionId) {
     	Validator validator = new Validator();
     	

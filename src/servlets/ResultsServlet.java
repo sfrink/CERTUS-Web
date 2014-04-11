@@ -97,7 +97,7 @@ public class ResultsServlet extends HttpServlet {
 		ArrayList<ElectionDto> allElections = new ArrayList<ElectionDto>();
 
 		// 1. get the list of all elections this user voted in and which are closed
-		Validator vAllElections = ElectionService.selectElectionsForResultsForUser(HeaderService.getUserId());
+		Validator vAllElections = ElectionService.selectElectionsForResults(HeaderService.getUserId());
 
 		if(vAllElections.isVerified()) {
 			allElections = (ArrayList<ElectionDto>) vAllElections.getObject();

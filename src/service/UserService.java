@@ -25,17 +25,6 @@ public class UserService
 	
 	static String sessionID = ""; //to be changed with the real session ID
 	
-	public static Validator addUser(UserDto userDto) {
-		Validator val = new Validator();
-
-		try {
-			val = Initializer.rmi.addUser(userDto);
-		} catch (RemoteException e) {
-			val.setVerified(false);
-			val.setStatus("RMI call failed");
-		}
-		return val;
-	}
 	/**
 	 * @param userDto - user object
 	 * @return Validator with the verified status true upon successful update, false otherwise.

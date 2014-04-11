@@ -104,7 +104,7 @@ public class AdminServlet extends HttpServlet {
 	public void routineExistingElections() {
 		// get the list of elections from DB
 		ArrayList<ElectionDto> allElections = new ArrayList<ElectionDto>();
-		Validator v = ElectionService.selectElectionsNotDeleted();
+		Validator v = ElectionService.selectElectionsForAdmin();
 		
 		if(v.isVerified()) {
 			allElections = (ArrayList<ElectionDto>) v.getObject();	
