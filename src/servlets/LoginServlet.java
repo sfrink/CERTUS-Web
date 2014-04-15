@@ -145,8 +145,8 @@ public class LoginServlet extends HttpServlet {
 		String out = "";
 		if(u == null) {
 			u = new UserDto();
-			u.setEmail("");
-			u.setPassword("");
+			u.setEmail("dkarmazi@gwu.edu");
+			u.setPassword("password");
 		}
 		
 		out += "<form action=\"login\" method=\"post\" data-abide>";
