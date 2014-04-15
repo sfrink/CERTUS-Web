@@ -22,4 +22,7 @@
           </ul>
         </li>
       </ul>
-    </section></nav>
+  </section>
+</nav>
+
+<div class="global_margin_bottom"></div>

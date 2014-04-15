@@ -38,10 +38,10 @@ public class LoginServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	
+		resetGlobals();
+		
 		if(HeaderService.isAuthenticated()) {
 			// logged in, redirect to main
-			messageAlert = HtmlService.drawMessageAlert("Select option to proceed", "");
 			request.setAttribute("message_alert", messageAlert);
 			RequestDispatcher rd = getServletContext().getRequestDispatcher("/main.jsp");		
 			rd.forward(request, response);
@@ -60,6 +60,7 @@ public class LoginServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		resetGlobals();
 		
 		if(request.getParameter("logout") != null) {
 			// logout button clicked
@@ -81,9 +82,8 @@ public class LoginServlet extends HttpServlet {
 				HeaderService.setUserId(u.getUserId());
 				HeaderService.setUserSessionId(u.getSessionId());
 				HeaderService.setUserName(username);
-				HeaderService.setUserType(u.getAdministratorFlag());
+				HeaderService.setUserType(u.getType());
 				
-				messageAlert = HtmlService.drawMessageAlert(v.getStatus() + ", " + u.getFirstName() + " " + u.getLastName(), "success");
 				request.setAttribute("message_alert", messageAlert);
 				RequestDispatcher rd = getServletContext().getRequestDispatcher("/main.jsp");		
 				rd.forward(request, response);
@@ -115,7 +115,6 @@ public class LoginServlet extends HttpServlet {
 	 */
 	public void routinePrepareFirstLogin() {
 		resetGlobals();
-		messageAlert = HtmlService.drawMessageAlert("Welcome to CERTUS! Please login or register before using the system", "");
 		outForm = drawLoginFieldset(null);
 	}
 
@@ -152,7 +151,7 @@ public class LoginServlet extends HttpServlet {
 		
 		out += "<form action=\"login\" method=\"post\" data-abide>";
 		out += "<fieldset>";
-		out += "<legend>Authorization</legend>";
+		out += "<legend>Log in to Certus</legend>";
 		out += HtmlService.drawInputTextEmail("username", "Email", "your@email.address", u.getEmail());		
 		out += HtmlService.drawInputTextPassword("password", "Password", "password", u.getPassword(), false, "");
 		out += "<input type=\"submit\" name=\"login\" class=\"small radius button\" value=\"Login\">";

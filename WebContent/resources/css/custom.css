@@ -88,3 +88,7 @@ table tr.even, table tr.alt, table tr:nth-of-type(even) {
 .election_published {
 	background-color: #e0f2f7;
 }
+
+.global_margin_bottom {
+	margin-bottom: 15px;
+}
