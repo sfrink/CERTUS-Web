@@ -37,9 +37,9 @@ public class EditProfileService {
 		String sessionID = HeaderService.getUserSessionId();	
 		try {
 			val = Initializer.rmi.updateUserPassword(userDto, sessionID);
-			if (val.isVerified()){
+			/*if (val.isVerified()){
 				HeaderService.logout();
-			}
+			}*/
 		} catch (RemoteException e) {
 			val.setVerified(false);
 			val.setStatus("RMI call failed");
@@ -47,5 +47,17 @@ public class EditProfileService {
 		return val;
 	}
 	
+	public static Validator sendTempPassword(UserDto userDto){
+		Validator val=new Validator();
+		String sessionID = HeaderService.getUserSessionId();	
+		try {
+			val = Initializer.rmi.sendTempPassword(userDto, sessionID);
+			
+		} catch (RemoteException e) {
+			val.setVerified(false);
+			val.setStatus("RMI call failed");
+		}
+		return val;
+	}
 	
 }

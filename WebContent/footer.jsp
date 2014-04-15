@@ -16,7 +16,7 @@
         </div>        
       </div>
       <div class="row">
-        <div class="columns"><p>© CSCI-6908 CERTUS Voting System</p></div>
+        <div class="columns"><p>©CERTUS Voting System 2014</p></div>
       </div>
     </div> 
   </footer>

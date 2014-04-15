@@ -1,4 +1,5 @@
 package servlets;
+
 import java.io.IOException;
 
 import javax.servlet.RequestDispatcher;
@@ -10,31 +11,27 @@ import javax.servlet.http.HttpServletResponse;
 
 import dto.UserDto;
 import dto.Validator;
-import service.HtmlService;
 import service.HeaderService;
+import service.HtmlService;
 import service.LoginService;
 
-
-
 /**
- * Servlet implementation class LoginServlet
+ * Servlet implementation class LoginWithTempServlet
  */
-@WebServlet("/login")
-public class LoginServlet extends HttpServlet {
+@WebServlet("/loginWithTemp")
+public class LoginWithTempServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private String messageAlert = "";   
 	private String outForm = "";
 
-	
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public LoginServlet() {
+    public LoginWithTempServlet() {
         super();
     }
 
 	/**
-	 * Dmitriy Karmazin
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -45,36 +42,29 @@ public class LoginServlet extends HttpServlet {
 			request.setAttribute("message_alert", messageAlert);
 			RequestDispatcher rd = getServletContext().getRequestDispatcher("/main.jsp");		
 			rd.forward(request, response);
+			
 		} else {
-			// user came for the first time, prepare login screen
-			routinePrepareFirstLogin();
+			System.out.println("doGet");
+			UserDto u=new UserDto();
+			outForm=drawLoginFieldset(u);
 			request.setAttribute("message_alert", messageAlert);
 			request.setAttribute("out_form", outForm);
-			RequestDispatcher rd = getServletContext().getRequestDispatcher("/login.jsp");		
+			RequestDispatcher rd = getServletContext().getRequestDispatcher("/loginWithTemp.jsp");	
 			rd.forward(request, response);
 		}
 	}
 
 	/**
-	 * Dmitriy Karmazin
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		resetGlobals();
 		
-		if(request.getParameter("logout") != null) {
-			// logout button clicked
-			routineLogout();
-			request.setAttribute("message_alert", messageAlert);
-			request.setAttribute("out_form", outForm);
-			RequestDispatcher rd = getServletContext().getRequestDispatcher("/login.jsp");		
-			rd.forward(request, response);
-		} else if(request.getParameter("login") != null) {
+		if(request.getParameter("login") != null) {
 			// login button clicked
 			UserDto u = new UserDto();
 			String username = request.getParameter("username");
 			String password = request.getParameter("password");
-			Validator v = LoginService.authenticate(username, password);
+			Validator v = LoginService.authenticateTemp(username, password);
 				
 			if(v.isVerified()) {
 				u = (UserDto) v.getObject();
@@ -95,52 +85,18 @@ public class LoginServlet extends HttpServlet {
 
 				request.setAttribute("message_alert", messageAlert);
 				request.setAttribute("out_form", outForm);
-				RequestDispatcher rd = getServletContext().getRequestDispatcher("/login.jsp");		
+				RequestDispatcher rd = getServletContext().getRequestDispatcher("/loginWithTemp.jsp");		
 				rd.forward(request, response);
 			}
-		} else {
-			// something else, perhaps malicious, redirect to login
-			routinePrepareFirstLogin();
+		}
+		else{
+			outForm=drawLoginFieldset(null);
 			request.setAttribute("message_alert", messageAlert);
 			request.setAttribute("out_form", outForm);
-			RequestDispatcher rd = getServletContext().getRequestDispatcher("/login.jsp");		
-			rd.forward(request, response);
-		}		
-	}
-
-	
-	/**
-	 * Dmitriy Karmazin
-	 * This function performs all actions required for preparing first login screen
-	 */
-	public void routinePrepareFirstLogin() {
-		resetGlobals();
-		outForm = drawLoginFieldset(null);
-	}
-
-
-//	public void routineLogin(HttpServletRequest request, HttpServletResponse response) {
-//	}
-	
-	
-	/**
-	 * Dmitriy Karmazin
-	 * This function performs all actions required for logout procedure
-	 */
-	public void routineLogout() {
-		HeaderService.logout();
-		resetGlobals();
-		messageAlert = HtmlService.drawMessageAlert("Successfully logged out, thank you for using the system", "");
-		outForm = drawLoginFieldset(null);
+			RequestDispatcher rd = getServletContext().getRequestDispatcher("/loginWithTemp.jsp");	
+			rd.forward(request, response);		}
 	}
 	
-	
-	/**
-	 * Dmitriy Karmazin
-	 * This function returns HTML output for login form
-	 * @param UserDto user
-	 * @return HTML string
-	 */
 	public String drawLoginFieldset(UserDto u) {
 		String out = "";
 		if(u == null) {
@@ -149,30 +105,21 @@ public class LoginServlet extends HttpServlet {
 			u.setPassword("");
 		}
 		
-		out += "<form action=\"login\" method=\"post\" data-abide>";
+		out += "<form action=\"loginWithTemp\" method=\"post\" data-abide>";
 		out += "<fieldset>";
-		out += "<legend>Log in to Certus</legend>";
+		out += "<legend>Use your email and temporary password to log in</legend>";
 		out += HtmlService.drawInputTextEmail("username", "Email", "your@email.address", u.getEmail());		
 		out += HtmlService.drawInputTextPassword("password", "Password", "password", u.getPassword(), false, "");
 		out += "<input type=\"submit\" name=\"login\" class=\"small radius button\" value=\"Login\">";
-		out += "<p><a href=\"signup\">New User?</a></p>";
-		out += "<p><a href=\"forgot\">Forgot your password?</a></p>";
+
 		out += "</fieldset>";
 		out += "</form>";
 		
 		return out;
 	}
-	
-	
-	/**
-	 * Dmitriy Karmazin
-	 * This functions resets all global variables for this class
-	 */
+
 	private void resetGlobals() {
 		this.messageAlert = "";
 		this.outForm = "";
 	}
-
-	
-	
 }
