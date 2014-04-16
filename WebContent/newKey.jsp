@@ -19,6 +19,44 @@ String outUpload = (String) request.getAttribute("out_upload");
 <jsp:include page="headerDefault.jsp" />
 <jsp:include page="headerTopBarAuthenticated.jsp" />
 
+<script>
+function showFileSize() {
+    var input, file;
+
+    document.getElementById("apiFileError").style.display = "none";
+    document.getElementById("emptyFileError").style.display = "none";
+    document.getElementById("largeFileError").style.display = "none";
+    
+    // (Can't use `typeof FileReader === "function"` because apparently
+    // it comes back as "object" on some browsers. So just see if it's there
+    // at all.)
+    
+    if (!window.FileReader) {
+        document.getElementById("apiFileError").style.display = "block";
+        return false;
+    }
+
+    input = document.getElementById('FileInput');
+    if (!input.files) {
+    	document.getElementById("apiFileError").style.display = "block";
+    	return false;
+    }
+    else if (!input.files[0]) {
+    	document.getElementById("emptyFileError").style.display = "block";
+    	return false;
+    }
+    else {
+        file = input.files[0];
+        if (file.size > 10240){
+        	document.getElementById("largeFileError").style.display = "block";
+        	return false;	
+        }
+    }
+    
+    return true;
+    
+}
+</script>
    
 <!-- display a message -->
 <%=messageAlert %> 

@@ -22,7 +22,7 @@ import service.NewKeyService;
  * Servlet implementation class NewKeysServlet
  */
 @WebServlet("/newkey")
-@MultipartConfig(maxFileSize = 51200)
+@MultipartConfig(maxFileSize = 10240)
 public class NewKeyServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -245,9 +245,15 @@ public class NewKeyServlet extends HttpServlet {
 		out += "<h5>";
 		out += "Your file size cannot be larger than 10 bytes.";
 		out += "</h5>";
+		
+		//error messages:
+		out += "<div id=\"emptyFileError\" style=\"display: none\"><p><font color=\"red\">Please select a file.</font></p></div>";
+		out += "<div id=\"largeFileError\" style=\"display: none\"><p><font color=\"red\">The file is larger than 10 bytes.</font></p></div>";
+		out += "<div id=\"apiFileError\" style=\"display: none\"><p><font color=\"red\">The file API isn't supported on this browser yet.</font></p></div>";
+		
 		out += "<h5>";
 		out += "<div class=\"row\">";
-		out += "<form action=\"uploadkey\" method=\"post\" enctype=\"multipart/form-data\">";
+		out += "<form action=\"uploadkey\" method=\"post\" enctype=\"multipart/form-data\" onsubmit=\"return showFileSize()\" >";
 		out += "Select a file: <input name=\"uploadFile\" id=\"FileInput\" type=\"file\" size=\"10240\">";
 		out += "<input type=\"submit\" value=\"Upload\" class=\"button radius\" name=\"button_start_uploading\">";
 		out += "</form>";

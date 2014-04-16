@@ -8,13 +8,40 @@ import dto.Validator;
 
 public class SignUpService {
 
-	public static Validator addUser(UserDto newUser){
+	public static Validator addBasicUser(UserDto newUser){
 		Validator res = new Validator();
 		
 		try {
-			res = Initializer.rmi.registerNewUser(newUser);
+			res = Initializer.rmi.addUser(newUser);
 		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
+			res.setVerified(false);
+			res.setStatus("RMI failure.");
+		}
+		
+		return res;
+	}
+	
+	
+	public static Validator addUserwithKeyProtectionPassword(UserDto newUser){
+		Validator res = new Validator();
+		
+		try {
+			res = Initializer.rmi.addUserWithPP(newUser);
+		} catch (RemoteException e) {
+			res.setVerified(false);
+			res.setStatus("RMI failure.");
+		}
+		
+		return res;
+	}
+	
+	
+	public static Validator addUserWithPublicKey(UserDto newUser){
+Validator res = new Validator();
+		
+		try {
+			res = Initializer.rmi.addUserWithKey(newUser);
+		} catch (RemoteException e) {
 			res.setVerified(false);
 			res.setStatus("RMI failure.");
 		}

@@ -198,7 +198,7 @@ public class HtmlService {
 		//Confirmation Field
 		out += "<div class=\"" + cField_name + "\">";
 		out += "<label>" + cLabel + " <small>Required</small>";
-		out += "<input type=\"password\" name=\""+ pField_name + "\" id=\"" + pField_name + "\" required pattern=\"[a-zA-Z]+\" data-equalto=\""+ pField_name +"\">";
+		out += "<input type=\"password\" name=\""+ cField_name + "\" id=\"" + cField_name + "\" required pattern=\"[a-zA-Z]+\" data-equalto=\""+ pField_name +"\">";
 		out += "</label>";
 		out += "<small class=\"error\">Passwords don't match</small>";
 		out += "</div>";
