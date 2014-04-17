@@ -85,8 +85,11 @@ public class LoginServlet extends HttpServlet {
 					HeaderService.deAuthenticate();
 					HeaderService.setUserId(u.getUserId());
 					HeaderService.setUserType(u.getType());
+					HeaderService.setTempUser(true);
+					HeaderService.setUserEmail(username);
+					HeaderService.setUserSessionId(u.getSessionId());
 					
-					RequestDispatcher rd = getServletContext().getRequestDispatcher("/invited.jsp");		
+					RequestDispatcher rd = getServletContext().getRequestDispatcher("/inviteduser");		
 					rd.forward(request, response);
 				} else {
 					HeaderService.authenticate();
@@ -94,6 +97,7 @@ public class LoginServlet extends HttpServlet {
 					HeaderService.setUserSessionId(u.getSessionId());
 					HeaderService.setUserName(username);
 					HeaderService.setUserType(u.getType());
+					HeaderService.setTempUser(false);
 					
 					request.setAttribute("message_alert", messageAlert);
 					RequestDispatcher rd = getServletContext().getRequestDispatcher("/main.jsp");		

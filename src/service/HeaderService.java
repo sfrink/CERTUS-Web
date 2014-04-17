@@ -1,7 +1,10 @@
 package service;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import rmi.Initializer;
 
 public class HeaderService {
 
@@ -11,6 +14,26 @@ public class HeaderService {
 	public static String userSessionId;
 	public static String userName;
 	public static int userType;
+	public static boolean tempUser = false;
+	public static String userEmail = "";
+	
+	
+
+	public static String getUserEmail() {
+		return userEmail;
+	}
+
+	public static void setUserEmail(String userEmail) {
+		HeaderService.userEmail = userEmail;
+	}
+
+	public static boolean isTempUser() {
+		return tempUser;
+	}
+
+	public static void setTempUser(boolean tempUser) {
+		HeaderService.tempUser = tempUser;
+	}
 
 	public static boolean isAuthenticated() {
 		return auth;
@@ -57,6 +80,12 @@ public class HeaderService {
 	}
 
 	public static void logout() {
+		try {
+			Initializer.rmi.logOut(getUserSessionId());
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		deAuthenticate();
 		setUserId(0);
 		setUserSessionId("");

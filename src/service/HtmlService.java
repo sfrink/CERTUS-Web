@@ -190,7 +190,7 @@ public class HtmlService {
 		//Password Field:
 		out += "<div class=\"" + pField_name + "\">";
 		out += "<label>" + pLabel + " <small>Required</small>";
-		out += "<input type=\"password\" name=\""+ pField_name + "\" id=\"" + pField_name + "\" required pattern=\"[a-zA-Z]+\">";
+		out += "<input type=\"password\" name=\""+ pField_name + "\" placeholder=\"" + pLabel + "\" id=\"" + pField_name + "\" required pattern=\"[a-zA-Z]+\">";
 		out += "</label>";
 		out += "<small class=\"error\">Your password must match the requirements</small>";
 		out += "</div>";
@@ -198,7 +198,7 @@ public class HtmlService {
 		//Confirmation Field
 		out += "<div class=\"" + cField_name + "\">";
 		out += "<label>" + cLabel + " <small>Required</small>";
-		out += "<input type=\"password\" name=\""+ cField_name + "\" id=\"" + cField_name + "\" required pattern=\"[a-zA-Z]+\" data-equalto=\""+ pField_name +"\">";
+		out += "<input type=\"password\" name=\""+ cField_name + "\" placeholder=\"" + cLabel + "\" id=\"" + cField_name + "\" required pattern=\"[a-zA-Z]+\" data-equalto=\""+ pField_name +"\">";
 		out += "</label>";
 		out += "<small class=\"error\">Passwords don't match</small>";
 		out += "</div>";
