@@ -3,6 +3,7 @@ package service;
 import java.rmi.RemoteException;
 
 import rmi.Initializer;
+import dto.UserDto;
 import dto.Validator;
 
 public class LoginService {
@@ -58,7 +59,5 @@ public class LoginService {
 		
 		return v;
 	}
-	
-	
 	
 }
