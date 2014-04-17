@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import dto.UserDto;
 import dto.Validator;
+import enumeration.UserType;
 import service.HtmlService;
 import service.HeaderService;
 import service.LoginService;
@@ -78,15 +79,26 @@ public class LoginServlet extends HttpServlet {
 				
 			if(v.isVerified()) {
 				u = (UserDto) v.getObject();
-				HeaderService.authenticate();
-				HeaderService.setUserId(u.getUserId());
-				HeaderService.setUserSessionId(u.getSessionId());
-				HeaderService.setUserName(username);
-				HeaderService.setUserType(u.getType());
 				
-				request.setAttribute("message_alert", messageAlert);
-				RequestDispatcher rd = getServletContext().getRequestDispatcher("/main.jsp");		
-				rd.forward(request, response);
+				if (u.getType() == UserType.INVITED.getCode()) {
+					// Invited user who does not have updated profile yet.
+					HeaderService.deAuthenticate();
+					HeaderService.setUserId(u.getUserId());
+					HeaderService.setUserType(u.getType());
+					
+					RequestDispatcher rd = getServletContext().getRequestDispatcher("/invited.jsp");		
+					rd.forward(request, response);
+				} else {
+					HeaderService.authenticate();
+					HeaderService.setUserId(u.getUserId());
+					HeaderService.setUserSessionId(u.getSessionId());
+					HeaderService.setUserName(username);
+					HeaderService.setUserType(u.getType());
+					
+					request.setAttribute("message_alert", messageAlert);
+					RequestDispatcher rd = getServletContext().getRequestDispatcher("/main.jsp");		
+					rd.forward(request, response);
+				}
 			} else {
 				u.setEmail(username);
 				u.setPassword(password);
