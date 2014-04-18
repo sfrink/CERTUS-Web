@@ -219,8 +219,8 @@ public class HtmlService {
 		out += "<label>Who can vote <small>required</small>";
         out += "<select id=\"" + field_name + "\" name=\"" + field_name + "\" required pattern=\"[12]\">";
         //out += "<option value=\"0\">Please select option</option>";  
-        out += "<option value=\"1\""+ selected1 + ">Public | any user can vote</option>";
-        out += "<option value=\"2\""+ selected2 + ">Private | manualy specify users</option>";
+        out += "<option value=\"2\""+ selected2 + ">Only specified users can vote (private election)</option>";
+        out += "<option value=\"1\""+ selected1 + ">Any user can vote (public election)</option>";
         out += "</select>";
         out += "</label>";
         out += "<small class=\"error\">please select either public or private type of election</small>";

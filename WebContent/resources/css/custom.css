@@ -105,4 +105,9 @@ table tr.even, table tr.alt, table tr:nth-of-type(even) {
 	font-weight: normal;
 	color: #777;
 	font-size: 0.6875rem;
+	border-bottom: none;
+}
+
+.has-tip:hover {
+	border-bottom: none;
 }
