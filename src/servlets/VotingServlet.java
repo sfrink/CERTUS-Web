@@ -316,7 +316,8 @@ public class VotingServlet extends HttpServlet {
 		out += "</fieldset>";
 		out += "</div>";
 		out += "</div>";
-	    out += "</form>";		
+	    out += "</form>";
+	    out += "<a id=\"close-reveal-modal-modified_election\" class=\"close-reveal-modal\">&#215;</a>";
 		
 		return out;
 	}

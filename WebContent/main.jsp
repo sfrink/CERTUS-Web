@@ -21,16 +21,14 @@ String outModal = (String) request.getAttribute("out_modal");
 <div class="row" data-equalizer>
 	<% if(HeaderService.hasAccess("election")) { %>
   	  <div class="large-12 columns">
-        <div class="right">
-          <a href="election" class="button tiny radius">Manage my elections</a>&nbsp
-          <span data-tooltip class="has-tip tip-top tip-right" title="You can start your own election or manage elections you have been working on.">(?)</span>
+        <div class="left">
+          <a href="election" class="button tiny radius">Manage my elections</a>
+          <span data-tooltip class="has-tip tip-top" title="You can start your own election or manage existing elections.">what is this?</span>
         </div>
  	  </div>
 	<% } %>
 
-
   <div class="large-12 columns">
-  
     <div class="large-6 medium-6 small-6 columns panel clear" data-equalizer-watch>
 	  <h5>You can vote in the following elections:</h5>
 	  <%=outElectionsForVoting %>
@@ -44,18 +42,21 @@ String outModal = (String) request.getAttribute("out_modal");
 </div>
 
 
+<!-- MODAL -->
+<div id=modal_window class="reveal-modal" data-reveal>
+  <div class="row">
+    <div class="large-6 large-centered medium-6 large-centered columns">
+	  <%=messageLabel %>
+	</div>
+  </div>
+  <%=outModal %>
+</div>
+<!-- MODAL END -->
+
+
+
 <div class="row">
   <div class="large-12 columns">
-
-
-	<% if(HeaderService.hasAccess("voting")) { %>
-	  <p><a href="voting" class="button radius">Vote</a></p>
-	<% } %>
-	  
-	<% if(HeaderService.hasAccess("results")) { %>
-	  <p><a href="results" class="button radius">Elections Results</a></p>
-	<% } %>
-	
 	<% if(HeaderService.hasAccess("adminElection")) { %>
 	  <p><a href="adminElection" class="button radius">Delete Elections</a></p>
 	<% } %>
@@ -63,8 +64,11 @@ String outModal = (String) request.getAttribute("out_modal");
 	<% if(HeaderService.hasAccess("adminUser")) { %>
       <p><a href="adminUser" class="button radius">Edit Users</a></p>
 	<% } %>
-
   </div>
 </div>
 
 <jsp:include page="footer.jsp" />
+
+<% if(mode.equals("2")) { %>
+  <script>$('#modal_window').foundation('reveal', 'open');</script>
+<% } %>

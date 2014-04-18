@@ -1,6 +1,6 @@
 $(document).ready(function() {
     $('#button_vote_back').click(function() {
-    	var url = 'voting';
+    	var url = 'main';
     	var elec_id = $(this).attr("value");
     	var form = $('<form action="' + url + '" method="post">' +
     	  '<input type="hidden" name="button_vote" value="' + elec_id + '" />' +
@@ -12,7 +12,7 @@ $(document).ready(function() {
 
 $(document).ready(function() {
     $('#button_vote_complete').click(function() {
-    	var url = 'voting';
+    	var url = 'main';
     	var form = $('<form action="' + url + '" method="post"></form>');
     	$('body').append(form);
     	$(form).submit();

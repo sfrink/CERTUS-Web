@@ -92,3 +92,17 @@ table tr.even, table tr.alt, table tr:nth-of-type(even) {
 .global_margin_bottom {
 	margin-bottom: 15px;
 }
+
+
+.panel.clear {
+	background-color: transparent;
+	border-bottom:none;
+	border-right:none;	
+	border-left:none;
+}
+
+.has-tip {
+	font-weight: normal;
+	color: #777;
+	font-size: 0.6875rem;
+}
