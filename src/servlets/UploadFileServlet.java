@@ -57,14 +57,16 @@ public class UploadFileServlet extends HttpServlet {
             String outUpload = "";
             
             if (fileSize == 0){
-            	outUpload = drawUploadingPage();
+            	outUpload = drawFailedUpload("Empty File");
             }else if (fileSize >= 10240){
-            	outUpload = drawUploadingPage();
+            	outUpload = drawFailedUpload("Large File");
             }else{
             	//obtains input stream of the upload file
             	inputStream = filePart.getInputStream();
             
-            	Validator res = NewKeyService.uploadPubKey(inputStream);
+            	String userPassword = request.getParameter("user_password");
+            	
+            	Validator res = NewKeyService.uploadPubKey(inputStream, userPassword);
             	
             	if (res.isVerified()){
                 	outUpload = drawSuccessfullUpload();
@@ -76,10 +78,10 @@ public class UploadFileServlet extends HttpServlet {
 			request.setAttribute("mode", "1");
 			request.setAttribute("message_alert", "");
 			request.setAttribute("message_label", "");
-			request.setAttribute("out_modal", "");
-			request.setAttribute("out_file", outUpload);
+			request.setAttribute("out_modal", outUpload);
 			
-            getServletContext().getRequestDispatcher("/newKey.jsp").forward(request, response);
+			
+            getServletContext().getRequestDispatcher("/uploadKey.jsp").forward(request, response);
         }
 	}
 	
@@ -93,7 +95,7 @@ public class UploadFileServlet extends HttpServlet {
 		out += "</div>";
 		out += "<div class=\"row\">";
 		out += "<div class=\"large-6 medium-6 columns\">";
-		out += "<a class=\"button radius\" href=\"newkey\">Finish</a>";
+		out += "<a class=\"button radius\" href=\"main\">Finish</a>";
 		out += "</div>";
 		out += "</div>";
 		out += "</div>";
@@ -117,7 +119,7 @@ public class UploadFileServlet extends HttpServlet {
 		out += "</div>";
 		out += "</div>";
 		out += "<div class=\"row\">";
-		out += "<form action=\"newkey\" method=\"post\">	";
+		out += "<form action=\"uploadkeypage\" method=\"post\">	";
 		out += "<button class=\"button radius\" type=\"submit\" name=\"start_fresh\" value=\"new\">Yes, let's try again</button>		";
 		out += "</form>";
 		out += "<a href=\"login\">No, just forget about it.</a>";
@@ -128,22 +130,5 @@ public class UploadFileServlet extends HttpServlet {
 	
 	}
 	
-	public String drawUploadingPage(){
-		String out = "";
-		out += "<h5><font color=\"red\">You didn't select a file!</font></h5>";
-		out += "<h5>";
-		out += "Your file size cannot be larger than 10 bytes.";
-		out += "</h5>";
-		out += "<h5>";
-		out += "<div class=\"row\">";
-		out += "<form action=\"uploadkey\" method=\"post\" enctype=\"multipart/form-data\">";
-		out += "Select a file: <input name=\"uploadFile\" type=\"file\">";
-		out += "<input type=\"submit\" value=\"Upload\" class=\"button radius\" name=\"button_start_uploading\">";
-		out += "</form>";
-		out += "</div>";
-
-		return out;
-	}
-
 
 }

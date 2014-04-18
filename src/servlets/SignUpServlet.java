@@ -71,7 +71,8 @@ public class SignUpServlet extends HttpServlet {
 			
 			RequestDispatcher rd = getServletContext().getRequestDispatcher("/signUp.jsp");		
 			rd.forward(request, response);
-		}	}
+		}	
+	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)

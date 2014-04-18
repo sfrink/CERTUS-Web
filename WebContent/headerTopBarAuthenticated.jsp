@@ -27,17 +27,20 @@
 
         <li class="divider"></li>
         <li class="has-dropdown not-click">
-          <a href="#">My profile</a>
+          <a href="#">Settings</a>
           <ul class="dropdown"><li class="title back js-generated"><h5><a href="javascript:void(0)">Back</a></h5></li>
 
 			<% if(HeaderService.hasAccess("profile")) { %>
-			  <li><a href="profile">Edit</a></li>
+			  <li><a href="profile">Edit Profile</a></li>
 			<% } %>
 
 			<% if(HeaderService.hasAccess("newkey")) { %>
-			  <li><a href="newkey">Key Management</a></li>
+			  <li><a href="newkey">Generate New Key</a></li>
 			<% } %>
 
+			<% if(HeaderService.hasAccess("upload")) { %>
+			  <li><a href="uploadkeypage">Upload Public Key</a></li>
+			<% } %>
           </ul>
         </li>
 
