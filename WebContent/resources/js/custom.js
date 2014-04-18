@@ -21,7 +21,7 @@ $(document).ready(function() {
 
 $(document).ready(function() {
 	$("#close-reveal-modal-modified").click(function () {
-	    var message = "Warning!\n\nYou are about to close this window and all entered information will be lost.\n\nClick 'OK' to close this window and dismiss entered information.\n\nClick 'CANCEL' to stay on this window.\n\n";
+	    var message = "Warning! You are about to lose unsaved changes.\n\nClick 'OK' to discard any unsaved changes.\n\nClick 'CANCEL' to return editing.\n\n";
         if (confirm(message)) { 
         	$('#modal_window').foundation('reveal', 'close');
         	return true;

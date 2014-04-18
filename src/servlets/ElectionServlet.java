@@ -186,10 +186,10 @@ public class ElectionServlet extends HttpServlet {
 	 */
 	public String drawNewElection(ElectionDto e) {
 		String out = "", valElecName = "", valElecDesc = "", valElecCand = "", 
-			   valElecEndTime = "", valRegEmails = "void", valUnRegEmails = "", 
+			   valElecEndTime = "", valRegEmails = "", valUnRegEmails = "", 
 			   valPasswordErrorMessage = "", usersFieldStyle = "";
 		boolean valEmailListError = false, valPasswordError = false;
-		int valElecId = 0, valElecAvailability = 0;
+		int valElecId = 0, valElecAvailability = ElectionType.PRIVATE.getCode();
 		
 		// checking null case
 		if(e != null) {
@@ -223,7 +223,7 @@ public class ElectionServlet extends HttpServlet {
 		out += HtmlService.drawInputTextAlphanumericOptional("new_election_end_time", "Election Closing Time", placeHoldElecEndTime, valElecEndTime);
 		out += "</fieldset>";
 		// password		
-		out += "<fieldset><legend>Protect election by password</legend>";
+		out += "<fieldset><legend>Protect election by password <span data-tooltip class=\"has-tip tip-top\" title=\"Steven, please provide the message.\">what is this?</span></legend>";
 		out += HtmlService.drawInputTextPasswordAndConfirmation("new_election_password", "Election Password", "new_election_password_confirm", "Confirm Election Password");		
 		out += "</fieldset>"; 
 		out += "</div>";
@@ -592,7 +592,7 @@ public class ElectionServlet extends HttpServlet {
 	public void routineAddNewElectionModal() {	
 		resetGlobals();
 		mode = "2";
-		messageLabel = HtmlService.drawMessageLabel("Please fill in required labels", "secondary");
+		messageLabel = HtmlService.drawMessageLabel("Please fill in required fields", "secondary");
 		outModal = drawNewElection(null);
 	}
 	

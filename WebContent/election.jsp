@@ -20,19 +20,14 @@ String outModal = (String) request.getAttribute("out_modal");
 <%=messageAlert %> 
 
 <div class="row">
-	<div class="large-12 columns">
-
-      <div class="row">
-		<h3>Elections Management</h3>
-
-		<form action="election" method="post">	
-			<button class="button tiny radius" type="submit" name="button_add_election" value="new">Add new election</button>		
-		</form>
-	  </div>
-
-      <div class="row">
-	    <%=outElections %>
-	</div>
+  <div class="large-12 medium-12 small-12 columns">
+    <h3>Elections Management</h3>
+	<form action="election" method="post">
+      <button class="button tiny radius" type="submit" name="button_add_election" value="new">Add new election</button>
+      <hr/>
+	</form>
+    <%=outElections %>
+  </div>
 </div>
 
 <div id="modal_window" class="reveal-modal" data-reveal>
