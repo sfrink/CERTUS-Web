@@ -568,6 +568,9 @@ public class ElectionServlet extends HttpServlet {
 	public void routineEditElectionSave(HttpServletRequest request) {
 		resetGlobals();
 		
+		String usersToInvite = getStringFromArray(request.getParameterValues("edit_election_users_invited"));
+		System.out.println(usersToInvite);
+		
 		ElectionDto editElection = new ElectionDto();
 		editElection.setElectionId(Integer.parseInt(request.getParameter("save_edit_election")));
 		editElection.setElectionName(request.getParameter("edit_election_name"));
