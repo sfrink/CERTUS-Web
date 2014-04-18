@@ -4,25 +4,49 @@ if(!HeaderService.isAuthenticated()) {
  	RequestDispatcher rd = getServletContext().getRequestDispatcher("/login");
 	rd.forward(request, response);		
 }
+
+String mode = (String) request.getAttribute("mode");
+String messageAlert = (String) request.getAttribute("message_alert");
+String messageLabel = (String) request.getAttribute("message_label");
+String outElectionsForVoting = (String) request.getAttribute("out_elections_for_voting");
+String outElectionsForResults = (String) request.getAttribute("out_elections_for_results");
+String outModal = (String) request.getAttribute("out_modal");
 %>
 
 <jsp:include page="headerDefault.jsp" /> 
 <jsp:include page="headerTopBarAuthenticated.jsp" /> 
 
-<%
-String messageAlert = (String) request.getAttribute("message_alert");
-%>
-
 <%=messageAlert %>
+
+<div class="row" data-equalizer>
+	<% if(HeaderService.hasAccess("election")) { %>
+  	  <div class="large-12 columns">
+        <div class="right">
+          <a href="election" class="button tiny radius">Manage my elections</a>&nbsp
+          <span data-tooltip class="has-tip tip-top tip-right" title="You can start your own election or manage elections you have been working on.">(?)</span>
+        </div>
+ 	  </div>
+	<% } %>
+
+
+  <div class="large-12 columns">
+  
+    <div class="large-6 medium-6 small-6 columns panel clear" data-equalizer-watch>
+	  <h5>You can vote in the following elections:</h5>
+	  <%=outElectionsForVoting %>
+    </div>
+
+    <div class="large-6 medium-6 small-6 columns panel clear" data-equalizer-watch>
+	  <h5>Elections with published results:</h5>	  
+	  <%=outElectionsForResults %>
+    </div>
+  </div>
+</div>
+
 
 <div class="row">
   <div class="large-12 columns">
 
-	<h3>Welcome Screen | Authorized User</h3>
-
-	<% if(HeaderService.hasAccess("election")) { %>
-      <p><a href="election" class="button radius">Add / Edit Elections</a></p>
-	<% } %>
 
 	<% if(HeaderService.hasAccess("voting")) { %>
 	  <p><a href="voting" class="button radius">Vote</a></p>

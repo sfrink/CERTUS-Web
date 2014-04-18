@@ -44,7 +44,7 @@ public class LoginServlet extends HttpServlet {
 		if(HeaderService.isAuthenticated()) {
 			// logged in, redirect to main
 			request.setAttribute("message_alert", messageAlert);
-			RequestDispatcher rd = getServletContext().getRequestDispatcher("/main.jsp");		
+			RequestDispatcher rd = getServletContext().getRequestDispatcher("/main");		
 			rd.forward(request, response);
 		} else {
 			// user came for the first time, prepare login screen
@@ -100,7 +100,7 @@ public class LoginServlet extends HttpServlet {
 					HeaderService.setTempUser(false);
 					
 					request.setAttribute("message_alert", messageAlert);
-					RequestDispatcher rd = getServletContext().getRequestDispatcher("/main.jsp");		
+					RequestDispatcher rd = getServletContext().getRequestDispatcher("/main");		
 					rd.forward(request, response);
 				}
 			} else {
