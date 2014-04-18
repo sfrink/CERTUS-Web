@@ -17,12 +17,12 @@ import dto.Validator;
 public class NewKeyService {
 
 	
-	public static Validator generateNewKeys(String newKeyPass){
+	public static Validator generateNewKeys(String newKeyPass, String userPassword){
 		Validator res = new Validator();
 		int userID = HeaderService.getUserId();
 		String sessionID = HeaderService.getUserSessionId();
 		try {
-			res = Initializer.rmi.generateNewKeys(userID, newKeyPass, sessionID);
+			res = Initializer.rmi.generateNewKeys(userID, newKeyPass, userPassword, sessionID);
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			res.setVerified(false);
@@ -31,7 +31,7 @@ public class NewKeyService {
 		return res;
 	}
 	
-	public static Validator uploadPubKey(InputStream dataStream) throws IOException{
+	public static Validator uploadPubKey(InputStream dataStream, String userPassword) throws IOException{
 		
 		Validator res = new Validator();
 		String sessionID = HeaderService.getUserSessionId();
@@ -47,7 +47,7 @@ public class NewKeyService {
 
 			buffer.flush();
 			
-			res = Initializer.rmi.uploadPubKey(buffer.toByteArray(), sessionID);
+			res = Initializer.rmi.uploadPubKey(buffer.toByteArray(), userPassword, sessionID);
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			res.setVerified(false);
