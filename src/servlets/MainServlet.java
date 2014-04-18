@@ -326,7 +326,7 @@ public class MainServlet extends HttpServlet {
 		out += "<fieldset>";
 		out += "<legend>Step 2 of 3: Please sign your vote</legend>";
 		out += HtmlService.drawInputTextareaReadonly("text_cipher", "Encrypted Vote", "Cipher is supposed to be here", vote.getVoteEncrypted());
-		out += HtmlService.drawInputTextareaAlphanumeric("text_signature", "Signature", "Enter your signature here...", signature, vote.isVoteSignatureError(), vote.getVoteSignatureErrorMessage());
+		out += HtmlService.drawInputTextareaAlphanumeric("text_signature", "Signature", "Enter your signature here...", signature, vote.isVoteSignatureError(), vote.getVoteSignatureErrorMessage(), true);
 		out += "</fieldset>";
 		// buttons
 		out += "<div class=\"row\">";

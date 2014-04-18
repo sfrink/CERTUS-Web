@@ -43,30 +43,26 @@ $(document).ready(function() {
 	});
 });
 
-
 $(document).ready(function() {
 	$("#close-reveal-modal-modified-force").click(function () {
     	$('#modal_window').foundation('reveal', 'close');
 	});
 });
 
-
 $(document).ready(function() {
 	$('#new_election_availability').on('change', function() {
 		var optionId = $(this).val();
-
 		$('#new_election_users_column').hide();
+		$('#new_election_users_invite').hide();		
 		
 		if(optionId == 2) {
 			$('#new_election_users_column').show();
-			if($('#new_election_users').val() == "void") {
-				$('#new_election_users').val("");				
-			}
+			$('#new_election_users_invite').show();
+			$('#new_election_users').prop('required',true);
 		} else if(optionId == 1) {
 			$('#new_election_users_column').hide();
-			if($('#new_election_users').val() == "") {
-				$('#new_election_users').val("void");				
-			}
+			$('#new_election_users_invite').hide();
+			$('#new_election_users').prop('required',false);
 		}
 	});
 });
@@ -74,23 +70,37 @@ $(document).ready(function() {
 $(document).ready(function() {
 	$('#edit_election_availability').on('change', function() {
 		var optionId = $(this).val();
-
 		$('#edit_election_users_column').hide();
+		$('#edit_election_users_invite').hide();		
 		
 		if(optionId == 2) {
 			$('#edit_election_users_column').show();
-			if($('#edit_election_users').val() == "void") {
-				$('#edit_election_users').val("");				
-			}
+			$('#edit_election_users_invite').show();
+			$('#edit_election_users').prop('required',true);
 		} else if(optionId == 1) {
 			$('#edit_election_users_column').hide();
-			if($('#edit_election_users').val() == "") {
-				$('#edit_election_users').val("void");				
-			}
+			$('#edit_election_users_invite').hide();
+			$('#edit_election_users').prop('required',false);
 		}
 	});
 });
 
+$(document).ready(function() {
+	$("[name='new_election_users_invited']").click(function () {
+		if($("[name=new_election_users_invited]:checked").length > 0) {
+			$('#new_election_users').prop('required',false);
+		} else {
+			$('#new_election_users').prop('required',true);
+		}
+	});
+});
 
-
-
+$(document).ready(function() {
+	$("[name='edit_election_users_invited']").click(function () {
+		if($("[name=edit_election_users_invited]:checked").length > 0) {
+			$('#edit_election_users').prop('required',false);
+		} else {
+			$('#edit_election_users').prop('required',true);
+		}
+	});
+});

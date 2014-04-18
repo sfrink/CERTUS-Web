@@ -92,9 +92,11 @@ public class HtmlService {
 	
 	
 	
-	public static String drawInputTextareaAlphanumeric(String field_name, String label, String placeholder, String value, boolean error, String errorMessage) {
+	public static String drawInputTextareaAlphanumeric(String field_name, String label, String placeholder, String value, boolean error, String errorMessage, boolean required) {
 		String out = "", errorClass = "";
+		String outRequired = required ? "required" : "";
 		String errorMessageToDisplay = label + " field can only contain letters and numbers and cannot be empty";
+		
 		
 		if(error) {
 			errorClass = "error";
@@ -103,7 +105,7 @@ public class HtmlService {
 		
 		out += "<div class=\"" + field_name + " " + errorClass + "\">";
 		out += "<label>" + label + " <small>required</small>";
-		out += "<textarea id=\"" + field_name + "\" name=\"" + field_name + "\" class=\"class_" + field_name + "\" placeholder=\"" + placeholder + "\" required pattern=\"^[0-9a-zA-Z@.\\s\\r\\n]+$\">" + value + "</textarea>";
+		out += "<textarea id=\"" + field_name + "\" name=\"" + field_name + "\" class=\"class_" + field_name + "\" placeholder=\"" + placeholder + "\" " + outRequired + " pattern=\"^[0-9a-zA-Z@.\\s\\r\\n]+$\">" + value + "</textarea>";
 		out += "</label>";
 		out += "<small class=\"error\">" + errorMessageToDisplay + "</small>";
 		out += "</div>";
@@ -218,7 +220,6 @@ public class HtmlService {
 		out += "<div class=\"" + field_name + "\">";
 		out += "<label>Who can vote <small>required</small>";
         out += "<select id=\"" + field_name + "\" name=\"" + field_name + "\" required pattern=\"[12]\">";
-        //out += "<option value=\"0\">Please select option</option>";  
         out += "<option value=\"2\""+ selected2 + ">Only specified users can vote (private election)</option>";
         out += "<option value=\"1\""+ selected1 + ">Any user can vote (public election)</option>";
         out += "</select>";
@@ -230,7 +231,24 @@ public class HtmlService {
 	}
 	
 	
-	
+	public static String drawCheckBoxesElectionPrivateOrPublic(String field_name, boolean errorFlag, String emails) {
+		String out = "";
+		String delimiter = System.getProperty("line.separator");
+
+		if(errorFlag) {
+			out += "<p>Check emails of users you would like to invite</p>";
+
+			String[] emailsArr = emails.split(delimiter);
+			for(int i = 0; i < emailsArr.length; i++) {
+              out += "<div>";
+			  out += "<input id=\"" + emailsArr[i] + "\" name=\"" + field_name + "\" value=\"" + emailsArr[i] + "\" type=\"checkbox\">";
+			  out += "<label for=\"" + emailsArr[i] + "\">" + emailsArr[i] + "</label>";
+              out += "</div>";
+			}
+		}
+		
+		return out;
+	}
 	
 	
 }
