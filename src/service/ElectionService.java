@@ -149,18 +149,6 @@ public class ElectionService {
 		return validator;
     }
     
-    public static Validator addUserInvitations(ElectionDto electionDto)
-    {
-    	Validator validator = new Validator();
-    	
-		try {
-			String sessionID = HeaderService.getUserSessionId();
-			validator  = Initializer.rmi.addUserInvitations(electionDto, sessionID);
-		} catch (RemoteException e) {
-			e.printStackTrace();
-		}
-		return validator;
-    }
     public static Validator editElection(ElectionDto election)
     {
     	Validator validator = new Validator();
