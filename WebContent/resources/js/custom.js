@@ -104,3 +104,10 @@ $(document).ready(function() {
 		}
 	});
 });
+
+$(document).ready(function() {
+	$("#btn_elec_publish_cancel").click(function () {
+    	$('#modal_window').foundation('reveal', 'close');
+	});
+});
+

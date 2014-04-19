@@ -755,9 +755,12 @@ public class ElectionServlet extends HttpServlet {
 		out += "<div class=\"large-6 large-centered medium-6 medium-centered columns\">";
 		out += "<h5>Publish Election Results: " + valElecName + "</h5>";
 		out += "<fieldset><legend>Please Enter Election Password</legend>";
+		out += "<p class=\"global_warning\">Warning! Election publishing is irrevocable action.<br>The results of this election will become available to voters and you will not be able to reopen this election anymore.<br> Enter election password and click 'Publish Election' to proceed or click 'Cancel Publishing' otherwise.</p>";
+		
 		out += HtmlService.drawInputTextPassword("election_publish_password", "Election Password", "", "", valPasswordError, valPasswordErrorMessage);
 		out += "</fieldset>"; 		
-		out += "<button class=\"radius button center\" type=\"submit\" name=\"btn_elec_publish_with_password\" value=\"" + valElecId + "\">Publish Election</button>";
+		out += "<button class=\"radius button left\" type=\"submit\" name=\"btn_elec_publish_with_password\" value=\"" + valElecId + "\">Publish Election</button>";
+		out += "<button class=\"button alert right\" type=\"button\" id=\"btn_elec_publish_cancel\" \">Cancel Publishing</button>";
 		out += "</div>";
 		out += "</div>";
 		out += "</form>";

@@ -111,3 +111,7 @@ table tr.even, table tr.alt, table tr:nth-of-type(even) {
 .has-tip:hover {
 	border-bottom: none;
 }
+
+.global_warning {
+	color: #f04124;
+}

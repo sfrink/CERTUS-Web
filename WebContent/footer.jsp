@@ -15,10 +15,11 @@
           </ul>
         </div>        
       </div>
+
       <div class="row">
-        <div class="columns"><p>©CERTUS Voting System 2014</p></div>
-      </div>
-    </div> 
+        <div class="large-12 medium-12 small-12 columns text-center"><p>Copyright © 2014 CERTUS Voting System<p></div>
+      </div>  
+    </div>
   </footer>
   
 <script>$(document).foundation();</script>
