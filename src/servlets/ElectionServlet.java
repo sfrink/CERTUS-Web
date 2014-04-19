@@ -509,9 +509,6 @@ public class ElectionServlet extends HttpServlet {
 	public void routineAddNewElection(HttpServletRequest request) {
 		resetGlobals();
 		
-		String usersToInvite = getStringFromArray(request.getParameterValues("new_election_users_invited"));
-		System.out.println(usersToInvite);
-		
 		// prepare new election
 		ElectionDto newElection = new ElectionDto();
 		newElection.setElectionName(request.getParameter("new_election_name"));
@@ -521,7 +518,7 @@ public class ElectionServlet extends HttpServlet {
 		newElection.setElectionType(Integer.parseInt(request.getParameter("new_election_availability")));
 		newElection.setEmailList(request.getParameter("new_election_users"));
 		newElection.setPassword(request.getParameter("new_election_password"));
-		//newElection.setEmailList(request.getParameter("new_election_users_invited"));
+		newElection.setEmailListInvited(getStringFromArray(request.getParameterValues("new_election_users_invited")));
 		newElection.setOwnerId(HeaderService.getUserId());
 		// insert attempt
 		Validator vElection = ElectionService.addElection(newElection);
@@ -579,6 +576,7 @@ public class ElectionServlet extends HttpServlet {
 		editElection.setCloseDatetime(request.getParameter("edit_election_end_time"));
 		editElection.setElectionType(Integer.parseInt(request.getParameter("edit_election_availability")));
 		editElection.setEmailList(request.getParameter("edit_election_users"));
+		editElection.setEmailListInvited(getStringFromArray(request.getParameterValues("new_election_users_invited")));
 		editElection.setOwnerId(HeaderService.getUserId());
 
 		// update existing election
