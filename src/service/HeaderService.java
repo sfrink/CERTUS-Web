@@ -16,7 +16,7 @@ public class HeaderService {
 	public static int userType;
 	public static boolean tempUser = false;
 	public static String userEmail = "";
-	
+	public static boolean loginWithTemp=false;
 	
 
 	public static String getUserEmail() {
@@ -45,6 +45,16 @@ public class HeaderService {
 	
 	public static void deAuthenticate() {
 		auth = false;
+	}
+	
+	public static void setLoginWithTemp(boolean b){
+		loginWithTemp=b;
+	}
+	
+	
+	
+	public static boolean usedTemp(){
+		return loginWithTemp;
 	}
 
 	public static int getUserId() {
