@@ -73,16 +73,15 @@ public class LoginWithTempServlet extends HttpServlet {
 				HeaderService.setUserSessionId(u.getSessionId());
 				HeaderService.setUserName(username);
 				HeaderService.setUserType(u.getType());
-				
+				HeaderService.setLoginWithTemp(true);
 				request.setAttribute("message_alert", messageAlert);
-				RequestDispatcher rd = getServletContext().getRequestDispatcher("/main.jsp");		
+				RequestDispatcher rd = getServletContext().getRequestDispatcher("/profile");		
 				rd.forward(request, response);
 			} else {
 				u.setEmail(username);
 				u.setPassword(password);
 				outForm = drawLoginFieldset(u);
 				messageAlert = HtmlService.drawMessageAlert(v.getStatus(), "alert");
-
 				request.setAttribute("message_alert", messageAlert);
 				request.setAttribute("out_form", outForm);
 				RequestDispatcher rd = getServletContext().getRequestDispatcher("/loginWithTemp.jsp");		

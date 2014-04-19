@@ -68,8 +68,19 @@ public class EditPorfileServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		if(HeaderService.usedTemp()){
+			resetGlobals();
+			routineChangePasswordFromTemp();
+			request.setAttribute("mode", mode);
+			request.setAttribute("message_alert", messageAlert);
+			request.setAttribute("message_label", messageLabel);
+			request.setAttribute("out_user", outUser);
+			request.setAttribute("out_modal", outModal);
+			RequestDispatcher rd = getServletContext().getRequestDispatcher("/editProfile.jsp");
+			rd.forward(request, response);
+		}
 		
-		if(HeaderService.isAuthenticated()) {
+		else if(HeaderService.isAuthenticated()) {
 			resetGlobals();
 
 			if (request.getParameter("button_edit") != null) {
@@ -82,6 +93,9 @@ public class EditPorfileServlet extends HttpServlet {
 				routineChangePassword();
 			}else if (request.getParameter("button_update_password") != null){
 				updateUserPassword(request);
+			}else if (request.getParameter("button_update_password_temp")!=null){
+				System.out.println("got request");
+				updateUserPasswordTemp(request);
 			}
 			// refresh 
 			routineExistingUser();
@@ -152,6 +166,24 @@ public class EditPorfileServlet extends HttpServlet {
 		}
 	}
 
+	public void updateUserPasswordTemp(HttpServletRequest request) throws ServletException, IOException{
+		UserDto user=new UserDto();
+		newPassword=request.getParameter("new_password");
+		user.setTempPassword(newPassword);
+		Validator v=EditProfileService.updatePasswordTemp(user);
+		if(v.isVerified()){
+			System.out.println("updated password");
+			mode = "2";
+			outModal = drawSuccessfullPasswordUpdate();
+			messageAlert = "";
+		}
+		else{
+			System.out.println("did not update password");
+
+			mode = "2";
+			outModal = drawFailedPasswordUpdate(v.getStatus());
+		}
+	}
 	
 	
 	public void updateUserInfo(HttpServletRequest request) throws ServletException, IOException{
@@ -179,7 +211,7 @@ public class EditPorfileServlet extends HttpServlet {
 		
 		out += "<div class=\"row\">";
 		out += "<div class=\"large-6 medium-6 columns\">";
-		out += "<h3>Your password was updated successfully, you have to log in again.</h3>";
+		out += "<h3>Your password was updated successfully.</h3>";
 		out += "</div>";
 		out += "</div>";
 		out += "<div class=\"row\">";
@@ -272,7 +304,7 @@ public class EditPorfileServlet extends HttpServlet {
 	public String drawChangePassword() {
 		String out = "";
 
-		out += "<h5>Password Change</h5>";
+		out += "<h5>Change Password</h5>";
 		out += "<form id=\"form_password_change\" action=\"profile\" method=\"post\" data-abide>";
 		out += "<div class=\"row\">";
 		// draw key protection fields:
@@ -285,6 +317,38 @@ public class EditPorfileServlet extends HttpServlet {
 		out += "<div class=\"row\">";
 		out += "<div class=\"large-3 large-centered medium-3 medium-centered columns\">";
 		out += "<button class=\"radius button right\" type=\"submit\" name=\"button_update_password\">Change Password</button>";
+		out += "</div>";
+		out += "</div>";
+		out += "</div>";
+		out += "</fieldset>";
+		out += "</form>";
+
+		return out;
+	}
+	
+	public void routineChangePasswordFromTemp() {
+		HeaderService.setLoginWithTemp(false);
+		resetGlobals();
+		mode = "2";
+		messageLabel = HtmlService.drawMessageLabel("", "secondary");
+		outModal = drawChangePasswordFromTemp();
+	}
+	
+	public String drawChangePasswordFromTemp() {
+		String out = "";
+
+		out += "<h5>Change Password</h5>";
+		out += "<form id=\"form_password_change\" action=\"profile\" method=\"post\" data-abide>";
+		out += "<div class=\"row\">";
+		// draw key protection fields:
+		out += "<div class=\"large-6 medium-6 columns\">";
+		out += "<fieldset>";
+		out += HtmlService.drawInputTextPasswordAndConfirmation("new_password", "New Password", "new_password_confirm", "Confirm New Password");
+		
+		// button
+		out += "<div class=\"row\">";
+		out += "<div class=\"large-3 large-centered medium-3 medium-centered columns\">";
+		out += "<button class=\"radius button right\" type=\"submit\" name=\"button_update_password_temp\">Change Password</button>";
 		out += "</div>";
 		out += "</div>";
 		out += "</div>";
