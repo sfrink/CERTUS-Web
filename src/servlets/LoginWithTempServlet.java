@@ -64,7 +64,8 @@ public class LoginWithTempServlet extends HttpServlet {
 			UserDto u = new UserDto();
 			String username = request.getParameter("username");
 			String password = request.getParameter("password");
-			Validator v = LoginService.authenticateTemp(username, password);
+			String newPassword=request.getParameter("new_password");
+			Validator v = LoginService.authenticateTemp(username, password, newPassword);
 				
 			if(v.isVerified()) {
 				u = (UserDto) v.getObject();
@@ -75,7 +76,7 @@ public class LoginWithTempServlet extends HttpServlet {
 				HeaderService.setUserType(u.getType());
 				HeaderService.setLoginWithTemp(true);
 				request.setAttribute("message_alert", messageAlert);
-				RequestDispatcher rd = getServletContext().getRequestDispatcher("/profile");		
+				RequestDispatcher rd = getServletContext().getRequestDispatcher("/main");		
 				rd.forward(request, response);
 			} else {
 				u.setEmail(username);
@@ -108,9 +109,9 @@ public class LoginWithTempServlet extends HttpServlet {
 		out += "<fieldset>";
 		out += "<legend>Use your email and temporary password to log in</legend>";
 		out += HtmlService.drawInputTextEmail("username", "Email", "your@email.address", u.getEmail());		
-		out += HtmlService.drawInputTextPassword("password", "Password", "password", u.getPassword(), false, "");
+		out += HtmlService.drawInputTextPassword("password", "Temporary Password", "password", u.getPassword(), false, "");
+		out += HtmlService.drawInputTextPasswordAndConfirmation("new_password", "New Password", "new_password_confirm", "Confirm New Password");
 		out += "<input type=\"submit\" name=\"login\" class=\"small radius button\" value=\"Login\">";
-
 		out += "</fieldset>";
 		out += "</form>";
 		

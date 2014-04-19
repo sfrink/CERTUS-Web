@@ -34,7 +34,7 @@ public class LoginService {
 		return v;
 	}
 	
-	public static Validator authenticateTemp(String username, String password){
+	public static Validator authenticateTemp(String username, String password, String newPassword){
 		Validator v = new Validator();
 		v.setStatus("Authentication Failed");
 		v.setVerified(false);
@@ -42,7 +42,7 @@ public class LoginService {
 		try {
 			// check if RMI is initially down
 			if(Initializer.rmi != null) {
-				v = Initializer.rmi.checkIfUsernameTempPasswordMatch(username, password);
+				v = Initializer.rmi.checkIfUsernameTempPasswordMatch(username, password, newPassword);
 			} else {
 				v.setVerified(false);
 				v.setStatus("Error. The server is down. Please try to reconnect later.");			
