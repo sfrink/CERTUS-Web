@@ -124,7 +124,6 @@ public class MainServlet extends HttpServlet {
 		String out = "";
 
 		if(elections != null && elections.size() != 0) {
-			out += "<h5>List of elections to vote</h5>";
 			out += "<h5><form action=\"main\" method=\"post\">";
 			out += "<table><thead><tr>";
 			out += "<th>Election Name</th>";

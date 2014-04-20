@@ -576,7 +576,7 @@ public class ElectionServlet extends HttpServlet {
 		editElection.setCloseDatetime(request.getParameter("edit_election_end_time"));
 		editElection.setElectionType(Integer.parseInt(request.getParameter("edit_election_availability")));
 		editElection.setEmailList(request.getParameter("edit_election_users"));
-		editElection.setEmailListInvited(getStringFromArray(request.getParameterValues("new_election_users_invited")));
+		editElection.setEmailListInvited(getStringFromArray(request.getParameterValues("edit_election_users_invited")));
 		editElection.setOwnerId(HeaderService.getUserId());
 
 		// update existing election
