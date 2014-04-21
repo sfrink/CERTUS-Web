@@ -106,6 +106,16 @@ $(document).ready(function() {
 });
 
 $(document).ready(function() {
+	$("[name='edit_election_new_users_invited']").click(function () {
+		if($("[name=edit_election_new_users_invited]:checked").length > 0) {
+			$('#edit_election_new_users').prop('required',false);
+		} else {
+			$('#edit_election_new_users').prop('required',true);
+		}
+	});
+});
+
+$(document).ready(function() {
 	$("#btn_elec_publish_cancel").click(function () {
     	$('#modal_window').foundation('reveal', 'close');
 	});

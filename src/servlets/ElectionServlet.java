@@ -332,7 +332,7 @@ public class ElectionServlet extends HttpServlet {
 		String out = "", valElecName = "", valCurrentEmailList = "", valRegEmails = "",
 			   valUnRegEmails = "", valEmailListErrorMessage = "";
 			int valElecId = 0;
-			boolean valEmailListError = false;
+			boolean valEmailListError = false, valRequired = true;
 			// checking null case
 			if(e != null) {
 				valElecId = e.getElectionId();
@@ -341,7 +341,7 @@ public class ElectionServlet extends HttpServlet {
 				valRegEmails = e.getRegisteredEmailList();
 				valEmailListError = e.isEmailListError();
 				valEmailListErrorMessage = e.getEmailListMessage();
-				valUnRegEmails = (valEmailListError) ? "The following users could not be added: " + e.getUnregisteredEmailList() : "";
+				valUnRegEmails = (valEmailListError) ? e.getUnregisteredEmailList() : "";
 			}
 
 			out += "<h5>Add users to private election: " + valElecName + "</h5>";
@@ -358,7 +358,8 @@ public class ElectionServlet extends HttpServlet {
 			out += "<div id=\"edit_election_users_column\" class=\"large-6 medium-6 columns\">";
 
 			out += "<fieldset><legend>Invite additional users to vote</legend>";
-			out += HtmlService.drawInputTextareaAlphanumeric("edit_election_new_users", "Users emails", placeHoldElecUsers, valRegEmails, valEmailListError, valUnRegEmails, true);
+			out += HtmlService.drawInputTextareaAlphanumeric("edit_election_new_users", "Users emails", placeHoldElecUsers, valRegEmails, valEmailListError, "Not all users are registered in the system.", true);			
+			out += HtmlService.drawCheckBoxesElectionPrivateOrPublic("edit_election_new_users_invited", valEmailListError, valUnRegEmails);
 			out += "</fieldset>"; 
 			out += "</div>";
 			out += "</div>";
@@ -691,6 +692,7 @@ public class ElectionServlet extends HttpServlet {
 		ElectionDto newElection = new ElectionDto();
 		newElection.setElectionId(electionId);
 		newElection.setEmailList(request.getParameter("edit_election_new_users"));
+		newElection.setEmailListInvited(getStringFromArray(request.getParameterValues("edit_election_new_users_invited")));
 		newElection.setOwnerId(HeaderService.getUserId());
 		// insert attempt
 		Validator vElection = ElectionService.addAdditionalUsersToElection(newElection);
