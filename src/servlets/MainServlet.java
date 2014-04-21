@@ -124,10 +124,10 @@ public class MainServlet extends HttpServlet {
 		String out = "";
 
 		if(elections != null && elections.size() != 0) {
-			out += "<h5><form action=\"main\" method=\"post\">";
-			out += "<table><thead><tr>";
-			out += "<th>Election Name</th>";
-			out += "<th>Action</th>";
+			out += "<form action=\"main\" method=\"post\">";
+			out += "<table class=\"large-12\"><thead><tr>";
+			out += "<th class=\"large-9 medium-9 small-9\">Election Name</th>";
+			out += "<th class=\"large-3 medium-3 small-3\">Action</th>";
 			out += "</tr></thead><tbody>";
 				
 			for (ElectionDto e : elections) {
@@ -158,9 +158,9 @@ public class MainServlet extends HttpServlet {
 
 		if(elections != null && elections.size() != 0) {
 			out += "<form action=\"main\" method=\"post\">";
-			out += "<table><thead><tr>";
-			out += "<th>Election Name</th>";
-			out += "<th>Action</th>";
+			out += "<table class=\"large-12\"><thead><tr>";
+			out += "<th class=\"large-9 medium-9 small-9\">Election Name</th>";
+			out += "<th class=\"large-3 medium-3 small-3\">Action</th>";
 			out += "</tr></thead><tbody>";
 			
 			int i = 1;
