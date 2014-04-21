@@ -45,7 +45,6 @@ public class MainServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		resetGlobals();
-		System.out.println("asd");
 
 		if(HeaderService.isAuthenticated()) {
 
