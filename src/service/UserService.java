@@ -107,4 +107,17 @@ public class UserService
 		return val;
 	}
 	
+	public static Validator selectUserByEmail(String email){
+		Validator val = new Validator();
+
+		try {
+			String sessionID = HeaderService.getUserSessionId();
+			val = Initializer.rmi.selectUserByEmail(email, sessionID);
+		} catch (RemoteException e) {
+			val.setVerified(false);
+			val.setStatus("RMI call failed");
+		}
+		return val;
+	}
+	
 }

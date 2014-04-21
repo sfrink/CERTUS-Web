@@ -13,7 +13,9 @@ import dto.Validator;
 import service.EditProfileService;
 import service.HtmlService;
 import service.HeaderService;
+import service.InvitedUserService;
 import service.LoginService;
+import service.UserService;
 
 
 
@@ -57,12 +59,19 @@ public class ForgotServlet extends HttpServlet {
 		resetGlobals();
 
 		if(request.getParameter("getTemp") != null) {
-			UserDto userDto=new UserDto();
 			String email=request.getParameter("username");
-			userDto.setEmail(email);
-			EditProfileService.sendTempPassword(userDto);
 			
-			request.setAttribute("message_alert", messageAlert);
+			Validator v=UserService.selectUserByEmail(email);
+			UserDto u=(UserDto)v.getObject();
+			//check if regular user
+			if(u.getType()==0){
+				EditProfileService.sendTempPassword(u);
+			}
+			else if(u.getType()==2){
+				InvitedUserService.resendInvitation(u);
+			}
+			request.setAttribute("email", email);
+			request.setAttribute("message_alert",messageAlert);
 			request.setAttribute("out_form", outForm);
 			RequestDispatcher rd = getServletContext().getRequestDispatcher("/loginWithTemp");		
 			rd.forward(request, response);

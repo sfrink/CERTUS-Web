@@ -14,6 +14,7 @@ import dto.Validator;
 import service.HeaderService;
 import service.HtmlService;
 import service.LoginService;
+import service.UserService;
 
 /**
  * Servlet implementation class LoginWithTempServlet
@@ -43,12 +44,18 @@ public class LoginWithTempServlet extends HttpServlet {
 			RequestDispatcher rd = getServletContext().getRequestDispatcher("/main.jsp");		
 			rd.forward(request, response);
 			
-		} else {
-			System.out.println("doGet");
+		} else if(request.getAttribute("messageAlert").equals("1")){
 			UserDto u=new UserDto();
 			outForm=drawLoginFieldset(u);
 			request.setAttribute("message_alert", messageAlert);
 			request.setAttribute("out_form", outForm);
+			RequestDispatcher rd = getServletContext().getRequestDispatcher("/loginWithTemp.jsp");	
+			rd.forward(request, response);
+		}
+		else if(request.getAttribute("messageAlert").equals("2")){
+			outForm=resentInvitation();
+			request.setAttribute("message_alert",messageAlert);
+			request.setAttribute("out_form",outForm);
 			RequestDispatcher rd = getServletContext().getRequestDispatcher("/loginWithTemp.jsp");	
 			rd.forward(request, response);
 		}
@@ -90,11 +97,31 @@ public class LoginWithTempServlet extends HttpServlet {
 			}
 		}
 		else{
-			outForm=drawLoginFieldset(null);
-			request.setAttribute("message_alert", messageAlert);
-			request.setAttribute("out_form", outForm);
-			RequestDispatcher rd = getServletContext().getRequestDispatcher("/loginWithTemp.jsp");	
-			rd.forward(request, response);		}
+			String email=(String)request.getAttribute("email");
+			Validator val=UserService.selectUserByEmail(email);
+			UserDto user=new UserDto();
+			if(val.isVerified()){
+				user=(UserDto)val.getObject();
+				if(user.getType()==0){
+					UserDto u=new UserDto();
+					outForm=drawLoginFieldset(u);
+					request.setAttribute("message_alert", messageAlert);
+					request.setAttribute("out_form", outForm);
+					RequestDispatcher rd = getServletContext().getRequestDispatcher("/loginWithTemp.jsp");	
+					rd.forward(request, response);
+				}
+				else if(user.getType()==2){
+					outForm=resentInvitation();
+					request.setAttribute("message_alert",messageAlert);
+					request.setAttribute("out_form",outForm);
+					RequestDispatcher rd = getServletContext().getRequestDispatcher("/loginWithTemp.jsp");	
+					rd.forward(request, response);
+				}
+			}
+			else{
+				System.out.println("Something wrong with email; do something here");
+			}
+		}
 	}
 	
 	public String drawLoginFieldset(UserDto u) {
@@ -116,6 +143,15 @@ public class LoginWithTempServlet extends HttpServlet {
 		out += "</form>";
 		
 		return out;
+	}
+	
+	public String resentInvitation(){
+		String out="";
+		out+="<div>";
+		out+="<p>Your email address is already associated with an account.\n</p>";
+		out+="<p>You must login with your email address and complete registration.\n</p>";
+		out+="<p>We have resent an invitation to your email address.</p>";
+		return out;	
 	}
 
 	private void resetGlobals() {

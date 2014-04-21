@@ -183,7 +183,7 @@ public class SignUpServlet extends HttpServlet {
 		out += "</div>";
 		out += "<div class=\"row\">";
 		out += "<div class=\"large-6 medium-6 columns\">";
-		out += "<a class=\"button radius\" href=\"login\">Let us get started!</a>";
+		out += "<a class=\"button radius\" href=\"login\">Let's get started!</a>";
 		out += "</div>";
 		out += "</div>";
 		out += "</div>";
@@ -205,15 +205,15 @@ public class SignUpServlet extends HttpServlet {
 		out += "</div>";
 		out += "<div class=\"row\">";
 		out += "<div class=\"large-6 medium-6 columns\">";
-		out += "<h3>We couldn't create a new account for you, and that's because: "+ status +"</h3>";
+		out += "<h3>We couldn't create a new account for you because "+ status +"</h3>";
 		out += "<h3>Do you want to try again?</h3>";
 		out += "</div>";
 		out += "</div>";
 		out += "<div class=\"row\">";
-		out += "<a href=\"signup\" class=\"button radius\">Yes, let's try again</a>";
+		out += "<a href=\"signup\" class=\"button radius\">Try again</a>";
 		out += "</div>";
 		out += "<div class=\"row\">";
-		out += "<a href=\"login\" class=\"button radius\">No, just forget about it.</a>";
+		out += "<a href=\"login\" class=\"button radius\">Return to Login Page</a>";
 		out += "</div>";
 		out += "</div>";
 		
