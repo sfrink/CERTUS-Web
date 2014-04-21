@@ -187,8 +187,8 @@ public class ElectionServlet extends HttpServlet {
 	public String drawNewElection(ElectionDto e) {
 		String out = "", valElecName = "", valElecDesc = "", valElecCand = "", 
 			   valElecEndTime = "", valRegEmails = "", valUnRegEmails = "", 
-			   valPasswordErrorMessage = "", usersFieldStyle = "";
-		boolean valEmailListError = false, valPasswordError = false, valRequired = true;
+			   valPasswordErrorMessage = "", valElecCandErrorMessage = "", usersFieldStyle = "";
+		boolean valEmailListError = false, valPasswordError = false, valRequired = true, valElecCandError = false;
 		int valElecId = 0, valElecAvailability = ElectionType.PRIVATE.getCode();
 		
 		// checking null case
@@ -197,6 +197,8 @@ public class ElectionServlet extends HttpServlet {
 			valElecName = e.getElectionName();
 			valElecDesc = e.getElectionDescription();
 			valElecCand = e.getCandidatesListString();
+			valElecCandError = e.isCandidateListError();
+			valElecCandErrorMessage = e.getCandidateListErrorMessage();
 			valElecEndTime = e.getCloseDatetime();
 			valElecAvailability = e.getElectionType();
 			valRegEmails = e.getRegisteredEmailList();
@@ -231,7 +233,7 @@ public class ElectionServlet extends HttpServlet {
 		out += "<div class=\"large-6 medium-6 columns\">";
 		// candidates
 		out += "<fieldset><legend>Add candidates</legend>";
-		out += HtmlService.drawInputTextareaAlphanumeric("new_election_candidates", "Candidates names", placeHoldElecCand, valElecCand, false, "", true);
+		out += HtmlService.drawInputTextareaAlphanumeric("new_election_candidates", "Candidates names", placeHoldElecCand, valElecCand, valElecCandError, valElecCandErrorMessage, true);
 		out += "</fieldset>";
 		// public and private
 		out += "<fieldset><legend>Election avalability</legend>";
@@ -267,15 +269,17 @@ public class ElectionServlet extends HttpServlet {
 	 */
 	public String drawEditElection(ElectionDto e) {
 		String out = "", valElecName = "", valElecDesc = "", valElecCand = "", 
-			   valElecEndTime = "", valRegEmails = "", valUnRegEmails = "", usersStyle = "";
+			   valElecEndTime = "", valRegEmails = "", valUnRegEmails = "", valElecCandErrorMessage = "", usersStyle = "";
 		int valElecId = 0, valElecAvailability = 0;
-		boolean valEmailListError = false, valRequired = true;
+		boolean valEmailListError = false, valElecCandError = false, valRequired = true;
 		// checking null case
 		if(e != null) {
 			valElecId = e.getElectionId();
 			valElecName = e.getElectionName();
 			valElecDesc = e.getElectionDescription();
 			valElecCand = e.getCandidatesListString();
+			valElecCandError = e.isCandidateListError();
+			valElecCandErrorMessage = e.getCandidateListErrorMessage();
 			valElecEndTime = e.getCloseDatetime();
 			valElecAvailability = e.getElectionType();
 			valRegEmails = e.getRegisteredEmailList();
@@ -299,7 +303,7 @@ public class ElectionServlet extends HttpServlet {
 		out += HtmlService.drawInputTextAlphanumericOptional("edit_election_end_time", "Election Closing Time", placeHoldElecEndTime, valElecEndTime);
 		out += "</fieldset>";
 		out += "<fieldset><legend>Add candidates</legend>";
-		out += HtmlService.drawInputTextareaAlphanumeric("edit_election_candidates", "Candidates names", placeHoldElecCand, valElecCand, false, "", true);
+		out += HtmlService.drawInputTextareaAlphanumeric("edit_election_candidates", "Candidates names", placeHoldElecCand, valElecCand, valElecCandError, valElecCandErrorMessage, true);
 		out += "</fieldset>";
 		out += "</div>";
 		// draw allowed users info
