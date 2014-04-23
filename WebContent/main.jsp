@@ -1,3 +1,4 @@
+<%@page import="service.HtmlService"%>
 <%@page import="service.HeaderService"%>
 <%
 if(!HeaderService.isAuthenticated()) {
@@ -23,7 +24,7 @@ String outModal = (String) request.getAttribute("out_modal");
   	  <div class="large-12 columns">
         <div class="left">
           <a href="election" class="button tiny radius">Manage my elections</a>
-          <span data-tooltip class="has-tip tip-top" title="You can start your own election or manage existing elections.">what is this?</span>
+          <%= HtmlService.getToolTip("You can start your own election or manage existing elections.") %>
         </div>
  	  </div>
 	<% } %>

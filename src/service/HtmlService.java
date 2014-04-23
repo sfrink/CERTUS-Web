@@ -92,11 +92,10 @@ public class HtmlService {
 	
 	
 	
-	public static String drawInputTextareaAlphanumeric(String field_name, String label, String placeholder, String value, boolean error, String errorMessage, boolean required) {
+	public static String drawInputTextareaAlphanumeric(String field_name, String label, String placeholder, String value, boolean error, String errorMessage, boolean required, String toolTip) {
 		String out = "", errorClass = "";
 		String outRequired = required ? "required" : "";
 		String errorMessageToDisplay = label + " field can only contain letters and numbers and cannot be empty";
-		
 		
 		if(error) {
 			errorClass = "error";
@@ -104,7 +103,7 @@ public class HtmlService {
 		}
 		
 		out += "<div class=\"" + field_name + " " + errorClass + "\">";
-		out += "<label>" + label + " <small>required</small>";
+		out += "<label>" + label + " <small>" + outRequired + "</small> " + getToolTip(toolTip);
 		out += "<textarea id=\"" + field_name + "\" name=\"" + field_name + "\" class=\"class_" + field_name + "\" placeholder=\"" + placeholder + "\" " + outRequired + " pattern=\"^[0-9a-zA-Z@.\\s\\r\\n]+$\">" + value + "</textarea>";
 		out += "</label>";
 		out += "<small class=\"error\">" + errorMessageToDisplay + "</small>";
@@ -142,8 +141,9 @@ public class HtmlService {
 		return out;		
 	}
 
-	public static String drawInputTextareaReadonly(String field_name, String label, String placeholder, String value) {
+	public static String drawInputTextareaReadonly(String field_name, String label, String placeholder, String value, String toolTip) {
 		String out = "";
+		label += " " +  getToolTip(toolTip);
 
 		out += "<div>";
 		out += "<label>" + label + "</label>";
@@ -249,7 +249,7 @@ public class HtmlService {
 		String delimiter = System.getProperty("line.separator");
 
 		if(errorFlag) {
-			out += "<p>Check emails of users you would like to invite</p>";
+			out += "<p>Check emails of users you would like to invite " + HtmlService.getToolTip("Invitation to register to the system will be send to all checked email addresses.<br>Upon successful registration, users will be automatically able to vote in your election.") + "</p>";
 
 			String[] emailsArr = emails.split(delimiter);
 			for(int i = 0; i < emailsArr.length; i++) {
@@ -258,6 +258,22 @@ public class HtmlService {
 			  out += "<label for=\"" + emailsArr[i] + "\">" + emailsArr[i] + "</label>";
               out += "</div>";
 			}
+		}
+		
+		return out;
+	}
+	
+	/**
+	 * This function return HTML output to display tooltip with given message
+	 * @author Dmitriy Karmazin | dkarmazi
+	 * @param message
+	 * @return
+	 */
+	public static String getToolTip(String message) {
+		String out = "";
+		
+		if(!message.equals("")) {
+			out += "<span data-tooltip class=\"has-tip tip-top\" title=\"" + message + "\">what is this?</span>";
 		}
 		
 		return out;
