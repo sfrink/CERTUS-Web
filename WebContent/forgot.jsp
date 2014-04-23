@@ -1,3 +1,11 @@
+<%@page import="service.HeaderService"%>
+<%
+if(HeaderService.isAuthenticated()) {
+	RequestDispatcher rd = getServletContext().getRequestDispatcher("/login");
+	rd.forward(request, response);
+}
+%>
+
 <jsp:include page="headerDefault.jsp" /> 
 <jsp:include page="headerTopBarDefault.jsp" /> 
 

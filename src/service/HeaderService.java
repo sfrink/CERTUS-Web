@@ -111,7 +111,7 @@ public class HeaderService {
 	 */
 	public static boolean hasAccess(String servletName) {
 		String[] adminServlets = {"adminElection", "adminUser"};
-		String[] userServlets = {"election", "newkey", "profile", "upload"};
+		String[] userServlets = {"election", "newkey", "profile", "upload", "uploadkeypage"};
 
 		if(getUserType() == 1) {
 			// ADMIN
