@@ -224,11 +224,11 @@ public class ElectionServlet extends HttpServlet {
 		out += "<div class=\"large-6 medium-6 columns\">";
 		out += "<fieldset><legend>Election Information</legend>";
 		out += HtmlService.drawInputTextAlphanumeric("new_election_name", "Election Name", placeHoldElecName, valElecName);
-		out += HtmlService.drawInputTextareaAlphanumeric("new_election_description", "Election Description", placeHoldElecDesc, valElecDesc, false, "", true);
+		out += HtmlService.drawInputTextareaAlphanumeric("new_election_description", "Election Description", placeHoldElecDesc, valElecDesc, false, "", true, "");
 		out += HtmlService.drawInputTextAlphanumericOptional("new_election_end_time", "Election Closing Time", placeHoldElecEndTime, valElecEndTime);
 		out += "</fieldset>";
 		// password		
-		out += "<fieldset><legend>Protect election by password <span data-tooltip class=\"has-tip tip-top\" title=\"" + tooltipElectionPassword + "\">what is this?</span></legend>";
+		out += "<fieldset><legend>Protect election by password " + HtmlService.getToolTip(tooltipElectionPassword) + "</legend>";
 		out += HtmlService.drawInputTextPasswordAndConfirmation("new_election_password", "Election Password", "new_election_password_confirm", "Confirm Election Password");		
 		out += "</fieldset>"; 
 		out += "</div>";
@@ -236,14 +236,14 @@ public class ElectionServlet extends HttpServlet {
 		out += "<div class=\"large-6 medium-6 columns\">";
 		// candidates
 		out += "<fieldset><legend>Add candidates</legend>";
-		out += HtmlService.drawInputTextareaAlphanumeric("new_election_candidates", "Candidates names", placeHoldElecCand, valElecCand, valElecCandError, valElecCandErrorMessage, true);
+		out += HtmlService.drawInputTextareaAlphanumeric("new_election_candidates", "Candidates names", placeHoldElecCand, valElecCand, valElecCandError, valElecCandErrorMessage, true, "");
 		out += "</fieldset>";
 		// public and private
 		out += "<fieldset><legend>Election avalability</legend>";
 		out += HtmlService.drawSelectBoxElectionPrivateOrPublic("new_election_availability", valElecAvailability);
 		// draw allowed users info
 		out += "<div id=\"new_election_users_column\" " + usersFieldStyle + ">";
-		out += HtmlService.drawInputTextareaAlphanumeric("new_election_users", "Users emails", placeHoldElecUsers, valRegEmails, valEmailListError, "Not all users are registered in the system.", valRequired);
+		out += HtmlService.drawInputTextareaAlphanumeric("new_election_users", "Users emails", placeHoldElecUsers, valRegEmails, valEmailListError, "Not all users are registered in the system.", valRequired, "");
 		out += "</div>";
 		// draw failed users select
 		out += "<div id=\"new_election_users_invite\" " + usersFieldStyle + ">";
@@ -302,11 +302,11 @@ public class ElectionServlet extends HttpServlet {
 		out += "<div class=\"large-6 medium-6 columns\">";
 		out += "<fieldset><legend>Election Information</legend>";
 		out += HtmlService.drawInputTextAlphanumeric("edit_election_name", "Election Name", placeHoldElecName, valElecName);
-		out += HtmlService.drawInputTextareaAlphanumeric("edit_election_description", "Election Description", placeHoldElecDesc, valElecDesc, false, "", true);
+		out += HtmlService.drawInputTextareaAlphanumeric("edit_election_description", "Election Description", placeHoldElecDesc, valElecDesc, false, "", true, "");
 		out += HtmlService.drawInputTextAlphanumericOptional("edit_election_end_time", "Election Closing Time", placeHoldElecEndTime, valElecEndTime);
 		out += "</fieldset>";
 		out += "<fieldset><legend>Add candidates</legend>";
-		out += HtmlService.drawInputTextareaAlphanumeric("edit_election_candidates", "Candidates names", placeHoldElecCand, valElecCand, valElecCandError, valElecCandErrorMessage, true);
+		out += HtmlService.drawInputTextareaAlphanumeric("edit_election_candidates", "Candidates names", placeHoldElecCand, valElecCand, valElecCandError, valElecCandErrorMessage, true, "");
 		out += "</fieldset>";
 		out += "</div>";
 		// draw allowed users info
@@ -315,7 +315,7 @@ public class ElectionServlet extends HttpServlet {
 		out += HtmlService.drawSelectBoxElectionPrivateOrPublic("edit_election_availability", valElecAvailability);
 		// draw allowed users info
 		out += "<div id=\"edit_election_users_column\" " + usersStyle + ">";
-		out += HtmlService.drawInputTextareaAlphanumeric("edit_election_users", "Users emails", placeHoldElecUsers, valRegEmails, valEmailListError, "Not all users are registered in the system.", valRequired);
+		out += HtmlService.drawInputTextareaAlphanumeric("edit_election_users", "Users emails", placeHoldElecUsers, valRegEmails, valEmailListError, "Not all users are registered in the system.", valRequired, "");
 		out += "</div>";
 		out += "<div id=\"edit_election_users_invite\" " + usersStyle + ">";
 		out += HtmlService.drawCheckBoxesElectionPrivateOrPublic("edit_election_users_invited", valEmailListError, valUnRegEmails);
@@ -357,7 +357,7 @@ public class ElectionServlet extends HttpServlet {
 			// draw election info
 			out += "<div class=\"large-6 medium-6 columns\">";
 			out += "<fieldset><legend>Existing Users</legend>";
-			out += HtmlService.drawInputTextareaReadonly("edit_election_users", "Existing users", "No users", valCurrentEmailList);
+			out += HtmlService.drawInputTextareaReadonly("edit_election_users", "Existing users", "No users", valCurrentEmailList, "");
 			out += "</fieldset>";
 			out += "</div>";
 
@@ -365,7 +365,7 @@ public class ElectionServlet extends HttpServlet {
 			out += "<div id=\"edit_election_users_column\" class=\"large-6 medium-6 columns\">";
 
 			out += "<fieldset><legend>Invite additional users to vote</legend>";
-			out += HtmlService.drawInputTextareaAlphanumeric("edit_election_new_users", "Users emails", placeHoldElecUsers, valRegEmails, valEmailListError, "Not all users are registered in the system.", true);			
+			out += HtmlService.drawInputTextareaAlphanumeric("edit_election_new_users", "Users emails", placeHoldElecUsers, valRegEmails, valEmailListError, "Not all users are registered in the system.", true, "");			
 			out += HtmlService.drawCheckBoxesElectionPrivateOrPublic("edit_election_new_users_invited", valEmailListError, valUnRegEmails);
 			out += "</fieldset>"; 
 			out += "</div>";
