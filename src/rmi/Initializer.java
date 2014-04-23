@@ -62,11 +62,7 @@ public class Initializer {
 		
 		try {
 			// load a properties file
-			prop.load(input);
-	 
-			// get the property value and print it out
-			System.out.println(prop.toString());
-			
+			prop.load(input);			
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}

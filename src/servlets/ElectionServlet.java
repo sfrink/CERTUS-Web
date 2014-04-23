@@ -574,7 +574,6 @@ public class ElectionServlet extends HttpServlet {
 		resetGlobals();
 		
 		String usersToInvite = getStringFromArray(request.getParameterValues("edit_election_users_invited"));
-		System.out.println(usersToInvite);
 		
 		ElectionDto editElection = new ElectionDto();
 		editElection.setElectionId(Integer.parseInt(request.getParameter("save_edit_election")));
@@ -711,7 +710,6 @@ public class ElectionServlet extends HttpServlet {
 		} else {
 			// errors, send back to add election screen
 			mode = "2";
-			System.out.println("Error: " + vElection.getStatus());
 			messageLabel = HtmlService.drawMessageLabel(vElection.getStatus(), "alert");
 			outModal = drawElectionUsers((ElectionDto) vElection.getObject());
 		}
