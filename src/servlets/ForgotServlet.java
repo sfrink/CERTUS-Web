@@ -39,8 +39,10 @@ public class ForgotServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		resetGlobals();
-		
-		if(HeaderService.isAuthenticated()) {
+		if (HeaderService.isTempUser()){
+			RequestDispatcher rd = getServletContext().getRequestDispatcher("/inviteduser");		
+			rd.forward(request, response);
+		} else if(HeaderService.isAuthenticated()) {
 			// logged in, redirect to main
 			request.setAttribute("message_alert", messageAlert);
 			RequestDispatcher rd = getServletContext().getRequestDispatcher("/main.jsp");		

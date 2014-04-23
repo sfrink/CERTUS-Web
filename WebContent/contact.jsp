@@ -18,7 +18,7 @@
 		
 			<li>Steven Frink: sfrink1@gmail.com</li>
 			<li>Dmitriy Karmazin: dkarmazi@gwmail.gwu.edu</li>
-			<li>Ahmad Kouraiem: ahmadko@gmail.com</li>
+			<li>Ahmad Kouraiem: ahmadko@gwmail.gwu.edu</li>
 			<li>Hirosh Wickramasuriya: hirosh@gwmail.gwu.edu</li>
 		</ul>
 	</div>

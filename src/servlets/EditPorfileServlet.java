@@ -46,7 +46,10 @@ public class EditPorfileServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if(HeaderService.isAuthenticated()) {
+		if (HeaderService.isTempUser()){
+			RequestDispatcher rd = getServletContext().getRequestDispatcher("/inviteduser");		
+			rd.forward(request, response);
+		} else if(HeaderService.isAuthenticated()) {
 			resetGlobals();
 			routineExistingUser();
 			
@@ -263,7 +266,6 @@ public class EditPorfileServlet extends HttpServlet {
 	public void routineChangePassword() {	
 		resetGlobals();
 		mode = "2";
-		messageLabel = HtmlService.drawMessageLabel("", "secondary");
 		outModal = drawChangePassword();
 	}
 
@@ -271,22 +273,19 @@ public class EditPorfileServlet extends HttpServlet {
 		String out = "";
 
 		out += "<h5>Change Password</h5>";
-		out += "<form id=\"form_password_change\" action=\"profile\" method=\"post\" data-abide>";
-		out += "<div class=\"row\">";
-		// draw key protection fields:
-		out += "<div class=\"large-6 medium-6 columns\">";
-		out += "<fieldset>";
-		out += HtmlService.drawInputTextPassword("current_password", "Current Password", "", "", false, "");
-		out += HtmlService.drawInputTextPasswordAndConfirmation("new_password", "New Password", "new_password_confirm", "Confirm New Password");
 		
-		// button
-		out += "<div class=\"row\">";
-		out += "<div class=\"large-3 large-centered medium-3 medium-centered columns\">";
-		out += "<button class=\"radius button right\" type=\"submit\" name=\"button_update_password\">Change Password</button>";
-		out += "</div>";
-		out += "</div>";
-		out += "</div>";
-		out += "</fieldset>";
+		out += "<form id=\"form_password_change\" action=\"profile\" method=\"post\" data-abide>";
+			out += "<div class=\"row\">";
+			// draw key protection fields:
+				out += "<div class=\"large-6 medium-6 columns\">";
+					out += "<fieldset>";
+						out += HtmlService.drawInputTextPassword("current_password", "Current Password", "Your Current Password", "", false, "");
+						out += HtmlService.drawInputTextPasswordAndConfirmation("new_password", "Your New Password", "new_password_confirm", "Confirm New Password");
+						// button
+						out += "<button class=\"radius button left\" type=\"submit\" name=\"button_update_password\">Change Password</button>";
+					out += "</fieldset>";
+				out += "</div>";
+			out += "</div>";
 		out += "</form>";
 
 		return out;
@@ -296,7 +295,6 @@ public class EditPorfileServlet extends HttpServlet {
 	public void routineEditUserModal() {	
 		resetGlobals();
 		mode = "2";
-		messageLabel = HtmlService.drawMessageLabel("", "secondary");
 		outModal = drawEditUser();
 	}
 	
@@ -306,21 +304,18 @@ public class EditPorfileServlet extends HttpServlet {
 
 		out += "<h5>Edit Profile</h5>";
 		out += "<form id=\"form_user_edit\" action=\"profile\" method=\"post\" data-abide>";
-		out += "<div class=\"row\">";
-		// draw user info
-		out += "<div class=\"large-6 medium-6 columns\">";
-		out += "<fieldset>";
-		out += "<legend>User Information</legend>";
-		out += HtmlService.drawInputTextAlphanumeric("edit_user_first_name", "First Name", "Enter First Name", firstName);
-		out += HtmlService.drawInputTextAlphanumeric("edit_user_last_name", "Last Name", "Enter Last Name", lastName);
-		out += "</fieldset>";
-		out += "</div>";
-		// button
-		out += "<div class=\"row\">";
-		out += "<div class=\"large-3 large-centered medium-3 medium-centered columns\">";
-		out += "<button class=\"radius button right\" type=\"submit\" name=\"save_edit_user\">Update Info</button>";
-		out += "</div>";
-		out += "</div>";
+			out += "<div class=\"row\">";
+		// 	draw user info
+				out += "<div class=\"large-6 medium-6 columns\">";
+					out += "<fieldset>";
+						out += "<legend>User Information</legend>";
+						out += HtmlService.drawInputTextAlphanumeric("edit_user_first_name", "First Name", "Enter First Name", firstName);
+						out += HtmlService.drawInputTextAlphanumeric("edit_user_last_name", "Last Name", "Enter Last Name", lastName);
+						// button
+						out += "<button class=\"radius button left\" type=\"submit\" name=\"save_edit_user\">Update Info</button>";
+					out += "</fieldset>";
+				out += "</div>";
+			out += "</div>";
 		out += "</form>";
 
 		return out;

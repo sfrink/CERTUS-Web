@@ -53,7 +53,10 @@ public class SignUpServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		if(HeaderService.isAuthenticated()) {
+		if (HeaderService.isTempUser()){
+			RequestDispatcher rd = getServletContext().getRequestDispatcher("/inviteduser");		
+			rd.forward(request, response);
+		} else if(HeaderService.isAuthenticated()) {
 			// logged in, redirect to main
 			messageAlert = HtmlService.drawMessageAlert("Select option to proceed", "");
 			request.setAttribute("message_alert", messageAlert);
@@ -62,7 +65,6 @@ public class SignUpServlet extends HttpServlet {
 		} else {
 			// user came for the first time, prepare login screen
 			routineAddNewUserModal();
-			messageAlert = HtmlService.drawMessageAlert("New User Wizard", "");
 			request.setAttribute("mode", mode);
 			request.setAttribute("message_alert", messageAlert);
 			request.setAttribute("message_label", messageLabel);
@@ -243,8 +245,8 @@ public class SignUpServlet extends HttpServlet {
 			out += "<div class=\"row\">";
 	
 				//Generate New key Radio:
-				out += "<input type=\"radio\" name=\"KeyGeneratingType\" id=\"rdn_generate_new_keys\" value=\"generate_new_keys\" onMouseDown=\"onGenerateKeysRadioClick()\" checked>Generate new protected private key<br>";
-		
+				out += "<input type=\"radio\" name=\"KeyGeneratingType\" id=\"rdn_generate_new_keys\" value=\"generate_new_keys\" onMouseDown=\"onGenerateKeysRadioClick()\" checked><label onMouseDown=\"onGenerateKeysRadioClick()\" for=\"rdn_generate_new_keys\">Generate new protected private key</label><br>";
+				
 				// draw key protection fields:
 				out += "<div class=\"large-6 medium-6 columns\">";
 					out += "<fieldset>";
@@ -252,13 +254,11 @@ public class SignUpServlet extends HttpServlet {
 						out += HtmlService.drawInputTextPasswordAndConfirmation("new_key_password", "Password", "new_key_password_confirm", "Confirm Password");
 
 						// button
+						out += "<p>";
 						out += "Once you hit the submit button, we will create an account for you and send your protected private key to your email address.";
 						out += "P.S. this might take few seconds, please wait.";
-						out += "<div class=\"row\">";
-							out += "<div class=\"row\">";
-								out += "<button id=\"btn_generate_new_keys\"class=\"radius button right\" type=\"submit\" name=\"generate_and_submit_button\">Generate and Submit</button>";
-							out += "</div>";
-						out += "</div>";
+						out += "</p>";
+						out += "<button id=\"btn_generate_new_keys\"class=\"radius button left\" type=\"submit\" name=\"generate_and_submit_button\">Generate and Submit</button>";
 					out += "</fieldset>";
 				out += "</div>";
 			out += "</div>";
@@ -269,7 +269,7 @@ public class SignUpServlet extends HttpServlet {
 		out += "<form action=\"signupwithkey\" method=\"post\" enctype=\"multipart/form-data\" onsubmit=\"return showFileSize()\" >";
 			out += "<div class=\"row\">";
 		
-				out += "<input type=\"radio\"  onMouseDown=\"onUploadRadioClick()\" name=\"KeyGeneratingType\" id=\"upload_old_key\" value=\"upload_old_key\" >Upload your own public key<br>";
+				out += "<input type=\"radio\"  onMouseDown=\"onUploadRadioClick()\" name=\"KeyGeneratingType\" id=\"upload_old_key\" value=\"upload_old_key\" ><label onMouseDown=\"onUploadRadioClick()\" for=\"upload_old_key\">Upload your own public key</label><br>";
 		
 				//Draw upload button
 				out += "<div class=\"large-6 medium-6 columns\">";
@@ -281,18 +281,15 @@ public class SignUpServlet extends HttpServlet {
 						out += "<div id=\"largeFileError\" style=\"display: none\"><p><font color=\"red\">The file is larger than 10 bytes.</font></p></div>";
 						out += "<div id=\"apiFileError\" style=\"display: none\"><p><font color=\"red\">The file API isn't supported on this browser yet.</font></p></div>";
 						
-						out += "Your file size cannot be larger than 10 bytes.";
-						out += "<div class=\"row\">";
-				
-							out += "<div><input name=\"uploadFile\" id=\"FileInput\" type=\"file\" size=\"10240\" disabled=\"disabled\"></div>";
-							out += "<div>";
-								out += "<input type=\"hidden\" name=\"user_firstName\" value=\"" + firstName + "\">";
-								out += "<input type=\"hidden\" name=\"user_lastName\" value=\"" + lastName + "\">";
-								out += "<input type=\"hidden\" name=\"user_email\" value=\"" + emailAdd + "\">";
-								out += "<input type=\"hidden\" name=\"user_password\" value=\"" + password + "\">";
-								out += "<button id=\"button_start_uploading\" type=\"submit\" value=\"Upload\" disabled=\"disabled\" class=\"radius button right\" name=\"upload_and_submit_button\">Upload and Submit</button>";
-							out += "</div>";
-						out += "</div>";
+						out += "<p>Your file size cannot be larger than 10 bytes.</p>";
+						
+						out += "<input name=\"uploadFile\" id=\"FileInput\" type=\"file\" size=\"10240\" disabled=\"disabled\">";
+						out += "<input type=\"hidden\" name=\"user_firstName\" value=\"" + firstName + "\">";
+						out += "<input type=\"hidden\" name=\"user_lastName\" value=\"" + lastName + "\">";
+						out += "<input type=\"hidden\" name=\"user_email\" value=\"" + emailAdd + "\">";
+						out += "<input type=\"hidden\" name=\"user_password\" value=\"" + password + "\">";
+						out += "<button id=\"button_start_uploading\" type=\"submit\" value=\"Upload\" disabled=\"disabled\" class=\"radius button left\" name=\"upload_and_submit_button\">Upload and Submit</button>";
+							
 				out += "</fieldset>";
 			out += "</div>";		
 		out += "</div>";
@@ -336,7 +333,7 @@ public class SignUpServlet extends HttpServlet {
 	public String drawNewUser() {
 		String out = "";
 		
-		out += "<form id=\"form_user_new\" action=\"signup\" method=\"post\" data-abide>";
+		out += "<form id=\"form_user_new\" name=\"form_user_new\" action=\"signup\" method=\"post\" data-abide>";
 		
 		// draw new user info
 		out += "<div class=\"row\">";
@@ -346,14 +343,20 @@ public class SignUpServlet extends HttpServlet {
 		out += HtmlService.drawInputTextEmail("new_user_email", "E-mail Address", "your@email.address", "");
 		out += HtmlService.drawInputTextPasswordAndConfirmation("new_user_password", "Password", "new_user_password_confirm", "Confirm Password");
 		out += "Note: this password will be used to protect your private key, if you want to setup a different "
-				+ "password to protect your private key, please go to";
-		out += "<button class=\"label radius\" type=\"submit\" name=\"show_advanced\">advanced options</button>"; 
-		// button
+				+ "password to protect your private key, please click advanced options.";
+		
+		
+		// buttons
+		out += "<p>";
 		out += "<div class=\"row\">";
-		out += "<div class=\"large-6 large-centered medium-6 medium-centered columns\">";
-		out += "<button class=\"radius button right\" type=\"submit\" name=\"button_basic_signup\">Sign Up</button>";
+//		out += "<div class=\"large-3 large-centered medium-3 medium-centered columns\">";
+		out += "<ul class=\"button-group\">";
+		out += "<li><button class=\"radius button left\" type=\"submit\" name=\"button_basic_signup\">Sign Up</button></li>";
+		out += "<li><button class=\"radius button left\" type=\"submit\" name=\"show_advanced\">Advanced Options</button></li>";
+		out += "</ul>";
 		out += "</div>";
 		out += "</div>";
+		out += "</p>";
 		out += "</div>";
 		out += "</form>";
 		

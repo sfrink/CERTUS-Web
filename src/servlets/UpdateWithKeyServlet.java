@@ -30,8 +30,7 @@ public class UpdateWithKeyServlet extends HttpServlet {
 	private String lastName = "";
 	private String email = "";
 	private String password = "";
-	private String tempPassword = "";
-	
+
 	
 	
     /**
@@ -58,7 +57,6 @@ public class UpdateWithKeyServlet extends HttpServlet {
 		lastName = request.getParameter("user_lastName");
 		email = request.getParameter("user_email");
 		password = request.getParameter("user_password");
-		tempPassword = request.getParameter("user_tempPassword");
 		
 		InputStream inputStream = null; // input stream of the upload file
         
@@ -93,7 +91,7 @@ public class UpdateWithKeyServlet extends HttpServlet {
         	newUser.setPassword(password);
         	newUser.setPublicKeyBytes(publicKeyBytes);
         	
-        	Validator res = InvitedUserService.updateUserWithPublicKey(newUser, tempPassword);
+        	Validator res = InvitedUserService.updateUserWithPublicKey(newUser);
       
         	if (res.isVerified()){
             	outUpload = drawSuccessfullUpload();

@@ -45,7 +45,11 @@ public class NewKeyServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if(HeaderService.isAuthenticated()) {
+		
+		if (HeaderService.isTempUser()){
+			RequestDispatcher rd = getServletContext().getRequestDispatcher("/inviteduser");		
+			rd.forward(request, response);
+		} else if(HeaderService.isAuthenticated()) {
 			
 			resetGlobals();
 			routineKeyPage();
@@ -181,10 +185,12 @@ public class NewKeyServlet extends HttpServlet {
 					out += "<legend>Key Protection Password</legend>";
 					out += HtmlService.drawInputTextPassword("user_password", "Your Password", "Your Password", "", false, "");
 					out += HtmlService.drawInputTextPasswordAndConfirmation("new_key_password", "Key Protection Password", "new_key_password_confirm", "Confirm Key Protection Password");
-					out += "<div class=\"row\"><h5>Once you hit the generate button, we will generate new protected signing key for you and send it to your email address.</h5></div>";
-					out += "<div class=\"row\"><h5>P.S. this might take few seconds, please wait.</h5></div>";
-					out += "<button class=\"radius button\" type=\"submit\" name=\"button_do_generate\">Generate</button>";
-					out += "<a href=\"login\">Cancel</a>";
+					out += "<p><h5>Once you hit the generate button, we will generate new protected signing key for you and send it to your email address.</h5></p>";
+					out += "<p><h5>P.S. this might take few seconds, please wait.</h5></p>";
+					out += "<ul class=\"button-group\">";
+					out += "<li><button class=\"radius button left\" type=\"submit\" name=\"button_do_generate\">Generate</button></li>";
+					out += "<li><a  class=\"button alert left\" href=\"login\">Cancel</a></li>";
+					out += "</ul>";
 				out += "</fieldset>";
 		
 			out += "</div>";

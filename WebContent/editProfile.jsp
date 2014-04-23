@@ -35,6 +35,8 @@ String outModal = (String) request.getAttribute("out_modal");
 	<a id="close-reveal-modal-modified" class="close-reveal-modal">&#215;</a>
 </div>
 
+
+
 <jsp:include page="footer.jsp" />
 
 <% if(mode.equals("2")) { %>

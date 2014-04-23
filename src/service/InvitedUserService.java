@@ -9,13 +9,13 @@ import dto.Validator;
 public class InvitedUserService {
 	
 	
-	public static Validator addUpdateUser(UserDto newUser, String tempPassword){
+	public static Validator addUpdateUser(UserDto newUser){
 		Validator res = new Validator();
 		
 		String sessionID = HeaderService.getUserSessionId();
 		
 		try {
-			res = Initializer.rmi.updateTempUser(newUser, tempPassword, sessionID);
+			res = Initializer.rmi.updateTempUser(newUser, sessionID);
 		} catch (RemoteException e) {
 			res.setVerified(false);
 			res.setStatus("RMI failure.");
@@ -25,13 +25,13 @@ public class InvitedUserService {
 	}
 	
 	
-	public static Validator updateUserwithKeyProtectionPassword(UserDto newUser, String tempPassword){
+	public static Validator updateUserwithKeyProtectionPassword(UserDto newUser){
 		Validator res = new Validator();
 		
 		String sessionID = HeaderService.getUserSessionId();
 		
 		try {
-			res = Initializer.rmi.UpdateTempUserWithPP(newUser, tempPassword, sessionID);
+			res = Initializer.rmi.UpdateTempUserWithPP(newUser, sessionID);
 		} catch (RemoteException e) {
 			res.setVerified(false);
 			res.setStatus("RMI failure.");
@@ -42,13 +42,13 @@ public class InvitedUserService {
 	
 	
 
-	public static Validator updateUserWithPublicKey(UserDto newUser, String tempPassword){
+	public static Validator updateUserWithPublicKey(UserDto newUser){
 		Validator res = new Validator();
 		
 		String sessionID = HeaderService.getUserSessionId();
 		
 		try {
-			res = Initializer.rmi.UpdateTempUserWithKey(newUser, tempPassword, sessionID);
+			res = Initializer.rmi.UpdateTempUserWithKey(newUser, sessionID);
 		} catch (RemoteException e) {
 			res.setVerified(false);
 			res.setStatus("RMI failure.");

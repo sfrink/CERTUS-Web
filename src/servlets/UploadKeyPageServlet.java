@@ -38,7 +38,11 @@ public class UploadKeyPageServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if(!HeaderService.isAuthenticated()) {
+		
+		if (HeaderService.isTempUser()){
+			RequestDispatcher rd = getServletContext().getRequestDispatcher("/inviteduser");		
+			rd.forward(request, response);
+		} else if(!HeaderService.isAuthenticated()) {
 			// not logged in, redirect to login
 			messageAlert = HtmlService.drawMessageAlert("Select option to proceed", "");
 			request.setAttribute("message_alert", messageAlert);

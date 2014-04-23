@@ -45,8 +45,10 @@ public class MainServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		resetGlobals();
-
-		if(HeaderService.isAuthenticated()) {
+		if (HeaderService.isTempUser()){
+			RequestDispatcher rd = getServletContext().getRequestDispatcher("/inviteduser");		
+			rd.forward(request, response);
+		} else if(HeaderService.isAuthenticated()) {
 
 			routineExistingElectionsForVoting();
 			routineExistingElectionsForResults();

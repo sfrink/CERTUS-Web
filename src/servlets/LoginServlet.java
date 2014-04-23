@@ -46,7 +46,8 @@ public class LoginServlet extends HttpServlet {
 			request.setAttribute("message_alert", messageAlert);
 			RequestDispatcher rd = getServletContext().getRequestDispatcher("/main");		
 			rd.forward(request, response);
-		} else {
+		
+		}else{
 			// user came for the first time, prepare login screen
 			routinePrepareFirstLogin();
 			request.setAttribute("message_alert", messageAlert);
