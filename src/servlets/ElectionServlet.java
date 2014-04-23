@@ -45,7 +45,7 @@ public class ElectionServlet extends HttpServlet {
 	private String placeHoldElecEndTime = "Enter election end time here";
 	private String placeHoldElecCand = "Enter candidates names, one per line, candidates will appear in the same order as you specify.";
 	private String placeHoldElecUsers = "Enter users emails, one per line.";
-	
+	private String tooltipElectionPassword = "Please specify a unique password which will be used to protect votes of this election.<br/> You will need this password in order to start tallying and publish the results of the election.<br/>WARNING: without this password, tallying of this election is impossible.";
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -228,7 +228,7 @@ public class ElectionServlet extends HttpServlet {
 		out += HtmlService.drawInputTextAlphanumericOptional("new_election_end_time", "Election Closing Time", placeHoldElecEndTime, valElecEndTime);
 		out += "</fieldset>";
 		// password		
-		out += "<fieldset><legend>Protect election by password <span data-tooltip class=\"has-tip tip-top\" title=\"Steven, please provide the message.\">what is this?</span></legend>";
+		out += "<fieldset><legend>Protect election by password <span data-tooltip class=\"has-tip tip-top\" title=\"" + tooltipElectionPassword + "\">what is this?</span></legend>";
 		out += HtmlService.drawInputTextPasswordAndConfirmation("new_election_password", "Election Password", "new_election_password_confirm", "Confirm Election Password");		
 		out += "</fieldset>"; 
 		out += "</div>";
@@ -711,6 +711,7 @@ public class ElectionServlet extends HttpServlet {
 		} else {
 			// errors, send back to add election screen
 			mode = "2";
+			System.out.println("Error: " + vElection.getStatus());
 			messageLabel = HtmlService.drawMessageLabel(vElection.getStatus(), "alert");
 			outModal = drawElectionUsers((ElectionDto) vElection.getObject());
 		}

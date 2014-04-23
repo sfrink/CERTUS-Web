@@ -93,6 +93,9 @@ table tr.even, table tr.alt, table tr:nth-of-type(even) {
 	margin-bottom: 15px;
 }
 
+.global_margin_top {
+	margin-top: 15px;
+}
 
 .panel.clear {
 	background-color: transparent;
@@ -100,6 +103,12 @@ table tr.even, table tr.alt, table tr:nth-of-type(even) {
 	border-right:none;	
 	border-left:none;
 }
+
+.panel.clearnb {
+	background-color: transparent;
+	border:none;
+}
+
 
 .has-tip {
 	font-weight: normal;
