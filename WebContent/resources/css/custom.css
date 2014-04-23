@@ -125,6 +125,12 @@ table tr.even, table tr.alt, table tr:nth-of-type(even) {
 	color: #f04124;
 }
 
+.global_body_text {
+	line-height: 1.6;
+	color: #6f6f6f; 
+}
+
+
 .global_th_election_name {
 	
 }

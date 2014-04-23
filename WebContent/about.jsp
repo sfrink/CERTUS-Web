@@ -1,22 +1,22 @@
 <%@page import="service.HeaderService"%>
 
-<jsp:include page="headerDefault.jsp" /> 
-<jsp:include page="headerTopBarAuthenticated.jsp" /> 
+<jsp:include page="headerDefault.jsp" />
 
-<%
-String messageAlert = (String) request.getAttribute("message_alert");
-%>
-
-<!--  <%=messageAlert %>-->
+<% if(HeaderService.isAuthenticated()) { %>
+  <jsp:include page="headerTopBarAuthenticated.jsp" /> 	
+<% } else { %>
+  <jsp:include page="headerTopBarDefault.jsp" />
+<% } %>
 
 <div class="row">
-<h4>About CERTUS</h4>
-	<div class="large-8 medium-8 columns">
-		CERTUS is a secure voting system developed at George Washington University.  It currently utilizes a 
-		simple double envelope voting protocol that provides some basic privacy, integrity, and verifiability
-		properties. In the future a more secure protocol will be implemented for CERTUS, using the same secure
-		infrastructure.  
-	</div>
+  <div class="large-12 medium-12 small-12 columns">
+	<h4>About CERTUS</h4>
+	<div class="global_body_text">
+	  CERTUS is a secure voting system developed at George Washington University. 
+	  It currently utilizes a simple double envelope voting protocol that provides some basic privacy, integrity, and verifiability properties. 
+	  In the future a more secure protocol will be implemented for CERTUS, using the same secure infrastructure.  
+ 	</div>
+  </div>
 </div>
 
 <jsp:include page="footer.jsp" />
