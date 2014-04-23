@@ -10,7 +10,7 @@
 
 <div class="row">
   <div class="large-12 medium-12 small-12 columns">
-	<h4>About CERTUS</h4>
+	<h4>Contact</h4>
 	<div class="global_body_text">
       CERTUS was developed under the guidance of Professor Michael Clarkson by Steven Frink, Dmitriy Karmazin, Ahmad Kouraiem, and Hirosh Wickramasuriya.
 	  <br><br>
