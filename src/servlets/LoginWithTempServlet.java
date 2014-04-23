@@ -137,8 +137,8 @@ public class LoginWithTempServlet extends HttpServlet {
 		out += "<form action=\"loginWithTemp\" method=\"post\" data-abide>";
 		out += "<fieldset>";
 		out += "<legend>Use your email and temporary password to log in</legend>";
-		out += HtmlService.drawInputTextEmail("username", "Email", "your@email.address", u.getEmail());		
-		out += HtmlService.drawInputTextPassword("password", "Temporary Password", "password", u.getPassword(), false, "");
+		out += HtmlService.drawInputTextEmail("username", "Email", "your@email.address", "");		
+		out += HtmlService.drawInputTextPassword("password", "Temporary Password", "password", "", false, "");
 		out += HtmlService.drawInputTextPasswordAndConfirmation("new_password", "New Password", "new_password_confirm", "Confirm New Password");
 		out += "<input type=\"submit\" name=\"login\" class=\"small radius button\" value=\"Login\">";
 		out += "</fieldset>";

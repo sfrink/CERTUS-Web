@@ -127,7 +127,20 @@ public class HtmlService {
 		return out;		
 	}
 	
-	
+	public static String drawInputTextEmailForgot(String field_name, String label, String placeholder, String value, String errorMessage) {
+		String out="";
+		String errorMessageToDisplay = errorMessage;
+		
+		
+		out += "<div class=\"" + field_name + " error\">";
+		out += "<label>" + label + " <small>required</small>";
+		out += "<input type=\"email\" name=\""+ field_name + "\" placeholder=\"" + placeholder + "\" value=\"" + value + "\" required \">";
+		out += "</label>";
+		out += "<small class=\"error\">" + errorMessageToDisplay + "</small>";
+		out += "</div>";
+		
+		return out;		
+	}
 
 	public static String drawInputTextareaReadonly(String field_name, String label, String placeholder, String value) {
 		String out = "";
