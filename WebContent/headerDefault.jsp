@@ -40,16 +40,7 @@ if(request.isSecure()) {
 <body>
 
 <p class="text-center">
-
 <%=request.getSession().getId() %></br>
-
-<%
-if(HeaderService.isSessionStarted(request)) {
-	out.print(HeaderService.sessionToString(request));
-}
-%>
-
-
 </p>
 
 
