@@ -114,7 +114,7 @@ public class UploadFileServlet extends HttpServlet {
 		out += "</div>";
 		out += "<div class=\"row\">";
 		out += "<div class=\"large-6 medium-6 columns\">";
-		out += "<h3>We couldn't your public key, and that's because: "+ status +"</h3>";
+		out += "<h3>We couldn't upload your public key because: "+ status +"</h3>";
 		out += "<h3>Do you want to try again?</h3>";
 		out += "</div>";
 		out += "</div>";

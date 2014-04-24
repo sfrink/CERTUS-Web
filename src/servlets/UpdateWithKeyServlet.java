@@ -138,7 +138,7 @@ public class UpdateWithKeyServlet extends HttpServlet {
 		out += "</div>";
 		out += "<div class=\"row\">";
 		out += "<div class=\"large-6 medium-6 columns\">";
-		out += "<h3>We couldn't create a new account for you, and that's because: "+ status +"</h3>";
+		out += "<h3>We couldn't create a new account for you because: "+ status +"</h3>";
 		out += "<h3>Do you want to try again?</h3>";
 		out += "</div>";
 		out += "</div>";

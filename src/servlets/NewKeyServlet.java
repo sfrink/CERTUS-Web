@@ -148,7 +148,7 @@ public class NewKeyServlet extends HttpServlet {
 		out += "</div>";
 		out += "<div class=\"row\">";
 		out += "<div class=\"large-6 medium-6 columns\">";
-		out += "<h3>We couldn't create a new protected key for you, and that's because: "+ status +"</h3>";
+		out += "<h3>We couldn't create a new protected key for you because: "+ status +"</h3>";
 		out += "<h3>Do you want to try again?</h3>";
 		out += "</div>";
 		out += "</div>";
@@ -172,8 +172,8 @@ public class NewKeyServlet extends HttpServlet {
 		String out = "";
 
 		out += "<h5>";
-		out += "<font color=\"red\">Warning:</font> If you generate a new signing key, All your voting in any un-closed elections will not be casted, ";
-		out += "and you will not be able to re-vote again in those un-closed elections.";
+		out += "<font color=\"red\">Warning:</font> If you generate a new signing key, all your votes in any un-closed elections will not be cast, ";
+		out += "and you will not be able to re-vote in those un-closed elections.";
 		out += "</h5>";
 		
 		out += "<form id=\"form_new_keys\" action=\"newkey\" method=\"post\" data-abide>";
