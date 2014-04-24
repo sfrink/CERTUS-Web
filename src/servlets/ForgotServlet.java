@@ -47,7 +47,7 @@ public class ForgotServlet extends HttpServlet {
 		} else if(HeaderService.isAuthenticated()) {
 			// logged in, redirect to main
 			request.setAttribute("message_alert", messageAlert);
-			RequestDispatcher rd = getServletContext().getRequestDispatcher("/main.jsp");		
+			RequestDispatcher rd = getServletContext().getRequestDispatcher("/main");		
 			rd.forward(request, response);
 		} else {
 			outForm=drawEmailFieldset(null);
@@ -68,7 +68,7 @@ public class ForgotServlet extends HttpServlet {
 		} else if(HeaderService.isAuthenticated()) {
 			// logged in, redirect to main
 			request.setAttribute("message_alert", messageAlert);
-			RequestDispatcher rd = getServletContext().getRequestDispatcher("/main.jsp");		
+			RequestDispatcher rd = getServletContext().getRequestDispatcher("/main");		
 			rd.forward(request, response);
 		} else if(request.getParameter("getTemp") != null) {
 			String email=request.getParameter("username");

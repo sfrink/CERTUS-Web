@@ -43,7 +43,7 @@ public class LoginWithTempServlet extends HttpServlet {
 		} else if(HeaderService.isAuthenticated()) {
 			// logged in, redirect to main
 			request.setAttribute("message_alert", messageAlert);
-			RequestDispatcher rd = getServletContext().getRequestDispatcher("/main.jsp");		
+			RequestDispatcher rd = getServletContext().getRequestDispatcher("/main");		
 			rd.forward(request, response);
 			
 		} else if(request.getAttribute("messageAlert").equals("1")){
@@ -51,14 +51,14 @@ public class LoginWithTempServlet extends HttpServlet {
 			outForm=drawLoginFieldset(u);
 			request.setAttribute("message_alert", messageAlert);
 			request.setAttribute("out_form", outForm);
-			RequestDispatcher rd = getServletContext().getRequestDispatcher("/loginWithTemp.jsp");	
+			RequestDispatcher rd = getServletContext().getRequestDispatcher("/loginWithTemp");	
 			rd.forward(request, response);
 		}
 		else if(request.getAttribute("messageAlert").equals("2")){
 			outForm=resentInvitation();
 			request.setAttribute("message_alert",messageAlert);
 			request.setAttribute("out_form",outForm);
-			RequestDispatcher rd = getServletContext().getRequestDispatcher("/loginWithTemp.jsp");	
+			RequestDispatcher rd = getServletContext().getRequestDispatcher("/loginWithTemp");	
 			rd.forward(request, response);
 		}
 	}
@@ -73,7 +73,7 @@ public class LoginWithTempServlet extends HttpServlet {
 		} else if(HeaderService.isAuthenticated()) {
 			// logged in, redirect to main
 			request.setAttribute("message_alert", messageAlert);
-			RequestDispatcher rd = getServletContext().getRequestDispatcher("/main.jsp");		
+			RequestDispatcher rd = getServletContext().getRequestDispatcher("/main");		
 			rd.forward(request, response);
 		} else if(request.getParameter("login") != null) {
 			// login button clicked
