@@ -248,7 +248,7 @@ public class HtmlService {
 		String out = "";
 		String delimiter = System.getProperty("line.separator");
 
-		if(errorFlag) {
+		if(errorFlag && !emails.isEmpty()) {
 			out += "<p>Check emails of users you would like to invite " + HtmlService.getToolTip("Invitation to register to the system will be send to all checked email addresses.<br>Upon successful registration, users will be automatically able to vote in your election.") + "</p>";
 
 			String[] emailsArr = emails.split(delimiter);
