@@ -62,7 +62,15 @@ public class ForgotServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		resetGlobals();
 
-		if(request.getParameter("getTemp") != null) {
+		if (HeaderService.isTempUser()){
+			RequestDispatcher rd = getServletContext().getRequestDispatcher("/inviteduser");		
+			rd.forward(request, response);
+		} else if(HeaderService.isAuthenticated()) {
+			// logged in, redirect to main
+			request.setAttribute("message_alert", messageAlert);
+			RequestDispatcher rd = getServletContext().getRequestDispatcher("/main.jsp");		
+			rd.forward(request, response);
+		} else if(request.getParameter("getTemp") != null) {
 			String email=request.getParameter("username");
 			
 			Validator v=UserService.selectUserByEmail(email);
