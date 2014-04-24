@@ -37,10 +37,10 @@ public class LoginWithTempServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		resetGlobals();
-		if (HeaderService.isTempUser()){
+		if (HeaderService.isTempUser(request)){
 			RequestDispatcher rd = getServletContext().getRequestDispatcher("/inviteduser");		
 			rd.forward(request, response);
-		} else if(HeaderService.isAuthenticated()) {
+		} else if(HeaderService.isAuthenticated(request)) {
 			// logged in, redirect to main
 			request.setAttribute("message_alert", messageAlert);
 			RequestDispatcher rd = getServletContext().getRequestDispatcher("/main");		
@@ -67,10 +67,10 @@ public class LoginWithTempServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if (HeaderService.isTempUser()){
+		if (HeaderService.isTempUser(request)){
 			RequestDispatcher rd = getServletContext().getRequestDispatcher("/inviteduser");		
 			rd.forward(request, response);
-		} else if(HeaderService.isAuthenticated()) {
+		} else if(HeaderService.isAuthenticated(request)) {
 			// logged in, redirect to main
 			request.setAttribute("message_alert", messageAlert);
 			RequestDispatcher rd = getServletContext().getRequestDispatcher("/main");		
@@ -85,12 +85,12 @@ public class LoginWithTempServlet extends HttpServlet {
 				
 			if(v.isVerified()) {
 				u = (UserDto) v.getObject();
-				HeaderService.authenticate();
-				HeaderService.setUserId(u.getUserId());
-				HeaderService.setUserSessionId(u.getSessionId());
-				HeaderService.setUserName(username);
-				HeaderService.setUserType(u.getType());
-				HeaderService.setLoginWithTemp(true);
+				HeaderService.authenticate(request);
+				HeaderService.setUserId(request, u.getUserId());
+				HeaderService.setUserSessionId(request, u.getSessionId());
+				HeaderService.setUserName(request, username);
+				HeaderService.setUserType(request, u.getType());
+				HeaderService.setLoginWithTemp(request, true);
 				request.setAttribute("message_alert", messageAlert);
 				RequestDispatcher rd = getServletContext().getRequestDispatcher("/main");		
 				rd.forward(request, response);
@@ -107,7 +107,7 @@ public class LoginWithTempServlet extends HttpServlet {
 		}
 		else{
 			String email=(String)request.getAttribute("email");
-			Validator val=UserService.selectUserByEmail(email);
+			Validator val=UserService.selectUserByEmail(request, email);
 			UserDto user=new UserDto();
 			if(val.isVerified()){
 				user=(UserDto)val.getObject();

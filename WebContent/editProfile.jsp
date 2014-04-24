@@ -1,7 +1,7 @@
 <%@page import="service.HeaderService"%>
 <%
-if(!HeaderService.isAuthenticated() ||
-   !HeaderService.hasAccess("profile")) {
+if(!HeaderService.isAuthenticated(request) ||
+   !HeaderService.hasAccess(request, "profile")) {
 	RequestDispatcher rd = getServletContext().getRequestDispatcher("/login");
 	rd.forward(request, response);
 }

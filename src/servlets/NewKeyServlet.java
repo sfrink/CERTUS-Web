@@ -46,10 +46,10 @@ public class NewKeyServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		if (HeaderService.isTempUser()){
+		if (HeaderService.isTempUser(request)){
 			RequestDispatcher rd = getServletContext().getRequestDispatcher("/inviteduser");		
 			rd.forward(request, response);
-		} else if(HeaderService.isAuthenticated()) {
+		} else if(HeaderService.isAuthenticated(request)) {
 			
 			resetGlobals();
 			routineKeyPage();
@@ -70,14 +70,14 @@ public class NewKeyServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if(HeaderService.isAuthenticated()) {
+		if(HeaderService.isAuthenticated(request)) {
 			resetGlobals();
 			routineKeyPage();
 
 			if (request.getParameter("button_do_generate") != null){
 				userPassword = (String) request.getParameter("user_password");
 				keyPassword = (String) request.getParameter("new_key_password");
-				generateNewKey();
+				generateNewKey(request);
 			}
 			
 			
@@ -99,10 +99,10 @@ public class NewKeyServlet extends HttpServlet {
 	/**
 	 * This function tries to generate new private key:
 	 */
-	public void generateNewKey(){
+	public void generateNewKey(HttpServletRequest request){
 		resetGlobals();
 
-		Validator v = NewKeyService.generateNewKeys(keyPassword, userPassword);
+		Validator v = NewKeyService.generateNewKeys(request, keyPassword, userPassword);
 		
 		if (v.isVerified()){
 			outModal = drawSuccessfullGenerating();

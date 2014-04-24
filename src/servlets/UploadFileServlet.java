@@ -66,7 +66,7 @@ public class UploadFileServlet extends HttpServlet {
             
             	String userPassword = request.getParameter("user_password");
             	
-            	Validator res = NewKeyService.uploadPubKey(inputStream, userPassword);
+            	Validator res = NewKeyService.uploadPubKey(request, inputStream, userPassword);
             	
             	if (res.isVerified()){
                 	outUpload = drawSuccessfullUpload();

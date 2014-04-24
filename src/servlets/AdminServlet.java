@@ -43,12 +43,12 @@ public class AdminServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if (HeaderService.isTempUser()){
+		if (HeaderService.isTempUser(request)){
 			RequestDispatcher rd = getServletContext().getRequestDispatcher("/inviteduser");		
 			rd.forward(request, response);
-		} else if(HeaderService.isAuthenticated()) {
+		} else if(HeaderService.isAuthenticated(request)) {
 			resetGlobals();
-			routineExistingElections();
+			routineExistingElections(request);
 			
 			request.setAttribute("mode", mode);
 			request.setAttribute("message_alert", messageAlert);
@@ -68,7 +68,7 @@ public class AdminServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if(HeaderService.isAuthenticated()) {
+		if(HeaderService.isAuthenticated(request)) {
 			resetGlobals();
 
 			if (request.getParameter("delete") != null) {
@@ -79,7 +79,7 @@ public class AdminServlet extends HttpServlet {
 				routineDeleteElection(request);
 			}
 			// refresh existing elections
-			routineExistingElections();
+			routineExistingElections(request);
 
 			request.setAttribute("mode", mode);
 			request.setAttribute("message_alert", messageAlert);
@@ -104,10 +104,10 @@ public class AdminServlet extends HttpServlet {
 		this.outElections = "";
 	}
 	
-	public void routineExistingElections() {
+	public void routineExistingElections(HttpServletRequest request) {
 		// get the list of elections from DB
 		ArrayList<ElectionDto> allElections = new ArrayList<ElectionDto>();
-		Validator v = ElectionService.selectElectionsForAdmin();
+		Validator v = ElectionService.selectElectionsForAdmin(request);
 		
 		if(v.isVerified()) {
 			allElections = (ArrayList<ElectionDto>) v.getObject();	
@@ -228,7 +228,7 @@ public class AdminServlet extends HttpServlet {
 	public void routineDeleteElection(HttpServletRequest request) {
 		resetGlobals();
 		int elec_id=Integer.parseInt(request.getParameter("confirm_delete"));
-		Validator vElection = ElectionService.disableElection(elec_id);
+		Validator vElection = ElectionService.disableElection(request, elec_id);
 
 		if (vElection.isVerified()) {
 			//delete successful

@@ -5,22 +5,18 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.rmi.RemoteException;
 
-
-
-
-
+import javax.servlet.http.HttpServletRequest;
 
 import rmi.Initializer;
-import sun.misc.IOUtils;
 import dto.Validator;
 
 public class NewKeyService {
 
 	
-	public static Validator generateNewKeys(String newKeyPass, String userPassword){
+	public static Validator generateNewKeys(HttpServletRequest request, String newKeyPass, String userPassword){
 		Validator res = new Validator();
-		int userID = HeaderService.getUserId();
-		String sessionID = HeaderService.getUserSessionId();
+		int userID = HeaderService.getUserId(request);
+		String sessionID = HeaderService.getUserSessionId(request);
 		try {
 			res = Initializer.rmi.generateNewKeys(userID, newKeyPass, userPassword, sessionID);
 		} catch (RemoteException e) {
@@ -31,10 +27,10 @@ public class NewKeyService {
 		return res;
 	}
 	
-	public static Validator uploadPubKey(InputStream dataStream, String userPassword) throws IOException{
+	public static Validator uploadPubKey(HttpServletRequest request, InputStream dataStream, String userPassword) throws IOException{
 		
 		Validator res = new Validator();
-		String sessionID = HeaderService.getUserSessionId();
+		String sessionID = HeaderService.getUserSessionId(request);
 		
 		try {
 			ByteArrayOutputStream buffer = new ByteArrayOutputStream();

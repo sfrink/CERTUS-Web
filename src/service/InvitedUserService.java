@@ -2,6 +2,8 @@ package service;
 
 import java.rmi.RemoteException;
 
+import javax.servlet.http.HttpServletRequest;
+
 import rmi.Initializer;
 import dto.UserDto;
 import dto.Validator;
@@ -9,10 +11,10 @@ import dto.Validator;
 public class InvitedUserService {
 	
 	
-	public static Validator addUpdateUser(UserDto newUser){
+	public static Validator addUpdateUser(HttpServletRequest request, UserDto newUser){
 		Validator res = new Validator();
 		
-		String sessionID = HeaderService.getUserSessionId();
+		String sessionID = HeaderService.getUserSessionId(request);
 		
 		try {
 			res = Initializer.rmi.updateTempUser(newUser, sessionID);
@@ -25,10 +27,10 @@ public class InvitedUserService {
 	}
 	
 	
-	public static Validator updateUserwithKeyProtectionPassword(UserDto newUser){
+	public static Validator updateUserwithKeyProtectionPassword(HttpServletRequest request, UserDto newUser){
 		Validator res = new Validator();
 		
-		String sessionID = HeaderService.getUserSessionId();
+		String sessionID = HeaderService.getUserSessionId(request);
 		
 		try {
 			res = Initializer.rmi.UpdateTempUserWithPP(newUser, sessionID);
@@ -42,10 +44,10 @@ public class InvitedUserService {
 	
 	
 
-	public static Validator updateUserWithPublicKey(UserDto newUser){
+	public static Validator updateUserWithPublicKey(HttpServletRequest request, UserDto newUser){
 		Validator res = new Validator();
 		
-		String sessionID = HeaderService.getUserSessionId();
+		String sessionID = HeaderService.getUserSessionId(request);
 		
 		try {
 			res = Initializer.rmi.UpdateTempUserWithKey(newUser, sessionID);
@@ -57,9 +59,9 @@ public class InvitedUserService {
 		return res;
 	} 
 
-	public static Validator resendInvitation(UserDto u){
+	public static Validator resendInvitation(HttpServletRequest request, UserDto u){
 		Validator val=new Validator();
-		String sessionID = HeaderService.getUserSessionId();
+		String sessionID = HeaderService.getUserSessionId(request);
 		try{
 			Initializer.rmi.resendInvitation(u,sessionID);
 		}

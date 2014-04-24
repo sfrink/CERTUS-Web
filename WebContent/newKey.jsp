@@ -1,7 +1,7 @@
 <%@page import="service.HeaderService"%>
 <%
-if(!HeaderService.isAuthenticated() ||
-   !HeaderService.hasAccess("newkey")) {
+if(!HeaderService.isAuthenticated(request) ||
+   !HeaderService.hasAccess(request, "newkey")) {
 	RequestDispatcher rd = getServletContext().getRequestDispatcher("/login");
 	rd.forward(request, response);
 }

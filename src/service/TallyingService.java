@@ -2,6 +2,8 @@ package service;
 
 import java.rmi.RemoteException;
 
+import javax.servlet.http.HttpServletRequest;
+
 import rmi.Initializer;
 import dto.Validator;
 
@@ -19,11 +21,11 @@ public class TallyingService
 	 * @return Validator with ElectionDto
 	 */
 		
-	public static Validator results(int electionId) {
+	public static Validator results(HttpServletRequest request, int electionId) {
 		Validator validator = new Validator();
 
 		try {
-			String sessionID = HeaderService.getUserSessionId();
+			String sessionID = HeaderService.getUserSessionId(request);
 			validator = Initializer.rmi.selectResults(electionId, sessionID);
 		} catch (RemoteException e) {
 			e.printStackTrace();
@@ -36,11 +38,11 @@ public class TallyingService
 	 * @param electionId
 	 * @return Validator with ElectionProgressDto
 	 */
-	public static Validator voteProgressStatusForElection(int electionId){
+	public static Validator voteProgressStatusForElection(HttpServletRequest request, int electionId){
 		Validator validator = new Validator();
 
 		try {
-			String sessionID = HeaderService.getUserSessionId();
+			String sessionID = HeaderService.getUserSessionId(request);
 			validator = Initializer.rmi.voteProgressStatusForElection(electionId, sessionID);
 		} catch (RemoteException e) {
 			e.printStackTrace();

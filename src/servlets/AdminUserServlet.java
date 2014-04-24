@@ -46,12 +46,12 @@ public class AdminUserServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if (HeaderService.isTempUser()){
+		if (HeaderService.isTempUser(request)){
 			RequestDispatcher rd = getServletContext().getRequestDispatcher("/inviteduser");		
 			rd.forward(request, response);
-		} else if(HeaderService.isAuthenticated()) {
+		} else if(HeaderService.isAuthenticated(request)) {
 			resetGlobals();
-			routineExistingUsers();
+			routineExistingUsers(request);
 			
 			request.setAttribute("mode", mode);
 			request.setAttribute("message_alert", messageAlert);
@@ -71,7 +71,7 @@ public class AdminUserServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if(HeaderService.isAuthenticated()) {
+		if(HeaderService.isAuthenticated(request)) {
 			resetGlobals();
 
 			if (request.getParameter("edit") != null) {
@@ -82,7 +82,7 @@ public class AdminUserServlet extends HttpServlet {
 				routineEditUser(request);
 			}
 			// refresh 
-			routineExistingUsers();
+			routineExistingUsers(request);
 
 			request.setAttribute("mode", mode);
 			request.setAttribute("message_alert", messageAlert);
@@ -107,10 +107,10 @@ public class AdminUserServlet extends HttpServlet {
 		this.outUsers = "";
 	}
 	
-	public void routineExistingUsers() {
+	public void routineExistingUsers(HttpServletRequest request) {
 		// get the list of elections from DB
 		ArrayList<UserDto> allUsers = new ArrayList<UserDto>();
-		Validator v = UserService.selectAllUsers();
+		Validator v = UserService.selectAllUsers(request);
 		
 		if(v.isVerified()) {
 			allUsers = (ArrayList<UserDto>) v.getObject();	
@@ -178,7 +178,7 @@ public class AdminUserServlet extends HttpServlet {
 		mode = "2";
 		messageLabel = HtmlService.drawMessageLabel("", "secondary");
 		UserDto u = new UserDto();
-		u=(UserDto)(UserService.selectUser(Integer.parseInt(request.getParameter("edit")))).getObject();
+		u=(UserDto)(UserService.selectUser(request, Integer.parseInt(request.getParameter("edit")))).getObject();
 		outModal = drawEditUser(u);
 	}
 	
@@ -231,7 +231,7 @@ public class AdminUserServlet extends HttpServlet {
 		u.setLastName(request.getParameter("edit_user_last_name"));
 		//u.setEmail(request.getParameter("edit_user_email"));
 		u.setStatus(Integer.parseInt(request.getParameter("edit_user_status")));
-		Validator vUser = UserService.editUser(u);
+		Validator vUser = UserService.editUser(request, u);
 
 		if (vUser.isVerified()) {
 			//edit successful

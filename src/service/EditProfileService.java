@@ -2,15 +2,17 @@ package service;
 
 import java.rmi.RemoteException;
 
+import javax.servlet.http.HttpServletRequest;
+
 import rmi.Initializer;
 import dto.UserDto;
 import dto.Validator;
 
 public class EditProfileService {
 	
-	public static Validator selectUser(int userId) {
+	public static Validator selectUser(HttpServletRequest request, int userId) {
 		Validator val = new Validator();
-		String sessionID = HeaderService.getUserSessionId();
+		String sessionID = HeaderService.getUserSessionId(request);
 		try {
 			val = Initializer.rmi.selectUser(userId, sessionID);
 		} catch (RemoteException e) {
@@ -20,9 +22,9 @@ public class EditProfileService {
 		return val;
 	}
 
-	public static Validator editUser(UserDto userDto) {
+	public static Validator editUser(HttpServletRequest request, UserDto userDto) {
 		Validator val = new Validator();
-		String sessionID = HeaderService.getUserSessionId();	
+		String sessionID = HeaderService.getUserSessionId(request);	
 		try {
 			val = Initializer.rmi.updateUser(userDto, sessionID);
 		} catch (RemoteException e) {
@@ -32,9 +34,9 @@ public class EditProfileService {
 		return val;
 	}
 	
-	public static Validator updatePassword (UserDto userDto){
+	public static Validator updatePassword (HttpServletRequest request, UserDto userDto){
 		Validator val = new Validator();
-		String sessionID = HeaderService.getUserSessionId();	
+		String sessionID = HeaderService.getUserSessionId(request);	
 		try {
 			val = Initializer.rmi.updateUserPassword(userDto, sessionID);
 			/*if (val.isVerified()){
@@ -48,9 +50,9 @@ public class EditProfileService {
 	}
 	
 	
-	public static Validator sendTempPassword(UserDto userDto){
+	public static Validator sendTempPassword(HttpServletRequest request, UserDto userDto){
 		Validator val=new Validator();
-		String sessionID = HeaderService.getUserSessionId();	
+		String sessionID = HeaderService.getUserSessionId(request);	
 		try {
 			val = Initializer.rmi.sendTempPassword(userDto, sessionID);
 			

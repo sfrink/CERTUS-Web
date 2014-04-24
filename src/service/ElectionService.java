@@ -1,21 +1,20 @@
 package service;
 
 import java.rmi.RemoteException;
-import java.util.ArrayList;
+
+import javax.servlet.http.HttpServletRequest;
 
 import rmi.Initializer;
-import dto.CandidateDto;
 import dto.ElectionDto;
 import dto.Validator;
 import dto.VoteDto;
 import enumeration.ElectionStatus;
-import enumeration.Status;
 
 public class ElectionService {
 	
-	public static Validator selectElectionsForVoter(int userId) {
+	public static Validator selectElectionsForVoter(HttpServletRequest request, int userId) {
 		Validator v1 = new Validator();
-		String sessionID = HeaderService.getUserSessionId();
+		String sessionID = HeaderService.getUserSessionId(request);
 
 		try {
 			v1 = Initializer.rmi.selectElectionsForVoter(userId, sessionID);
@@ -39,10 +38,10 @@ public class ElectionService {
 	}
 	
 	
-	public static Validator selectElectionForOwner(int id) {
+	public static Validator selectElectionForOwner(HttpServletRequest request, int id) {
 		Validator v1 = new Validator();
 		try {
-			String sessionID = HeaderService.getUserSessionId();
+			String sessionID = HeaderService.getUserSessionId(request);
 			v1 = Initializer.rmi.selectElectionForOwner(id, sessionID);
 		} catch (RemoteException e) {
 			v1.setVerified(false);
@@ -51,10 +50,10 @@ public class ElectionService {
 		return v1;
 	}
 
-	public static Validator selectElectionForVoter(int id) {
+	public static Validator selectElectionForVoter(HttpServletRequest request, int id) {
 		Validator v1 = new Validator();
 		try {
-			String sessionID = HeaderService.getUserSessionId();
+			String sessionID = HeaderService.getUserSessionId(request);
 			v1 = Initializer.rmi.selectElectionForVoter(id, sessionID);
 		} catch (RemoteException e) {
 			v1.setVerified(false);
@@ -64,10 +63,10 @@ public class ElectionService {
 	}
 	
 	
-	public static Validator deleteElection(int electionID){
+	public static Validator deleteElection(HttpServletRequest request, int electionID){
 		Validator val=new Validator();
 		try{
-			String sessionID = HeaderService.getUserSessionId();
+			String sessionID = HeaderService.getUserSessionId(request);
 			val=Initializer.rmi.deleteElection(electionID, sessionID);
 		}
 		catch (RemoteException e){
@@ -78,11 +77,11 @@ public class ElectionService {
 	}
 	
 	
-	public static Validator selectElectionFullDetail(int electionId) {
+	public static Validator selectElectionFullDetail(HttpServletRequest request, int electionId) {
 		Validator validator = null;
     	
 		try {
-			String sessionID = HeaderService.getUserSessionId();
+			String sessionID = HeaderService.getUserSessionId(request);
 			validator  = Initializer.rmi.selectElectionFullDetail(electionId, sessionID);
 			
 		} catch (RemoteException e) {
@@ -92,11 +91,11 @@ public class ElectionService {
 	}
 	
     
-	public static Validator selectElectionsForAdmin() {
+	public static Validator selectElectionsForAdmin(HttpServletRequest request) {
     	Validator validator = null;
     	
 		try {
-			String sessionID = HeaderService.getUserSessionId();
+			String sessionID = HeaderService.getUserSessionId(request);
 			validator  = Initializer.rmi.selectElectionsForAdmin(sessionID);
 			
 		} catch (RemoteException e) {
@@ -107,12 +106,12 @@ public class ElectionService {
     
 
     
-    public static Validator selectElectionsForOwner(int electionOwnerId) {
+    public static Validator selectElectionsForOwner(HttpServletRequest request, int electionOwnerId) {
     	
     	Validator validator = new Validator();
     	
 		try {
-			String sessionID = HeaderService.getUserSessionId();
+			String sessionID = HeaderService.getUserSessionId(request);
 			validator  = Initializer.rmi.selectElectionsForOwner(electionOwnerId, sessionID);
 		} catch (RemoteException e) {
 			e.printStackTrace();
@@ -123,12 +122,12 @@ public class ElectionService {
 
     
     
-    public static Validator addElection(ElectionDto electionDto)
+    public static Validator addElection(HttpServletRequest request, ElectionDto electionDto)
     {
     	Validator validator = new Validator();
     	
 		try {
-			String sessionID = HeaderService.getUserSessionId();
+			String sessionID = HeaderService.getUserSessionId(request);
 			validator  = Initializer.rmi.addElection(electionDto, sessionID);
 		} catch (RemoteException e) {
 			e.printStackTrace();
@@ -136,12 +135,12 @@ public class ElectionService {
 		return validator;
     }
     
-    public static Validator addAdditionalUsersToElection(ElectionDto electionDto)
+    public static Validator addAdditionalUsersToElection(HttpServletRequest request, ElectionDto electionDto)
     {
     	Validator validator = new Validator();
     	
 		try {
-			String sessionID = HeaderService.getUserSessionId();
+			String sessionID = HeaderService.getUserSessionId(request);
 			validator  = Initializer.rmi.addAdditionalUsersToElection(electionDto, sessionID);
 		} catch (RemoteException e) {
 			e.printStackTrace();
@@ -149,12 +148,12 @@ public class ElectionService {
 		return validator;
     }
     
-    public static Validator editElection(ElectionDto election)
+    public static Validator editElection(HttpServletRequest request, ElectionDto election)
     {
     	Validator validator = new Validator();
     	
 		try {
-			String sessionID = HeaderService.getUserSessionId();
+			String sessionID = HeaderService.getUserSessionId(request);
 			validator  = Initializer.rmi.editElection(election, sessionID);
 		} catch (RemoteException e) {
 			e.printStackTrace();
@@ -162,12 +161,12 @@ public class ElectionService {
 		return validator;
     }
     
-    public static Validator openElection(int electionId)
+    public static Validator openElection(HttpServletRequest request, int electionId)
     {
     	Validator validator = new Validator();
     	
 		try {
-			String sessionID = HeaderService.getUserSessionId();
+			String sessionID = HeaderService.getUserSessionId(request);
 			validator  = Initializer.rmi.openElectionAndPopulateCandidates(electionId, sessionID);
 		} catch (RemoteException e) {
 			e.printStackTrace();
@@ -175,12 +174,12 @@ public class ElectionService {
 		return validator;
     }
     
-    public static Validator reOpenElection(int electionId)
+    public static Validator reOpenElection(HttpServletRequest request, int electionId)
     {
     	Validator validator = new Validator();
     	
 		try {
-			String sessionID = HeaderService.getUserSessionId();
+			String sessionID = HeaderService.getUserSessionId(request);
 			validator  = Initializer.rmi.editElectionStatus(electionId, ElectionStatus.OPEN, sessionID);
 		} catch (RemoteException e) {
 			e.printStackTrace();
@@ -188,12 +187,12 @@ public class ElectionService {
 		return validator;
     }
     
-    public static Validator closeElection(int electionId)
+    public static Validator closeElection(HttpServletRequest request, int electionId)
     {
     	Validator validator = new Validator();
     	
 		try {
-			String sessionID = HeaderService.getUserSessionId();
+			String sessionID = HeaderService.getUserSessionId(request);
 			validator  = Initializer.rmi.editElectionStatus(electionId, ElectionStatus.CLOSED, sessionID);
 		} catch (RemoteException e) {
 			e.printStackTrace();
@@ -201,11 +200,11 @@ public class ElectionService {
 		return validator;
     }
     
-    public static Validator publishResults(int electionId, String password){
+    public static Validator publishResults(HttpServletRequest request, int electionId, String password){
     	Validator val=new Validator();
     	
     	try{
-			String sessionID = HeaderService.getUserSessionId();
+			String sessionID = HeaderService.getUserSessionId(request);
     		val=Initializer.rmi.publishResults(electionId, password, sessionID);
     	} catch(RemoteException e){
     		e.printStackTrace();
@@ -213,12 +212,12 @@ public class ElectionService {
     	return val;
     }
     
-    public static Validator disableElection(int electionId)
+    public static Validator disableElection(HttpServletRequest request, int electionId)
     {
     	Validator validator = new Validator();
     	
 		try {
-			String sessionID = HeaderService.getUserSessionId();
+			String sessionID = HeaderService.getUserSessionId(request);
 			validator  = Initializer.rmi.deleteElection(electionId, sessionID);
 		} catch (RemoteException e) {
 			e.printStackTrace();
@@ -228,11 +227,11 @@ public class ElectionService {
 
 
     
-    public static Validator selectElectionsForVotingForUser(int userId) {
+    public static Validator selectElectionsForVotingForUser(HttpServletRequest request, int userId) {
     	Validator validator = new Validator();
     	
     	try {
-			String sessionID = HeaderService.getUserSessionId();
+			String sessionID = HeaderService.getUserSessionId(request);
 			validator  = Initializer.rmi.selectElectionsForVoter(userId, sessionID);
 		} catch (RemoteException e) {
 			e.printStackTrace();
@@ -243,11 +242,11 @@ public class ElectionService {
     
     
     
-    public static Validator selectElectionsForResults(int userId) {
+    public static Validator selectElectionsForResults(HttpServletRequest request, int userId) {
     	Validator validator = new Validator();
     	
     	try {
-			String sessionID = HeaderService.getUserSessionId();
+			String sessionID = HeaderService.getUserSessionId(request);
 			validator  = Initializer.rmi.selectElectionsForResults(userId, sessionID);
 		} catch (RemoteException e) {
 			e.printStackTrace();
@@ -257,11 +256,11 @@ public class ElectionService {
     }
 
     
-    public static Validator selectResults(int electionId) {
+    public static Validator selectResults(HttpServletRequest request, int electionId) {
     	Validator validator = new Validator();
     	
     	try {
-			String sessionID = HeaderService.getUserSessionId();
+			String sessionID = HeaderService.getUserSessionId(request);
 			validator  = Initializer.rmi.selectResults(electionId, sessionID);
 		} catch (RemoteException e) {
 			e.printStackTrace();

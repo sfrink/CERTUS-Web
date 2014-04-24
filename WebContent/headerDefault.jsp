@@ -1,3 +1,4 @@
+<%@page import="service.HeaderService"%>
 <%@page import="rmi.Initializer"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" %>
@@ -37,6 +38,19 @@ if(request.isSecure()) {
 <title>CERTUS <%=conStatus %></title>
 </head>
 <body>
+
+<p class="text-center">
+
+<%=request.getSession().getId() %></br>
+
+<%
+if(HeaderService.isSessionStarted(request)) {
+	out.print(HeaderService.sessionToString(request));
+}
+%>
+
+
+</p>
 
 
 

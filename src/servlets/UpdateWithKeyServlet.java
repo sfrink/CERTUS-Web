@@ -91,7 +91,7 @@ public class UpdateWithKeyServlet extends HttpServlet {
         	newUser.setPassword(password);
         	newUser.setPublicKeyBytes(publicKeyBytes);
         	
-        	Validator res = InvitedUserService.updateUserWithPublicKey(newUser);
+        	Validator res = InvitedUserService.updateUserWithPublicKey(request, newUser);
       
         	if (res.isVerified()){
             	outUpload = drawSuccessfullUpload();

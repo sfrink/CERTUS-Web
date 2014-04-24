@@ -2,7 +2,7 @@
 
 <jsp:include page="headerDefault.jsp" />
 
-<% if(HeaderService.isAuthenticated()) { %>
+<% if(HeaderService.isAuthenticated(request)) { %>
   <jsp:include page="headerTopBarAuthenticated.jsp" /> 	
 <% } else { %>
   <jsp:include page="headerTopBarDefault.jsp" />

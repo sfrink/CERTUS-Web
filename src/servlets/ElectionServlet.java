@@ -59,12 +59,12 @@ public class ElectionServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// check authentication
-		if (HeaderService.isTempUser()){
+		if (HeaderService.isTempUser(request)){
 			RequestDispatcher rd = getServletContext().getRequestDispatcher("/inviteduser");		
 			rd.forward(request, response);
-		} else if(HeaderService.isAuthenticated()) {
+		} else if(HeaderService.isAuthenticated(request)) {
 			resetGlobals();
-			routineExistingElections();
+			routineExistingElections(request);
 			
 			request.setAttribute("mode", mode);
 			request.setAttribute("message_alert", messageAlert);
@@ -84,7 +84,7 @@ public class ElectionServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if(HeaderService.isAuthenticated()) {
+		if(HeaderService.isAuthenticated(request)) {
 			resetGlobals();
 
 			if (request.getParameter("button_add_election") != null) {
@@ -118,7 +118,7 @@ public class ElectionServlet extends HttpServlet {
 				
 				
 			// refresh existing elections
-			routineExistingElections();
+			routineExistingElections(request);
 
 			request.setAttribute("mode", mode);
 			request.setAttribute("message_alert", messageAlert);
@@ -140,7 +140,7 @@ public class ElectionServlet extends HttpServlet {
 	 * @param elections
 	 * @return
 	 */
-	public String drawExistingElections(ArrayList<ElectionDto> elections) {
+	public String drawExistingElections(HttpServletRequest request, ArrayList<ElectionDto> elections) {
 		String out = "";
 				
 		if(elections != null && elections.size() != 0) {
@@ -156,7 +156,7 @@ public class ElectionServlet extends HttpServlet {
 			for (ElectionDto e : elections) {
 				int voted = 0;
 				
-				Validator v2 = TallyingService.voteProgressStatusForElection(e.getElectionId());
+				Validator v2 = TallyingService.voteProgressStatusForElection(request, e.getElectionId());
 				if(v2.isVerified()) {
 					ElectionProgressDto epd = (ElectionProgressDto) v2.getObject();
 					voted = epd.getTotalVotes();
@@ -494,10 +494,10 @@ public class ElectionServlet extends HttpServlet {
 	 * Dmitriy Karmazin
 	 * This function sets global variables to display existing elections
 	 */
-	public void routineExistingElections() {
+	public void routineExistingElections(HttpServletRequest request) {
 		// get the list of elections from DB
 		ArrayList<ElectionDto> allElections = new ArrayList<ElectionDto>();
-		Validator v = ElectionService.selectElectionsForOwner(HeaderService.getUserId());
+		Validator v = ElectionService.selectElectionsForOwner(request, HeaderService.getUserId(request));
 		
 		if(v.isVerified()) {
 			allElections = (ArrayList<ElectionDto>) v.getObject();	
@@ -505,7 +505,7 @@ public class ElectionServlet extends HttpServlet {
 			messageAlert = HtmlService.drawMessageAlert(v.getStatus(), "alert") ;
 		}
 		
-		outElections = drawExistingElections(allElections);
+		outElections = drawExistingElections(request, allElections);
 	}	
 	
 	
@@ -527,9 +527,9 @@ public class ElectionServlet extends HttpServlet {
 		newElection.setEmailList(request.getParameter("new_election_users"));
 		newElection.setPassword(request.getParameter("new_election_password"));
 		newElection.setEmailListInvited(getStringFromArray(request.getParameterValues("new_election_users_invited")));
-		newElection.setOwnerId(HeaderService.getUserId());
+		newElection.setOwnerId(HeaderService.getUserId(request));
 		// insert attempt
-		Validator vElection = ElectionService.addElection(newElection);
+		Validator vElection = ElectionService.addElection(request, newElection);
 
 		if (vElection.isVerified()) {
 			 //insert was successful
@@ -553,7 +553,7 @@ public class ElectionServlet extends HttpServlet {
 		resetGlobals();
 		// get election by provided election id
 		int electionId = Integer.parseInt(request.getParameter("election"));
-		Validator vEditElection = ElectionService.selectElectionForOwner(electionId);
+		Validator vEditElection = ElectionService.selectElectionForOwner(request, electionId);
 
 		if (vEditElection.isVerified()) {
 			ElectionDto editElection = (ElectionDto) vEditElection.getObject();
@@ -584,10 +584,10 @@ public class ElectionServlet extends HttpServlet {
 		editElection.setElectionType(Integer.parseInt(request.getParameter("edit_election_availability")));
 		editElection.setEmailList(request.getParameter("edit_election_users"));
 		editElection.setEmailListInvited(getStringFromArray(request.getParameterValues("edit_election_users_invited")));
-		editElection.setOwnerId(HeaderService.getUserId());
+		editElection.setOwnerId(HeaderService.getUserId(request));
 
 		// update existing election
-		Validator vEditElection = ElectionService.editElection(editElection);
+		Validator vEditElection = ElectionService.editElection(request, editElection);
 
 		if (vEditElection.isVerified()) {
 			// insert of candidates was successful
@@ -635,24 +635,24 @@ public class ElectionServlet extends HttpServlet {
 			action = ElectionStatus.PUBLISHED.getCode();
 		}
 		
-		Validator v1 = ElectionService.selectElectionForOwner(electionId);		
+		Validator v1 = ElectionService.selectElectionForOwner(request, electionId);		
 		if (v1.isVerified()) {
 			ElectionDto e = (ElectionDto) v1.getObject();
 
 			if (e.getStatus() == ElectionStatus.NEW.getCode()) {
 				// open election
-				Validator v2 = ElectionService.openElection(electionId);
+				Validator v2 = ElectionService.openElection(request, electionId);
 				messageAlert = HtmlService.drawMessageAlert(
 						v2.getStatus(), "");
 			} else if (e.getStatus() == ElectionStatus.OPEN.getCode()) {			
 				// close election
 				Validator v3 = ElectionService
-						.closeElection(electionId);
+						.closeElection(request, electionId);
 				messageAlert = HtmlService.drawMessageAlert(
 						v3.getStatus(), "success");
 			} else if (e.getStatus() == ElectionStatus.CLOSED.getCode() && action == ElectionStatus.OPEN.getCode()) {
 				// reopen
-				Validator v4 = ElectionService.reOpenElection(electionId);
+				Validator v4 = ElectionService.reOpenElection(request, electionId);
 				messageAlert = HtmlService.drawMessageAlert(
 						v4.getStatus(), "success");
 			}
@@ -675,7 +675,7 @@ public class ElectionServlet extends HttpServlet {
 			electionId = Integer.parseInt(request.getParameter("btn_elec_add_users"));
 		}
 
-		Validator vElectionUsers = ElectionService.selectElectionFullDetail(electionId);
+		Validator vElectionUsers = ElectionService.selectElectionFullDetail(request, electionId);
 
 		if (vElectionUsers.isVerified()) {
 			ElectionDto editElection = (ElectionDto) vElectionUsers.getObject();
@@ -699,9 +699,9 @@ public class ElectionServlet extends HttpServlet {
 		newElection.setElectionId(electionId);
 		newElection.setEmailList(request.getParameter("edit_election_new_users"));
 		newElection.setEmailListInvited(getStringFromArray(request.getParameterValues("edit_election_new_users_invited")));
-		newElection.setOwnerId(HeaderService.getUserId());
+		newElection.setOwnerId(HeaderService.getUserId(request));
 		// insert attempt
-		Validator vElection = ElectionService.addAdditionalUsersToElection(newElection);
+		Validator vElection = ElectionService.addAdditionalUsersToElection(request, newElection);
 
 		if (vElection.isVerified()) {
 			 //insert was successful
@@ -729,7 +729,7 @@ public class ElectionServlet extends HttpServlet {
 			electionId = Integer.parseInt(request.getParameter("btn_elec_publish"));
 		}
 
-		Validator vEditElection = ElectionService.selectElectionForOwner(electionId);
+		Validator vEditElection = ElectionService.selectElectionForOwner(request, electionId);
 		if (vEditElection.isVerified()) {
 			this.mode = "2";
 			this.outModal = drawPasswordWithConfirmForElection((ElectionDto) vEditElection.getObject());
@@ -794,7 +794,7 @@ public class ElectionServlet extends HttpServlet {
 			password = request.getParameter("election_publish_password");
 		}
 
-		Validator v1 = ElectionService.publishResults(electionId, password);
+		Validator v1 = ElectionService.publishResults(request, electionId, password);
 
 		if(v1.isVerified()) {
 			messageAlert = HtmlService.drawMessageAlert("Election published", "success");					

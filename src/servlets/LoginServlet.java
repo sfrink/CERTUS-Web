@@ -7,6 +7,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import dto.UserDto;
 import dto.Validator;
@@ -41,7 +42,14 @@ public class LoginServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		resetGlobals();
 		
-		if(HeaderService.isAuthenticated()) {
+		if(!HeaderService.isSessionStarted(request)) {
+			// if the session is not started, start and clear all parameters
+			HeaderService.resetSession(request);
+			HeaderService.startSession(request);
+		}
+		
+		
+		if(HeaderService.isAuthenticated(request)) {
 			// logged in, redirect to main
 			request.setAttribute("message_alert", messageAlert);
 			RequestDispatcher rd = getServletContext().getRequestDispatcher("/main");		
@@ -66,7 +74,7 @@ public class LoginServlet extends HttpServlet {
 		
 		if(request.getParameter("logout") != null) {
 			// logout button clicked
-			routineLogout();
+			routineLogout(request);
 			request.setAttribute("message_alert", messageAlert);
 			request.setAttribute("out_form", outForm);
 			RequestDispatcher rd = getServletContext().getRequestDispatcher("/login.jsp");		
@@ -83,22 +91,24 @@ public class LoginServlet extends HttpServlet {
 				
 				if (u.getType() == UserType.INVITED.getCode()) {
 					// Invited user who does not have updated profile yet.
-					HeaderService.deAuthenticate();
-					HeaderService.setUserId(u.getUserId());
-					HeaderService.setUserType(u.getType());
-					HeaderService.setTempUser(true);
-					HeaderService.setUserEmail(username);
-					HeaderService.setUserSessionId(u.getSessionId());
+					
+					HeaderService.deAuthenticate(request);
+					HeaderService.setUserId(request, u.getUserId());
+					HeaderService.setUserType(request, u.getType());
+					HeaderService.setTempUser(request, true);
+					HeaderService.setUserEmail(request, username);
+					HeaderService.setUserSessionId(request, u.getSessionId());
 					
 					RequestDispatcher rd = getServletContext().getRequestDispatcher("/inviteduser");		
 					rd.forward(request, response);
 				} else {
-					HeaderService.authenticate();
-					HeaderService.setUserId(u.getUserId());
-					HeaderService.setUserSessionId(u.getSessionId());
-					HeaderService.setUserName(username);
-					HeaderService.setUserType(u.getType());
-					HeaderService.setTempUser(false);
+										
+					HeaderService.authenticate(request);
+					HeaderService.setUserId(request, u.getUserId());
+					HeaderService.setUserSessionId(request, u.getSessionId());
+					HeaderService.setUserName(request, username);
+					HeaderService.setUserType(request, u.getType());
+					HeaderService.setTempUser(request, false);
 					
 					request.setAttribute("message_alert", messageAlert);
 					RequestDispatcher rd = getServletContext().getRequestDispatcher("/main");		
@@ -144,8 +154,8 @@ public class LoginServlet extends HttpServlet {
 	 * Dmitriy Karmazin
 	 * This function performs all actions required for logout procedure
 	 */
-	public void routineLogout() {
-		HeaderService.logout();
+	public void routineLogout(HttpServletRequest request) {
+		HeaderService.logout(request);
 		resetGlobals();
 		messageAlert = HtmlService.drawMessageAlert("Successfully logged out, thank you for using the system", "");
 		outForm = drawLoginFieldset(null);

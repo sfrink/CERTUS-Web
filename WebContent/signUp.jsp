@@ -1,6 +1,6 @@
 <%@page import="service.HeaderService"%>
 <%
-	if(HeaderService.isAuthenticated()) {
+	if(HeaderService.isAuthenticated(request)) {
 		RequestDispatcher rd = getServletContext().getRequestDispatcher("/login");
 		rd.forward(request, response);
 	}

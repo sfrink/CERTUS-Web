@@ -46,12 +46,12 @@ public class EditPorfileServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if (HeaderService.isTempUser()){
+		if (HeaderService.isTempUser(request)){
 			RequestDispatcher rd = getServletContext().getRequestDispatcher("/inviteduser");		
 			rd.forward(request, response);
-		} else if(HeaderService.isAuthenticated()) {
+		} else if(HeaderService.isAuthenticated(request)) {
 			resetGlobals();
-			routineExistingUser();
+			routineExistingUser(request);
 			
 			request.setAttribute("mode", mode);
 			request.setAttribute("message_alert", messageAlert);
@@ -71,7 +71,7 @@ public class EditPorfileServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if(HeaderService.isAuthenticated()) {
+		if(HeaderService.isAuthenticated(request)) {
 			resetGlobals();
 
 			if (request.getParameter("button_edit") != null) {
@@ -86,7 +86,7 @@ public class EditPorfileServlet extends HttpServlet {
 				updateUserPassword(request);
 			}
 			// refresh 
-			routineExistingUser();
+			routineExistingUser(request);
 
 			request.setAttribute("mode", mode);
 			request.setAttribute("message_alert", messageAlert);
@@ -141,7 +141,7 @@ public class EditPorfileServlet extends HttpServlet {
 		newUser.setPassword(currentPassword);
 		newUser.setTempPassword(newPassword);
 				
-		Validator v = EditProfileService.updatePassword(newUser);
+		Validator v = EditProfileService.updatePassword(request, newUser);
 
 		if (v.isVerified()){
 			mode = "2";
@@ -164,7 +164,7 @@ public class EditPorfileServlet extends HttpServlet {
 		newUser.setFirstName(firstName);
 		newUser.setLastName(lastName);
 				
-		Validator v = EditProfileService.editUser(newUser);
+		Validator v = EditProfileService.editUser(request, newUser);
 
 		if (v.isVerified()){
 			mode = "2";
@@ -321,10 +321,10 @@ public class EditPorfileServlet extends HttpServlet {
 		return out;
 	}
 	
-	public void routineExistingUser() {
+	public void routineExistingUser(HttpServletRequest request) {
 		// get the user info from DB
 		UserDto userInfo = new UserDto();
-		Validator v = EditProfileService.selectUser(HeaderService.getUserId());
+		Validator v = EditProfileService.selectUser(request, HeaderService.getUserId(request));
 		
 		if(v.isVerified()) {
 			userInfo = (UserDto) v.getObject();	

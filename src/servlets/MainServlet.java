@@ -47,13 +47,13 @@ public class MainServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		resetGlobals();
-		if (HeaderService.isTempUser()){
+		if (HeaderService.isTempUser(request)){
 			RequestDispatcher rd = getServletContext().getRequestDispatcher("/inviteduser");		
 			rd.forward(request, response);
-		} else if(HeaderService.isAuthenticated()) {
+		} else if(HeaderService.isAuthenticated(request)) {
 
-			routineExistingElectionsForVoting();
-			routineExistingElectionsForResults();
+			routineExistingElectionsForVoting(request);
+			routineExistingElectionsForResults(request);
 			
 			request.setAttribute("mode", mode);
 			request.setAttribute("message_alert", messageAlert);
@@ -74,7 +74,7 @@ public class MainServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		resetGlobals();
 		
-		if(HeaderService.isAuthenticated()) {
+		if(HeaderService.isAuthenticated(request)) {
 
 			// OPEN RETULTS
 			if(request.getParameter("button_election_results") != null) {
@@ -90,8 +90,8 @@ public class MainServlet extends HttpServlet {
 				routineVoteSubmittedRoutine(request);
 			}
 
-			routineExistingElectionsForVoting();
-			routineExistingElectionsForResults();
+			routineExistingElectionsForVoting(request);
+			routineExistingElectionsForResults(request);
 
 			request.setAttribute("mode", mode);
 			request.setAttribute("message_alert", messageAlert);
@@ -386,10 +386,10 @@ public class MainServlet extends HttpServlet {
 	 * Dmitriy Karmazin
 	 * This function performs all routines required to get and display all elections this user can vote in
 	 */
-	public void routineExistingElectionsForVoting() {
+	public void routineExistingElectionsForVoting(HttpServletRequest request) {
 		// 1. get the list of all elections this user can vote in
 		ArrayList<ElectionDto> allElections = new ArrayList<ElectionDto>();
-		Validator vAllElections = ElectionService.selectElectionsForVoter(HeaderService.getUserId());
+		Validator vAllElections = ElectionService.selectElectionsForVoter(request, HeaderService.getUserId(request));
 		if(vAllElections.isVerified()) {
 			allElections = (ArrayList<ElectionDto>) vAllElections.getObject();
 		} else {
@@ -404,11 +404,11 @@ public class MainServlet extends HttpServlet {
 	 * Dmitriy Karmazin
 	 * This function performs all the routines required for displaying existing elections
 	 */
-	public void routineExistingElectionsForResults() {
+	public void routineExistingElectionsForResults(HttpServletRequest request) {
 		ArrayList<ElectionDto> allElections = new ArrayList<ElectionDto>();
 
 		// 1. get the list of all elections this user voted in and which are closed
-		Validator vAllElections = ElectionService.selectElectionsForResults(HeaderService.getUserId());
+		Validator vAllElections = ElectionService.selectElectionsForResults(request, HeaderService.getUserId(request));
 
 		if(vAllElections.isVerified()) {
 			allElections = (ArrayList<ElectionDto>) vAllElections.getObject();
@@ -428,7 +428,7 @@ public class MainServlet extends HttpServlet {
 	public void routineElectionResults(HttpServletRequest request) {
 		resetGlobals();
 		int electionId = Integer.parseInt(request.getParameter("button_election_results"));
-		Validator v = ElectionService.selectResults(electionId);
+		Validator v = ElectionService.selectResults(request, electionId);
 		
 		if(v.isVerified()) {
 			// get election object
@@ -449,7 +449,7 @@ public class MainServlet extends HttpServlet {
 	public void routineVoteModalStep1(HttpServletRequest request) {
 		resetGlobals();
 		int electionId = Integer.parseInt(request.getParameter("button_vote"));
-		Validator v = ElectionService.selectElectionForVoter(electionId);
+		Validator v = ElectionService.selectElectionForVoter(request, electionId);
 		
 		if(v.isVerified()) {
 			// get election object
@@ -471,7 +471,7 @@ public class MainServlet extends HttpServlet {
 	public void routineVoteModalStep2(HttpServletRequest request) {
 		resetGlobals();
 		int electionId = Integer.parseInt(request.getParameter("button_next"));
-		Validator v = ElectionService.selectElectionForVoter(electionId);
+		Validator v = ElectionService.selectElectionForVoter(request, electionId);
 		
 		if(v.isVerified()) {
 			// extract election object
@@ -480,13 +480,13 @@ public class MainServlet extends HttpServlet {
 			// get selected option
 			if(request.getParameter("voting_choice") != null) {
 				int candidateId = Integer.parseInt(request.getParameter("voting_choice"));
-				Validator vEnc = VotingService.encryptCandidateId(candidateId, electionId);
+				Validator vEnc = VotingService.encryptCandidateId(request, candidateId, electionId);
 
 				if(vEnc.isVerified()) {
 					String cipherText = (String) vEnc.getObject();
 					
 					VoteDto vote = new VoteDto();
-					vote.setUserId(HeaderService.getUserId());
+					vote.setUserId(HeaderService.getUserId(request));
 					vote.setElectionId(electionId);
 					vote.setVoteEncrypted(cipherText);
 					vote.setVoteSignatureError(false);
@@ -521,7 +521,7 @@ public class MainServlet extends HttpServlet {
 		if (request.getParameter("text_cipher") != null && request.getParameter("text_signature") != null) {
 			// get election
 			int electionId = Integer.parseInt(request.getParameter("button_submit_vote"));
-			Validator v = ElectionService.selectElectionForVoter(electionId);
+			Validator v = ElectionService.selectElectionForVoter(request, electionId);
 
 			if (v.isVerified()) {
 				// get election object
@@ -530,12 +530,12 @@ public class MainServlet extends HttpServlet {
 				String inputSignature = request.getParameter("text_signature");
 
 				VoteDto vote = new VoteDto();
-				vote.setUserId(HeaderService.getUserId());
+				vote.setUserId(HeaderService.getUserId(request));
 				vote.setElectionId(electionId);
 				vote.setVoteEncrypted(inputCipher);
 				vote.setVoteSignature(inputSignature);
 
-				Validator vVote = VotingService.saveVote(vote);
+				Validator vVote = VotingService.saveVote(request, vote);
 				if (vVote.isVerified()) {
 					mode = "2";
 					outModal = drawVotingInterfaceForElectionStep3();

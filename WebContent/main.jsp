@@ -1,7 +1,7 @@
 <%@page import="service.HtmlService"%>
 <%@page import="service.HeaderService"%>
 <%
-if(!HeaderService.isAuthenticated()) {
+if(!HeaderService.isAuthenticated(request)) {
  	RequestDispatcher rd = getServletContext().getRequestDispatcher("/login");
 	rd.forward(request, response);		
 }
@@ -20,7 +20,7 @@ String outModal = (String) request.getAttribute("out_modal");
 <%=messageAlert %>
 
 <div class="row" data-equalizer>
-	<% if(HeaderService.hasAccess("election")) { %>
+	<% if(HeaderService.hasAccess(request, "election")) { %>
   	  <div class="large-12 columns">
         <div class="left">
           <a href="election" class="button tiny radius">Manage my elections</a>
@@ -58,11 +58,11 @@ String outModal = (String) request.getAttribute("out_modal");
 
 <div class="row">
   <div class="large-12 columns">
-	<% if(HeaderService.hasAccess("adminElection")) { %>
+	<% if(HeaderService.hasAccess(request, "adminElection")) { %>
 	  <p><a href="adminElection" class="button radius">Delete Elections</a></p>
 	<% } %>
 
-	<% if(HeaderService.hasAccess("adminUser")) { %>
+	<% if(HeaderService.hasAccess(request, "adminUser")) { %>
       <p><a href="adminUser" class="button radius">Edit Users</a></p>
 	<% } %>
   </div>

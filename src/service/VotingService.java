@@ -4,6 +4,7 @@ import java.rmi.RemoteException;
 import java.security.PublicKey;
 
 import javax.crypto.Cipher;
+import javax.servlet.http.HttpServletRequest;
 
 import rmi.Initializer;
 import dto.Validator;
@@ -12,12 +13,12 @@ import dto.VoteDto;
 public class VotingService {
 
 	
-	public static Validator saveVote(VoteDto vote) {
+	public static Validator saveVote(HttpServletRequest request, VoteDto vote) {
 		Validator v1 = new Validator();
 		Validator v2 = new Validator();
 		
 		try {
-			String sessionID = HeaderService.getUserSessionId();
+			String sessionID = HeaderService.getUserSessionId(request);
 			v2 = Initializer.rmi.vote(vote, sessionID);
 
 			if(v2.isVerified()) {
@@ -39,13 +40,13 @@ public class VotingService {
 
 	
 	
-	public static Validator encryptCandidateId(int candidateId, int electionId) {
+	public static Validator encryptCandidateId(HttpServletRequest request, int candidateId, int electionId) {
 		Validator v1 = new Validator();
 		Validator v2 = new Validator();
 
 		// get public key from the server
 		try {
-			String sessionID = HeaderService.getUserSessionId();
+			String sessionID = HeaderService.getUserSessionId(request);
 			v2 = Initializer.rmi.getTallierPublicKey(electionId, sessionID);
 		
 			if(v2.isVerified()) {

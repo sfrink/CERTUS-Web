@@ -30,15 +30,15 @@
           <a href="#">Settings</a>
           <ul class="dropdown"><li class="title back js-generated"><h5><a href="javascript:void(0)">Back</a></h5></li>
 
-			<% if(HeaderService.hasAccess("profile")) { %>
+			<% if(HeaderService.hasAccess(request, "profile")) { %>
 			  <li><a href="profile">Edit Profile</a></li>
 			<% } %>
 
-			<% if(HeaderService.hasAccess("newkey")) { %>
+			<% if(HeaderService.hasAccess(request, "newkey")) { %>
 			  <li><a href="newkey">Generate New Key</a></li>
 			<% } %>
 
-			<% if(HeaderService.hasAccess("upload")) { %>
+			<% if(HeaderService.hasAccess(request, "upload")) { %>
 			  <li><a href="uploadkeypage">Upload Public Key</a></li>
 			<% } %>
           </ul>

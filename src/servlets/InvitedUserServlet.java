@@ -50,7 +50,7 @@ public class InvitedUserServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		if(!HeaderService.isTempUser()) {
+		if(!HeaderService.isTempUser(request)) {
 			// if the user is not temp user, redirect to main.jsp
 			messageAlert = HtmlService.drawMessageAlert("Select option to proceed", "");
 			request.setAttribute("message_alert", messageAlert);
@@ -81,7 +81,7 @@ public class InvitedUserServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		if(!HeaderService.isTempUser()) {
+		if(!HeaderService.isTempUser(request)) {
 			
 			// if the user is not temp user, redirect to main.jsp
 			messageAlert = HtmlService.drawMessageAlert("Select option to proceed", "");
@@ -99,27 +99,27 @@ public class InvitedUserServlet extends HttpServlet {
 				//forward parameters:
 				firstName = request.getParameter("new_user_firstname");
 				lastName = request.getParameter("new_user_lastname");
-				emailAdd = HeaderService.getUserEmail();
+				emailAdd = HeaderService.getUserEmail(request);
 				password = request.getParameter("new_user_password");
 				
 				//draw advanced options page:
-				routineShowAdvancedModal();
+				routineShowAdvancedModal(request);
 			}else if (request.getParameter("button_basic_signup") != null){
 				//Update temp user with basic information:
 				//get the values:
 				firstName = request.getParameter("new_user_firstname");
 				lastName = request.getParameter("new_user_lastname");
-				emailAdd = HeaderService.getUserEmail();
+				emailAdd = HeaderService.getUserEmail(request);
 				password = request.getParameter("new_user_password");
 				
 				//Do basic update:
-				doBasicUpdate();
+				doBasicUpdate(request);
 			}else if (request.getParameter("generate_and_submit_button") != null){
 				//Update user with key protection password:
 				// get the protection password:
 				keyPassword = request.getParameter("new_key_password");
 				//Do update:
-				doUpdateWithKeyProtectionPassword();
+				doUpdateWithKeyProtectionPassword(request);
 			}
 			
 			
@@ -134,18 +134,18 @@ public class InvitedUserServlet extends HttpServlet {
 	}
 	
 	
-	public void doBasicUpdate(){
+	public void doBasicUpdate(HttpServletRequest request){
 		resetGlobals();
 		
 		UserDto newUser = new UserDto();
 
 		newUser.setFirstName(firstName);
 		newUser.setLastName(lastName);
-		newUser.setEmail(HeaderService.getUserEmail());
+		newUser.setEmail(HeaderService.getUserEmail(request));
 		newUser.setPassword(password);
 		
 		
-		Validator v = InvitedUserService.addUpdateUser(newUser);
+		Validator v = InvitedUserService.addUpdateUser(request, newUser);
 
 		if (v.isVerified()){
 			outModal = drawSuccessfullAdding();
@@ -158,7 +158,7 @@ public class InvitedUserServlet extends HttpServlet {
 	/**
 	 * This function tries to add new user to the DB and generate keys:
 	 */
-	public void doUpdateWithKeyProtectionPassword(){
+	public void doUpdateWithKeyProtectionPassword(HttpServletRequest request){
 		resetGlobals();
 
 		UserDto newUser = new UserDto();
@@ -169,7 +169,7 @@ public class InvitedUserServlet extends HttpServlet {
 		newUser.setPassword(password);
 		newUser.setTempPassword(keyPassword);
 		
-		Validator v = InvitedUserService.updateUserwithKeyProtectionPassword(newUser);
+		Validator v = InvitedUserService.updateUserwithKeyProtectionPassword(request, newUser);
 
 		if (v.isVerified()){
 			outModal = drawSuccessfullAdding();
@@ -234,18 +234,18 @@ public class InvitedUserServlet extends HttpServlet {
 	 */
 	public void routineUpdateNewUserModal(HttpServletRequest request) {	
 		resetGlobals();
-		outModal = drawUpdateUser();
+		outModal = drawUpdateUser(request);
 	}
 
 	
-	public void routineShowAdvancedModal(){
+	public void routineShowAdvancedModal(HttpServletRequest request){
 		resetGlobals();
 		messageAlert = HtmlService.drawMessageAlert("Advanced Options", "");
-		outModal = drawAdvancedOptions();
+		outModal = drawAdvancedOptions(request);
 	}
 	
 	
-	public String drawAdvancedOptions(){
+	public String drawAdvancedOptions(HttpServletRequest request){
 		String out = "";
 		
 		out += "<form id=\"advanced_form\" action=\"inviteduser\" method=\"post\" data-abide>";
@@ -290,7 +290,7 @@ public class InvitedUserServlet extends HttpServlet {
 						out += "<input name=\"uploadFile\" id=\"FileInput\" type=\"file\" size=\"10240\" disabled=\"disabled\">";
 						out += "<input type=\"hidden\" name=\"user_firstName\" value=\"" + firstName + "\">";
 						out += "<input type=\"hidden\" name=\"user_lastName\" value=\"" + lastName + "\">";
-						out += "<input type=\"hidden\" name=\"user_email\" value=\"" + HeaderService.getUserEmail() + "\">";
+						out += "<input type=\"hidden\" name=\"user_email\" value=\"" + HeaderService.getUserEmail(request) + "\">";
 						out += "<input type=\"hidden\" name=\"user_password\" value=\"" + password + "\">";
 						out += "<button id=\"button_start_uploading\" type=\"submit\" value=\"Upload\" disabled=\"disabled\" class=\"radius button left\" name=\"upload_and_submit_button\">Upload and Submit</button>";
 				out += "</fieldset>";
@@ -333,7 +333,7 @@ public class InvitedUserServlet extends HttpServlet {
 	 * This method draws HTML modal output for a new user
 	 * @return HTML output
 	 */
-	public String drawUpdateUser() {
+	public String drawUpdateUser(HttpServletRequest request) {
 		String out = "";
 		
 		out += "<form id=\"form_user_new\" action=\"inviteduser\" method=\"post\" data-abide>";
@@ -346,7 +346,7 @@ public class InvitedUserServlet extends HttpServlet {
 		
 		out += "<div class=\"" + "new_user_email" + "\">";
 		out += "<label>" + "E-mail Address" + " <small>required</small>";
-		out += "<input disabled=\"none\" type=\"email\" name=\""+ "new_user_email" + "\" placeholder=\"" + "your@email.address" + "\" value=\"" + HeaderService.getUserEmail() + "\" required \">";
+		out += "<input disabled=\"none\" type=\"email\" name=\""+ "new_user_email" + "\" placeholder=\"" + "your@email.address" + "\" value=\"" + HeaderService.getUserEmail(request) + "\" required \">";
 		out += "</label>";
 		out += "<small class=\"error\">" + "E-mail Address" + " field can only contain letters and numbers and cannot be empty</small>";
 		out += "</div>";

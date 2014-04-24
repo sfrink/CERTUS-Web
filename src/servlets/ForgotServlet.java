@@ -41,10 +41,10 @@ public class ForgotServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		resetGlobals();
-		if (HeaderService.isTempUser()){
+		if (HeaderService.isTempUser(request)){
 			RequestDispatcher rd = getServletContext().getRequestDispatcher("/inviteduser");		
 			rd.forward(request, response);
-		} else if(HeaderService.isAuthenticated()) {
+		} else if(HeaderService.isAuthenticated(request)) {
 			// logged in, redirect to main
 			request.setAttribute("message_alert", messageAlert);
 			RequestDispatcher rd = getServletContext().getRequestDispatcher("/main");		
@@ -62,10 +62,10 @@ public class ForgotServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		resetGlobals();
 
-		if (HeaderService.isTempUser()){
+		if (HeaderService.isTempUser(request)){
 			RequestDispatcher rd = getServletContext().getRequestDispatcher("/inviteduser");		
 			rd.forward(request, response);
-		} else if(HeaderService.isAuthenticated()) {
+		} else if(HeaderService.isAuthenticated(request)) {
 			// logged in, redirect to main
 			request.setAttribute("message_alert", messageAlert);
 			RequestDispatcher rd = getServletContext().getRequestDispatcher("/main");		
@@ -73,7 +73,7 @@ public class ForgotServlet extends HttpServlet {
 		} else if(request.getParameter("getTemp") != null) {
 			String email=request.getParameter("username");
 			
-			Validator v=UserService.selectUserByEmail(email);
+			Validator v=UserService.selectUserByEmail(request, email);
 			UserDto u=(UserDto)v.getObject();
 			
 			if(!v.isVerified()){
@@ -93,9 +93,9 @@ public class ForgotServlet extends HttpServlet {
 					rd.forward(request, response);
 				} else {
 					if(u.getType()==UserType.ELECTORATE.getCode() || u.getType()==UserType.AUTHORITY.getCode()){
-						EditProfileService.sendTempPassword(u).isVerified();
+						EditProfileService.sendTempPassword(request, u).isVerified();
 					} else if(u.getType()==UserType.INVITED.getCode()){
-						InvitedUserService.resendInvitation(u).isVerified();
+						InvitedUserService.resendInvitation(request, u).isVerified();
 					}
 					request.setAttribute("email", email);
 					request.setAttribute("message_alert",messageAlert);
