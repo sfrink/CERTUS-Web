@@ -30,6 +30,7 @@ import enumeration.ElectionType;
 import enumeration.Status;
 
 /**
+ * Dmitriy Karmazin | dkarmazi
  * Servlet implementation class ElectionServlet
  */
 @WebServlet(name = "election", urlPatterns = { "/election" })
@@ -55,6 +56,7 @@ public class ElectionServlet extends HttpServlet {
     }
 
 	/**
+	 * Dmitriy Karmazin
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -81,6 +83,7 @@ public class ElectionServlet extends HttpServlet {
 
 	
 	/**
+	 * Dmitriy Karmazin
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -136,6 +139,7 @@ public class ElectionServlet extends HttpServlet {
 	
 	
 	/**
+	 * Dmitriy Karmazin
 	 * This function returns HTML output for all existing elections
 	 * @param elections
 	 * @return
@@ -239,7 +243,7 @@ public class ElectionServlet extends HttpServlet {
 		out += HtmlService.drawInputTextareaAlphanumeric("new_election_candidates", "Candidates names", placeHoldElecCand, valElecCand, valElecCandError, valElecCandErrorMessage, true, "");
 		out += "</fieldset>";
 		// public and private
-		out += "<fieldset><legend>Election avalability</legend>";
+		out += "<fieldset><legend>Election availability</legend>";
 		out += HtmlService.drawSelectBoxElectionPrivateOrPublic("new_election_availability", valElecAvailability);
 		// draw allowed users info
 		out += "<div id=\"new_election_users_column\" " + usersFieldStyle + ">";
@@ -311,7 +315,7 @@ public class ElectionServlet extends HttpServlet {
 		out += "</div>";
 		// draw allowed users info
 		out += "<div class=\"large-6 medium-6 columns\">";
-		out += "<fieldset><legend>Election avalability</legend>";
+		out += "<fieldset><legend>Election availability</legend>";
 		out += HtmlService.drawSelectBoxElectionPrivateOrPublic("edit_election_availability", valElecAvailability);
 		// draw allowed users info
 		out += "<div id=\"edit_election_users_column\" " + usersStyle + ">";
@@ -383,8 +387,6 @@ public class ElectionServlet extends HttpServlet {
 		
 		
 	}
-	
-	
 	
 	
 	/**

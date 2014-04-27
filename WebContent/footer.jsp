@@ -17,7 +17,7 @@
       </div>
 
       <div class="row">
-        <div class="large-12 medium-12 small-12 columns text-center"><p>Copyright © 2014 CERTUS Voting System<p></div>
+        <div class="large-12 medium-12 small-12 columns text-center"><p>Copyright &#169; 2014 CERTUS Voting System<p></div>
       </div>  
     </div>
   </footer>

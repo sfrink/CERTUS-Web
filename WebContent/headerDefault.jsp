@@ -39,11 +39,6 @@ if(request.isSecure()) {
 </head>
 <body>
 
-<p class="text-center">
-<%=request.getSession().getId() %></br>
-</p>
-
-
 
 
 
