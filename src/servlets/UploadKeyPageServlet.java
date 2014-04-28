@@ -119,7 +119,7 @@ public class UploadKeyPageServlet extends HttpServlet {
 					out += HtmlService.drawInputTextPassword("user_password", "Your Password", "Your Password", "", false, "");			
 					//error messages:
 					out += "<div id=\"emptyFileError\" style=\"display: none\"><p><font color=\"red\">Please select a file.</font></p></div>";
-					out += "<div id=\"largeFileError\" style=\"display: none\"><p><font color=\"red\">The file is larger than 10 bytes.</font></p></div>";
+					out += "<div id=\"largeFileError\" style=\"display: none\"><p><font color=\"red\">The file is larger than 10 kilobytes.</font></p></div>";
 					out += "<div id=\"apiFileError\" style=\"display: none\"><p><font color=\"red\">The file API isn't supported on this browser yet.</font></p></div>";
 					out += "Your file size cannot be larger than 10 bytes.";
 					out += "<div class=\"row\">";						
