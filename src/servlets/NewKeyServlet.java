@@ -184,7 +184,7 @@ public class NewKeyServlet extends HttpServlet {
 				out += "<fieldset>";
 					out += "<legend>Key Protection Password</legend>";
 					out += HtmlService.drawInputTextPassword("user_password", "Your Password", "Your Password", "", false, "");
-					out += HtmlService.drawInputTextPasswordAndConfirmation("new_key_password", "Key Protection Password", "new_key_password_confirm", "Confirm Key Protection Password");
+					out += HtmlService.drawInputTextPasswordAndConfirmation("new_key_password", "Key Protection Password", "new_key_password_confirm", "Confirm Key Protection Password", false);
 					out += "<p><h5>Once you hit the generate button, we will generate new protected signing key for you and send it to your email address.</h5></p>";
 					out += "<p><h5>P.S. this might take few seconds, please wait.</h5></p>";
 					out += "<ul class=\"button-group\">";

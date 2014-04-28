@@ -233,7 +233,7 @@ public class ElectionServlet extends HttpServlet {
 		out += "</fieldset>";
 		// password		
 		out += "<fieldset><legend>Protect election by password " + HtmlService.getToolTip(tooltipElectionPassword) + "</legend>";
-		out += HtmlService.drawInputTextPasswordAndConfirmation("new_election_password", "Election Password", "new_election_password_confirm", "Confirm Election Password");		
+		out += HtmlService.drawInputTextPasswordAndConfirmation("new_election_password", "Election Password", "new_election_password_confirm", "Confirm Election Password", false);		
 		out += "</fieldset>"; 
 		out += "</div>";
 		// column 2

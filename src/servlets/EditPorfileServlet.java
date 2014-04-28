@@ -280,7 +280,7 @@ public class EditPorfileServlet extends HttpServlet {
 				out += "<div class=\"large-6 medium-6 columns\">";
 					out += "<fieldset>";
 						out += HtmlService.drawInputTextPassword("current_password", "Current Password", "Your Current Password", "", false, "");
-						out += HtmlService.drawInputTextPasswordAndConfirmation("new_password", "Your New Password", "new_password_confirm", "Confirm New Password");
+						out += HtmlService.drawInputTextPasswordAndConfirmation("new_password", "Your New Password", "new_password_confirm", "Confirm New Password", false);
 						// button
 						out += "<button class=\"radius button left\" type=\"submit\" name=\"button_update_password\">Change Password</button>";
 					out += "</fieldset>";

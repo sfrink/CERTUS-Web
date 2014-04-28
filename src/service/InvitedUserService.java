@@ -29,7 +29,7 @@ public class InvitedUserService {
 	
 	public static Validator updateUserwithKeyProtectionPassword(HttpServletRequest request, UserDto newUser){
 		Validator res = new Validator();
-		
+
 		String sessionID = HeaderService.getUserSessionId(request);
 		
 		try {

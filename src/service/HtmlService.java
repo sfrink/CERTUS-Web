@@ -199,13 +199,17 @@ public class HtmlService {
 		return out;		
 	}
 	
-	public static String drawInputTextPasswordAndConfirmation(String pField_name, String pLabel, String cField_name, String cLabel) {
+	public static String drawInputTextPasswordAndConfirmation(String pField_name, String pLabel, String cField_name, String cLabel, boolean disabled) {
 		String out = "";
 		
 		//Password Field:
 		out += "<div class=\"" + pField_name + "\">";
 		out += "<label>" + pLabel + " <small>Required</small>";
-		out += "<input type=\"password\" name=\""+ pField_name + "\" placeholder=\"" + pLabel + "\" id=\"" + pField_name + "\" required pattern=\"[a-zA-Z]+\">";
+		if (!disabled){
+			out += "<input type=\"password\" name=\""+ pField_name + "\" placeholder=\"" + pLabel + "\" id=\"" + pField_name + "\" required pattern=\"[a-zA-Z]+\">";
+		}else{
+			out += "<input type=\"password\" name=\""+ pField_name + "\" placeholder=\"" + pLabel + "\" id=\"" + pField_name + "\" required pattern=\"[a-zA-Z]+\" disabled=\"disabled\">";
+		}
 		out += "</label>";
 		out += "<small class=\"error\">Your password must match the requirements</small>";
 		out += "</div>";
@@ -213,7 +217,11 @@ public class HtmlService {
 		//Confirmation Field
 		out += "<div class=\"" + cField_name + "\">";
 		out += "<label>" + cLabel + " <small>Required</small>";
-		out += "<input type=\"password\" name=\""+ cField_name + "\" placeholder=\"" + cLabel + "\" id=\"" + cField_name + "\" required pattern=\"[a-zA-Z]+\" data-equalto=\""+ pField_name +"\">";
+		if(!disabled){
+			out += "<input type=\"password\" name=\""+ cField_name + "\" placeholder=\"" + cLabel + "\" id=\"" + cField_name + "\" required pattern=\"[a-zA-Z]+\" data-equalto=\""+ pField_name +"\">";
+		}else{
+			 out += "<input type=\"password\" name=\""+ cField_name + "\" placeholder=\"" + cLabel + "\" id=\"" + cField_name + "\" required pattern=\"[a-zA-Z]+\" data-equalto=\""+ pField_name +"\" disabled=\"disabled\">";			
+		}
 		out += "</label>";
 		out += "<small class=\"error\">Passwords don't match</small>";
 		out += "</div>";
