@@ -104,7 +104,7 @@ public class ForgotServlet extends HttpServlet {
 		out += "<fieldset>";
 		out += "<legend>Reset Password</legend>";
 		out += HtmlService.drawInputTextEmail("username", "Email", "your@email.address", u.getEmail());		
-		out += "<input type=\"submit\" name=\"getTemp\" class=\"small radius button\" value=\"Send Email\">";
+		out += "<input type=\"submit\" name=\"getTemp\" class=\"small radius button\" value=\"Reset Password\">";
 		out += "</fieldset>";
 		out += "</form>";
 		
