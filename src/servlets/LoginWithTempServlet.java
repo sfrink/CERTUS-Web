@@ -46,19 +46,12 @@ public class LoginWithTempServlet extends HttpServlet {
 			RequestDispatcher rd = getServletContext().getRequestDispatcher("/main");		
 			rd.forward(request, response);
 			
-		} else if(request.getAttribute("messageAlert").equals("1")){
+		} else {
 			UserDto u=new UserDto();
 			outForm=drawLoginFieldset(u);
 			request.setAttribute("message_alert", messageAlert);
 			request.setAttribute("out_form", outForm);
-			RequestDispatcher rd = getServletContext().getRequestDispatcher("/loginWithTemp");	
-			rd.forward(request, response);
-		}
-		else if(request.getAttribute("messageAlert").equals("2")){
-			outForm=resentInvitation();
-			request.setAttribute("message_alert",messageAlert);
-			request.setAttribute("out_form",outForm);
-			RequestDispatcher rd = getServletContext().getRequestDispatcher("/loginWithTemp");	
+			RequestDispatcher rd = getServletContext().getRequestDispatcher("/loginWithTemp.jsp");	
 			rd.forward(request, response);
 		}
 	}
@@ -105,7 +98,7 @@ public class LoginWithTempServlet extends HttpServlet {
 				rd.forward(request, response);
 			}
 		}
-		else{
+		/*else{
 			String email=(String)request.getAttribute("email");
 			Validator val=UserService.selectUserByEmail(request, email);
 			UserDto user=new UserDto();
@@ -130,7 +123,7 @@ public class LoginWithTempServlet extends HttpServlet {
 			else{
 				System.out.println("Something wrong with email; do something here");
 			}
-		}
+		}*/
 	}
 	
 	public String drawLoginFieldset(UserDto u) {
