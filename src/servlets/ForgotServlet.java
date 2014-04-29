@@ -75,7 +75,7 @@ public class ForgotServlet extends HttpServlet {
 			
 			Validator v=UserService.selectUserByEmail(request, email);
 			UserDto u=(UserDto)v.getObject();
-			
+			System.out.println(u);
 			if(v.isVerified()) {
 				if(u.getStatus()!=UserStatus.LOCKED.getCode()){
 					if(u.getType()==UserType.ELECTORATE.getCode() || u.getType()==UserType.AUTHORITY.getCode()){
