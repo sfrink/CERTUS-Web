@@ -109,7 +109,7 @@ public class UserService
 		return val;
 	}
 	
-	public static Validator selectUserByEmail(HttpServletRequest request, String email){
+	/*public static Validator selectUserByEmail(HttpServletRequest request, String email){
 		Validator val = new Validator();
 
 		try {
@@ -120,6 +120,6 @@ public class UserService
 			val.setStatus("RMI call failed");
 		}
 		return val;
-	}
+	}*/
 	
 }

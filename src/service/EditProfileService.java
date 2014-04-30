@@ -49,8 +49,20 @@ public class EditProfileService {
 		return val;
 	}
 	
+	public static Validator resetPassword(String email, HttpServletRequest request){
+		Validator val=new Validator();
+		String sessionID=HeaderService.getUserSessionId(request);
+		try{
+			val=Initializer.rmi.resetPassword(email,sessionID);
+		}
+		catch(RemoteException e){
+			val.setVerified(false);
+			val.setStatus("RMI call failed");
+		}
+		return val;
+	}
 	
-	public static Validator sendTempPassword(HttpServletRequest request, UserDto userDto){
+	/*public static Validator sendTempPassword(HttpServletRequest request, UserDto userDto){
 		Validator val=new Validator();
 		String sessionID = HeaderService.getUserSessionId(request);	
 		try {
@@ -61,6 +73,6 @@ public class EditProfileService {
 			val.setStatus("RMI call failed");
 		}
 		return val;
-	}
+	}*/
 	
 }

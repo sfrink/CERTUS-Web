@@ -73,7 +73,8 @@ public class ForgotServlet extends HttpServlet {
 		} else if(request.getParameter("getTemp") != null) {
 			String email=request.getParameter("username");
 			
-			Validator v=UserService.selectUserByEmail(request, email);
+			Validator v=EditProfileService.resetPassword(email, request);
+			/*Validator v=UserService.selectUserByEmail(request, email);
 			UserDto u=(UserDto)v.getObject();
 			if(v.isVerified()) {
 				if(u.getStatus()!=UserStatus.LOCKED.getCode()){
@@ -83,7 +84,8 @@ public class ForgotServlet extends HttpServlet {
 						InvitedUserService.resendInvitation(request, u).isVerified();
 					}
 				}
-			}
+			}*/
+			System.out.println(v.getStatus());
 			outForm=drawEmailSentScreen();
 			request.setAttribute("message_alert",messageAlert);
 			request.setAttribute("out_form", outForm);

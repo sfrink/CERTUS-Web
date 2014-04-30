@@ -59,7 +59,7 @@ public class InvitedUserService {
 		return res;
 	} 
 
-	public static Validator resendInvitation(HttpServletRequest request, UserDto u){
+	/*public static Validator resendInvitation(HttpServletRequest request, UserDto u){
 		Validator val=new Validator();
 		String sessionID = HeaderService.getUserSessionId(request);
 		try{
@@ -72,6 +72,6 @@ public class InvitedUserService {
 		
 		
 		return val;
-	}
+	}*/
 
 }
