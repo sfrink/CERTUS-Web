@@ -287,5 +287,20 @@ public class HtmlService {
 		return out;
 	}
 	
-	
+
+	/**
+	 * This function return HTML output to display tooltip with given message
+	 * @author Dmitriy Karmazin | dkarmazi
+	 * @param message
+	 * @return
+	 */
+	public static String getToolTip(String label, String message) {
+		String out = "";
+		
+		if(!message.equals("")) {
+			out += "<span data-tooltip class=\"has-tip tip-top\" title=\"" + message + "\">" + label + "</span>";
+		}
+		
+		return out;
+	}
 }
