@@ -74,18 +74,6 @@ public class ForgotServlet extends HttpServlet {
 			String email=request.getParameter("username");
 			
 			Validator v=EditProfileService.resetPassword(email);
-			/*Validator v=UserService.selectUserByEmail(request, email);
-			UserDto u=(UserDto)v.getObject();
-			if(v.isVerified()) {
-				if(u.getStatus()!=UserStatus.LOCKED.getCode()){
-					if(u.getType()==UserType.ELECTORATE.getCode() || u.getType()==UserType.AUTHORITY.getCode()){
-						EditProfileService.sendTempPassword(request, u).isVerified();
-					} else if(u.getType()==UserType.INVITED.getCode()){
-						InvitedUserService.resendInvitation(request, u).isVerified();
-					}
-				}
-			}*/
-			System.out.println(v.getStatus());
 			outForm=drawEmailSentScreen();
 			request.setAttribute("message_alert",messageAlert);
 			request.setAttribute("out_form", outForm);

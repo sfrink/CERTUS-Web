@@ -59,19 +59,4 @@ public class InvitedUserService {
 		return res;
 	} 
 
-	/*public static Validator resendInvitation(HttpServletRequest request, UserDto u){
-		Validator val=new Validator();
-		String sessionID = HeaderService.getUserSessionId(request);
-		try{
-			Initializer.rmi.resendInvitation(u,sessionID);
-		}
-		catch(RemoteException e){
-			val.setVerified(false);
-			val.setStatus("RMI failed");
-		}
-		
-		
-		return val;
-	}*/
-
 }
