@@ -23,11 +23,11 @@
       <h5>Checksums</h5>
       
       <p style="word-wrap:break-word;">
-        SHA512: 36d8bef4da830ce40451a3a26a42c8fe4063d6bb8cfe2281f9b612bf708d26178b58572448980078bad7cc9c8baa030bdb41791ae1823a45cd5d9f66017b17ed
+        SHA512:</br> 36d8bef4da830ce40451a3a26a42c8fe4063d6bb8cfe2281f9b612bf708d26178b58572448980078bad7cc9c8baa030bdb41791ae1823a45cd5d9f66017b17ed
 	  </p>
 
       <p style="word-wrap:break-word;">
-        MD5: cf32d820babf34f1e6450772db021c5f
+        MD5:</br> cf32d820babf34f1e6450772db021c5f
 	  </p>
  	</div>
   </div>
