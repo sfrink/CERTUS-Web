@@ -123,7 +123,9 @@ public class AdminUserServlet extends HttpServlet {
 	
 	public String drawExistingUsers(ArrayList<UserDto> users) {
 		String out = "";
-				
+		String firstName ="";
+		String lastName = "";
+		
 		if(users != null && users.size() != 0) {
 			out += "<h5>Existing users</h5>";
 			out += "<form action=\"adminUser\" method=\"post\">";
@@ -136,10 +138,12 @@ public class AdminUserServlet extends HttpServlet {
 			out += "</tr></thead><tbody>";
 			
 			for (UserDto u : users) {
+				firstName = (u.getFirstName() == null) ?  "[invited user]" : u.getFirstName();
+				lastName = (u.getLastName() == null) ?  "" : u.getLastName();
 				
 				out += "<tr>";
 				//out += "<td>"+ u.getUserId() + "</td>";
-				out += "<td>" + u.getFirstName() +" "+u.getLastName()+ "</td>";
+				out += "<td>" + firstName +" "+lastName+ "</td>";
 				out += "<td>" + u.getEmail() + "</td>";
 				out += "<td>"+ drawUserStatusColored(u.getStatus(), u.getStatusDescription()) + " </td>";
 				out += "<td>" + drawUserEdit(u.getUserId()) + "</td>";
