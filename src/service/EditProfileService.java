@@ -49,11 +49,10 @@ public class EditProfileService {
 		return val;
 	}
 	
-	public static Validator resetPassword(String email, HttpServletRequest request){
+	public static Validator resetPassword(String email){
 		Validator val=new Validator();
-		String sessionID=HeaderService.getUserSessionId(request);
 		try{
-			val=Initializer.rmi.resetPassword(email,sessionID);
+			val=Initializer.rmi.resetPassword(email);
 		}
 		catch(RemoteException e){
 			val.setVerified(false);

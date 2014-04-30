@@ -73,7 +73,7 @@ public class ForgotServlet extends HttpServlet {
 		} else if(request.getParameter("getTemp") != null) {
 			String email=request.getParameter("username");
 			
-			Validator v=EditProfileService.resetPassword(email, request);
+			Validator v=EditProfileService.resetPassword(email);
 			/*Validator v=UserService.selectUserByEmail(request, email);
 			UserDto u=(UserDto)v.getObject();
 			if(v.isVerified()) {
