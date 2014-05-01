@@ -41,7 +41,13 @@ public class LoginServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		resetGlobals();
-				
+		
+		if(!HeaderService.isSessionStarted(request)) {
+			// if the session is not started, start and clear all parameters
+			HeaderService.resetSession(request);
+			HeaderService.startSession(request);
+		}
+
 		
 		if(HeaderService.isAuthenticated(request)) {
 			// logged in, redirect to main

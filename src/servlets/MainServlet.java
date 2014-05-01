@@ -53,8 +53,10 @@ public class MainServlet extends HttpServlet {
 			rd.forward(request, response);
 		} else if(HeaderService.isAuthenticated(request)) {
 
-			routineExistingElectionsForVoting(request);
-			routineExistingElectionsForResults(request);
+			if(HeaderService.hasAccess(request, "election")) {
+				routineExistingElectionsForVoting(request);
+				routineExistingElectionsForResults(request);				
+			}
 			
 			request.setAttribute("mode", mode);
 			request.setAttribute("message_alert", messageAlert);

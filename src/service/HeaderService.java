@@ -53,8 +53,13 @@ public class HeaderService {
 	}	
 
 	public static String getUserEmail(HttpServletRequest request) {
-		String value = (String) request.getSession().getAttribute("userEmail");
-		return value;
+		String out = "";
+			
+		if(request.getSession().getAttribute("userEmail") != null) {
+			out = (String) request.getSession().getAttribute("userEmail");
+		}
+			
+		return out;		
 	}
 
 	public static void setUserEmail(HttpServletRequest request, String userEmail) {
@@ -62,8 +67,13 @@ public class HeaderService {
 	}
 	
 	public static boolean isTempUser(HttpServletRequest request) {
-		boolean value = (boolean) request.getSession().getAttribute("tempUser");
-		return value;
+		boolean out = false;
+			
+		if(request.getSession().getAttribute("tempUser") != null) {
+			out = (boolean) request.getSession().getAttribute("tempUser");
+		}
+			
+		return out;
 	}
 
 	public static void setTempUser(HttpServletRequest request, boolean tempUser) {
@@ -71,8 +81,13 @@ public class HeaderService {
 	}
 	
 	public static boolean isAuthenticated(HttpServletRequest request) {
-		boolean value = (boolean) request.getSession().getAttribute("auth");
-		return value;
+		boolean out = false;
+		
+		if(request.getSession().getAttribute("auth") != null) {
+			out = (boolean) request.getSession().getAttribute("auth");
+		}
+			
+		return out;
 	}
 
 	public static void authenticate(HttpServletRequest request) {
@@ -90,13 +105,23 @@ public class HeaderService {
 	
 	
 	public static boolean usedTemp(HttpServletRequest request){
-		boolean value = (boolean) request.getSession().getAttribute("loginWithTemp");
-		return value;
+		boolean out = false;
+		
+		if(request.getSession().getAttribute("loginWithTemp") != null) {
+			out = (boolean) request.getSession().getAttribute("loginWithTemp");
+		}
+			
+		return out;
 	}
 
 	public static int getUserId(HttpServletRequest request) {
-		int value = (int) request.getSession().getAttribute("userId");
-		return value;
+		int out = -1;
+		
+		if(request.getSession().getAttribute("userId") != null) {
+			out = (int) request.getSession().getAttribute("userId");
+		}
+			
+		return out;
 	}
 
 	public static void setUserId(HttpServletRequest request, int userId) {
@@ -104,8 +129,13 @@ public class HeaderService {
 	}
 
 	public static String getUserSessionId(HttpServletRequest request) {
-		String value = (String) request.getSession().getAttribute("userSessionId");
-		return value;
+		String out = "";
+		
+		if(request.getSession().getAttribute("userSessionId") != null) {
+			out = (String) request.getSession().getAttribute("userSessionId");
+		}
+			
+		return out;
 	}
 
 	public static void setUserSessionId(HttpServletRequest request, String userSessionId) {
@@ -113,8 +143,13 @@ public class HeaderService {
 	}
 	
 	public static String getUserName(HttpServletRequest request) {
-		String value = (String) request.getSession().getAttribute("userName");
-		return value;
+		String out = "";
+		
+		if(request.getSession().getAttribute("userName") != null) {
+			out = (String) request.getSession().getAttribute("userName");
+		}
+			
+		return out;
 	}
 
 	public static void setUserName(HttpServletRequest request, String userName) {
@@ -122,8 +157,13 @@ public class HeaderService {
 	}
 	
 	public static int getUserType(HttpServletRequest request) {
-		int value = (int) request.getSession().getAttribute("userType");
-		return value;		
+		int out = -1;
+		
+		if(request.getSession().getAttribute("userType") != null) {
+			out = (int) request.getSession().getAttribute("userType");
+		}
+			
+		return out;
 	}
 
 	public static void setUserType(HttpServletRequest request, int userType) {
