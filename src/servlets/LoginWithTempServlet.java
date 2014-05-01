@@ -105,32 +105,6 @@ public class LoginWithTempServlet extends HttpServlet {
 				rd.forward(request, response);
 			}
 		}
-		/*else{
-			String email=(String)request.getAttribute("email");
-			Validator val=UserService.selectUserByEmail(request, email);
-			UserDto user=new UserDto();
-			if(val.isVerified()){
-				user=(UserDto)val.getObject();
-				if(user.getType()==0){
-					UserDto u=new UserDto();
-					outForm=drawLoginFieldset(u);
-					request.setAttribute("message_alert", messageAlert);
-					request.setAttribute("out_form", outForm);
-					RequestDispatcher rd = getServletContext().getRequestDispatcher("/loginWithTemp.jsp");	
-					rd.forward(request, response);
-				}
-				else if(user.getType()==2){
-					outForm=resentInvitation();
-					request.setAttribute("message_alert",messageAlert);
-					request.setAttribute("out_form",outForm);
-					RequestDispatcher rd = getServletContext().getRequestDispatcher("/loginWithTemp.jsp");	
-					rd.forward(request, response);
-				}
-			}
-			else{
-				System.out.println("Something wrong with email; do something here");
-			}
-		}*/
 	}
 	
 	public String drawLoginFieldset(UserDto u) {
