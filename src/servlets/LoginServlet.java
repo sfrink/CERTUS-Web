@@ -88,7 +88,8 @@ public class LoginServlet extends HttpServlet {
 				if (u.getType() == UserType.INVITED.getCode()) {
 					// Invited user who does not have updated profile yet.
 					
-					HeaderService.deAuthenticate(request);
+//					HeaderService.deAuthenticate(request);
+					HeaderService.authenticate(request);					
 					HeaderService.setUserId(request, u.getUserId());
 					HeaderService.setUserType(request, u.getType());
 					HeaderService.setTempUser(request, true);

@@ -1,7 +1,7 @@
 <%@page import="service.HeaderService"%>
 <%
 	if(!HeaderService.isTempUser(request)) {
-		RequestDispatcher rd = getServletContext().getRequestDispatcher("/main.jsp");
+		RequestDispatcher rd = getServletContext().getRequestDispatcher("/main");
 		rd.forward(request, response);
 	}
 

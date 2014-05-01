@@ -60,7 +60,7 @@ public class InvitedUserServlet extends HttpServlet {
 			messageAlert = HtmlService.drawMessageAlert("Select option to proceed", "");
 			request.setAttribute("message_alert", messageAlert);
 			
-			RequestDispatcher rd = getServletContext().getRequestDispatcher("/main.jsp");		
+			RequestDispatcher rd = getServletContext().getRequestDispatcher("/main");		
 			rd.forward(request, response);
 		} else {
 			//if the user is a temp user:
@@ -90,7 +90,7 @@ public class InvitedUserServlet extends HttpServlet {
 			// if the user is not temp user, redirect to main.jsp
 			messageAlert = HtmlService.drawMessageAlert("Select option to proceed", "");
 			request.setAttribute("message_alert", messageAlert);
-			RequestDispatcher rd = getServletContext().getRequestDispatcher("/main.jsp");		
+			RequestDispatcher rd = getServletContext().getRequestDispatcher("/main");		
 			rd.forward(request, response);
 		}else{
 			
@@ -162,6 +162,7 @@ public class InvitedUserServlet extends HttpServlet {
 
 		if (v.isVerified()){
 			outModal = drawSuccessfullAdding();
+			HeaderService.logout(request);
 		}else{
 			outModal = drawFailedAdding(v.getStatus());
 		}
@@ -186,6 +187,7 @@ public class InvitedUserServlet extends HttpServlet {
 
 		if (v.isVerified()){
 			outModal = drawSuccessfullAdding();
+			HeaderService.logout(request);
 		}else{
 			outModal = drawFailedAdding(v.getStatus());
 		}
@@ -235,6 +237,7 @@ public class InvitedUserServlet extends HttpServlet {
           
             	if (res.isVerified()){
             		outModal = drawSuccessfullAdding();
+        			HeaderService.logout(request);
                 }else{
                 	outModal = drawFailedAdding(res.getStatus());
                 }
