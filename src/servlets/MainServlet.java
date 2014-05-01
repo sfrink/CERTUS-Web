@@ -14,6 +14,7 @@ import dto.CandidateDto;
 import dto.ElectionDto;
 import dto.Validator;
 import dto.VoteDto;
+import enumeration.UserType;
 import service.ElectionService;
 import service.HeaderService;
 import service.HtmlService;
@@ -90,8 +91,10 @@ public class MainServlet extends HttpServlet {
 				routineVoteSubmittedRoutine(request);
 			}
 
-			routineExistingElectionsForVoting(request);
-			routineExistingElectionsForResults(request);
+			if(HeaderService.hasAccess(request, "election")) {
+				routineExistingElectionsForVoting(request);
+				routineExistingElectionsForResults(request);				
+			}
 
 			request.setAttribute("mode", mode);
 			request.setAttribute("message_alert", messageAlert);

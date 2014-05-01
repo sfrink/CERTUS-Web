@@ -27,8 +27,6 @@ String outModal = (String) request.getAttribute("out_modal");
           <%= HtmlService.getToolTip("You can start your own election or manage existing elections.") %>
         </div>
  	  </div>
-	<% } %>
-
   <div class="large-12 columns">
     <div class="large-6 medium-6 small-6 columns panel clear" data-equalizer-watch>
 	  <h5>You can vote in the following elections:</h5>
@@ -41,6 +39,7 @@ String outModal = (String) request.getAttribute("out_modal");
     </div>
   </div>
 </div>
+	<% } %>
 
 
 <!-- MODAL -->
