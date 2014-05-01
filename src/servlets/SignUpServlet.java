@@ -55,11 +55,14 @@ public class SignUpServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		if(HeaderService.isAuthenticated(request)) {
+		if (HeaderService.isTempUser(request)){
+			RequestDispatcher rd = getServletContext().getRequestDispatcher("/inviteduser");		
+			rd.forward(request, response);
+		} else if(HeaderService.isAuthenticated(request)) {
 			// logged in, redirect to main
 			messageAlert = HtmlService.drawMessageAlert("Select option to proceed", "");
 			request.setAttribute("message_alert", messageAlert);
-			RequestDispatcher rd = getServletContext().getRequestDispatcher("/main.jsp");		
+			RequestDispatcher rd = getServletContext().getRequestDispatcher("/main");		
 			rd.forward(request, response);
 		}else {
 			// user came for the first time, prepare login screen
@@ -79,7 +82,10 @@ public class SignUpServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if(HeaderService.isAuthenticated(request)) {
+		if (HeaderService.isTempUser(request)){
+			RequestDispatcher rd = getServletContext().getRequestDispatcher("/inviteduser");		
+			rd.forward(request, response);
+		} else if(HeaderService.isAuthenticated(request)) {
 			// logged in, redirect to main
 			messageAlert = HtmlService.drawMessageAlert("Select option to proceed", "");
 			request.setAttribute("message_alert", messageAlert);

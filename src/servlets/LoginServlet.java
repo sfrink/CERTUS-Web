@@ -42,13 +42,16 @@ public class LoginServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		resetGlobals();
 		
-		if(HeaderService.isAuthenticated(request)) {
+		if (HeaderService.isTempUser(request)){
+			RequestDispatcher rd = getServletContext().getRequestDispatcher("/inviteduser");		
+			rd.forward(request, response);
+		} else if (HeaderService.isAuthenticated(request)) {
 			// logged in, redirect to main
 			request.setAttribute("message_alert", messageAlert);
 			RequestDispatcher rd = getServletContext().getRequestDispatcher("/main");		
 			rd.forward(request, response);
 		
-		}else{
+		} else{
 			// user came for the first time, prepare login screen
 			routinePrepareFirstLogin();
 			request.setAttribute("message_alert", messageAlert);
