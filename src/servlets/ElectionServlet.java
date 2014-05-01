@@ -174,7 +174,7 @@ public class ElectionServlet extends HttpServlet {
 				out += "<td class =\"" + trClass + "\">" + e.getElectionName() + "</td>";
 				out += "<td class =\"" + trClass + "\">" + drawElectionStatus(e.getStatus(), e.getStatusDescription()) + "</td>";
 				out += "<td class =\"" + trClass + "\">" + voted + " votes</td>";
-				out += "<td class =\"" + trClass + "\">" + votersTotal + "</td>";				
+				out += "<td class =\"" + trClass + "\">" + votersTotal + " voters</td>";				
 				out += "<td class =\"" + trClass + "\">" + drawElectionAction(e.getElectionId(), e.getStatus(), e.getElectionType()) + "</td>";
 				out += "</tr>";
 			}
