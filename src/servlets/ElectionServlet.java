@@ -154,16 +154,18 @@ public class ElectionServlet extends HttpServlet {
 			out += "<th>Election Name</th>";
 			out += "<th>Election Status</th>";
 			out += "<th>Votes Collected</th>";			
+			out += "<th>Eligible to Vote</th>";
 			out += "<th>Action</th>";
 			out += "</tr></thead><tbody>";
 
 			for (ElectionDto e : elections) {
-				int voted = 0;
+				int voted = 0, votersTotal = 0;
 				
 				Validator v2 = TallyingService.voteProgressStatusForElection(request, e.getElectionId());
 				if(v2.isVerified()) {
 					ElectionProgressDto epd = (ElectionProgressDto) v2.getObject();
 					voted = epd.getTotalVotes();
+					votersTotal = epd.getTotalEligible();
 				}
 				
 				String trClass = getElectionTableRowClass(e.getStatus());
@@ -172,6 +174,7 @@ public class ElectionServlet extends HttpServlet {
 				out += "<td class =\"" + trClass + "\">" + e.getElectionName() + "</td>";
 				out += "<td class =\"" + trClass + "\">" + drawElectionStatus(e.getStatus(), e.getStatusDescription()) + "</td>";
 				out += "<td class =\"" + trClass + "\">" + voted + " votes</td>";
+				out += "<td class =\"" + trClass + "\">" + votersTotal + "</td>";				
 				out += "<td class =\"" + trClass + "\">" + drawElectionAction(e.getElectionId(), e.getStatus(), e.getElectionType()) + "</td>";
 				out += "</tr>";
 			}
