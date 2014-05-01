@@ -140,7 +140,7 @@ function prepareInvitedForm() {
 
 
 <jsp:include page="headerDefault.jsp" /> 
-<jsp:include page="headerTopBarDefault.jsp" />
+<jsp:include page="headerTopBarAuthenticated.jsp" />
 
 <%=messageAlert %>
  
