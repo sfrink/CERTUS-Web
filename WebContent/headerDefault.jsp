@@ -2,6 +2,16 @@
 <%@page import="rmi.Initializer"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" %>
+    
+<%
+if(!HeaderService.isSessionStarted(request)) {
+	// if the session is not started, start and clear all parameters
+ 	HeaderService.resetSession(request);
+	HeaderService.startSession(request);
+}
+%> 
+    
+    
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>

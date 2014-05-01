@@ -38,12 +38,6 @@ public class LoginWithTempServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		resetGlobals();
 		
-		if(!HeaderService.isSessionStarted(request)) {
-			// if the session is not started, start and clear all parameters
-			HeaderService.resetSession(request);
-			HeaderService.startSession(request);
-		}
-
 		if (HeaderService.isTempUser(request)){
 			RequestDispatcher rd = getServletContext().getRequestDispatcher("/inviteduser");		
 			rd.forward(request, response);

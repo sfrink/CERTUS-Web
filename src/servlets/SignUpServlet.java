@@ -324,8 +324,9 @@ public class SignUpServlet extends HttpServlet {
 		
 		out += "<form id=\"form_user_new\" name=\"form_user_new\" action=\"signup\" method=\"post\" data-abide enctype=\"multipart/form-data\" onsubmit=\"return prepareForm()\" >"; 
 			// draw basic user info
-			out += "<div class=\"row\">";
-				out += "<div class=\"large-6 medium-6 columns\">";
+			out += "<div class=\"row\" data-equalizer>";
+				// LEFT
+				out += "<div class=\"large-6 medium-6 columns panel clear\" data-equalizer-watch>";
 					out += "<fieldset>";
 						out += "<legend>Basic Information</legend>";	
 						out += HtmlService.drawInputTextAlphanumeric("new_user_firstname", "First Name", placeHoldFirstName, "");
@@ -340,9 +341,18 @@ public class SignUpServlet extends HttpServlet {
 						out += "</p>";
 						
 					out += "</fieldset>";
-				out += "</div>";
-			out += "</div>";
-			out += "<div class=\"row\" id=\"div_generate_key\" style=\"display: none\">";
+
+					// buttons
+					out += "<p>";
+					out += "<button class=\"radius button left\" type=\"submit\" name=\"button_basic_signup\">Sign Up</button>";
+					out += "</p>";
+
+					out += "</div>";
+
+
+				// RIGHT
+				out += "<div class=\"large-6 medium-6 columns panel clear\" id=\"div_generate_key\" style=\"display: none\" data-equalizer-watch>";
+
 				//Basic Signup Radio:
 				out += "<input type=\"radio\" name=\"rdn_basic_signup\" id=\"rdn_basic_signup\" value=\"rdn_basic_signup\" onMouseDown=\"onBasicSignupRadioClick()\" checked><label onMouseDown=\"onBasicSignupRadioClick()\" for=\"rdn_basic_signup\">Basic Information Only</label><br>";
 				
@@ -350,7 +360,7 @@ public class SignUpServlet extends HttpServlet {
 				out += "<input type=\"radio\" name=\"rdn_generate_new_keys\" id=\"rdn_generate_new_keys\" value=\"rdn_generate_new_keys\" onMouseDown=\"onGenerateKeysRadioClick()\"><label onMouseDown=\"onGenerateKeysRadioClick()\" for=\"rdn_generate_new_keys\">Generate new protected private key</label><br>";
 			
 				//draw key protection fields:
-				out += "<div class=\"large-6 medium-6 columns\">";
+				out += "<div>";
 					out += "<fieldset>";
 						out += "<legend>Key Protection Password</legend>";
 						out += HtmlService.drawInputTextPasswordAndConfirmation("new_key_password", "Password", "new_key_password_confirm", "Confirm Password", true);
@@ -390,15 +400,7 @@ public class SignUpServlet extends HttpServlet {
 					out += "</fieldset>";
 				out += "</div>";		
 			out += "</div>";
-
-
-		
-			// buttons
-			out += "<p>";
-				out += "<div class=\"row\">";
-					out += "<button class=\"radius button left\" type=\"submit\" name=\"button_basic_signup\">Sign Up</button>";
-				out += "</div>";
-			out += "</p>";
+			out += "</div>";		
 		out += "</form>";
 		
 		return out; 
