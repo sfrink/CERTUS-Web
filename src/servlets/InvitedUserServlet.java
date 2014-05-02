@@ -135,8 +135,6 @@ public class InvitedUserServlet extends HttpServlet {
 				doUpdateWithPublicKey(request);
 			}
 
-			
-			
 			request.setAttribute("mode", mode);
 			request.setAttribute("message_alert", messageAlert);
 			request.setAttribute("message_label", messageLabel);
@@ -161,7 +159,7 @@ public class InvitedUserServlet extends HttpServlet {
 		Validator v = InvitedUserService.addUpdateUser(request, newUser);
 
 		if (v.isVerified()){
-			outModal = drawSuccessfullAdding();
+			outModal = drawSuccessfullAdding(newUser.getFirstName());
 			HeaderService.logout(request);
 		}else{
 			outModal = drawFailedAdding(v.getStatus());
@@ -186,7 +184,7 @@ public class InvitedUserServlet extends HttpServlet {
 		Validator v = InvitedUserService.updateUserwithKeyProtectionPassword(request, newUser);
 
 		if (v.isVerified()){
-			outModal = drawSuccessfullAdding();
+			outModal = drawSuccessfullAdding(newUser.getFirstName());
 			HeaderService.logout(request);
 		}else{
 			outModal = drawFailedAdding(v.getStatus());
@@ -236,7 +234,7 @@ public class InvitedUserServlet extends HttpServlet {
             	Validator res = InvitedUserService.updateUserWithPublicKey(request, newUser);
           
             	if (res.isVerified()){
-            		outModal = drawSuccessfullAdding();
+            		outModal = drawSuccessfullAdding(newUser.getFirstName());
         			HeaderService.logout(request);
                 }else{
                 	outModal = drawFailedAdding(res.getStatus());
@@ -253,11 +251,11 @@ public class InvitedUserServlet extends HttpServlet {
 	 * This function is to draw a welcome page after a successful adding user:
 	 * @return HTML String
 	 */
-	public String drawSuccessfullAdding(){
+	public String drawSuccessfullAdding(String fName){
 		String out = "";
 		
 		out += "<div class=\"row\">";
-			out += "<h3>Welcome " + firstName + " to Certus Voting System!</h3>";
+			out += "<h3>Welcome " + fName + " to Certus Voting System!</h3>";
 			out += "<a class=\"button radius\" href=\"login\">Let's get started!</a>";
 		out += "</div>";
 		
@@ -400,11 +398,6 @@ public class InvitedUserServlet extends HttpServlet {
 					out += "<p>Your file size cannot be larger than 10 kilobytes.</p>";
 					
 					out += "<input name=\"uploadFile\" id=\"FileInput\" type=\"file\" size=\"10240\" disabled=\"disabled\">";
-					out += "<input type=\"hidden\" name=\"user_firstName\" value=\"" + firstName + "\">";
-					out += "<input type=\"hidden\" name=\"user_lastName\" value=\"" + lastName + "\">";
-					out += "<input type=\"hidden\" name=\"user_email\" value=\"" + emailAdd + "\">";
-					out += "<input type=\"hidden\" name=\"user_password\" value=\"" + password + "\">";
-					out += "<input type=\"hidden\" name =\"testtest\" value =\"testtest\" >";
 
 				out += "</fieldset>";
 			out += "</div>";		

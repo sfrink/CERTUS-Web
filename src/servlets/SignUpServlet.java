@@ -155,7 +155,7 @@ public class SignUpServlet extends HttpServlet {
 		Validator v = SignUpService.addBasicUser(newUser);
 
 		if (v.isVerified()){
-			outModal = drawSuccessfullAdding();
+			outModal = drawSuccessfullAdding(newUser.getFirstName());
 		}else{
 			outModal = drawFailedAdding(v.getStatus());
 		}
@@ -205,28 +205,13 @@ public class SignUpServlet extends HttpServlet {
             	Validator res = SignUpService.addUserWithPublicKey(newUser);
           
             	if (res.isVerified()){
-            		outModal = drawSuccessfullAdding();
+            		outModal = drawSuccessfullAdding(newUser.getFirstName());
                 }else{
                 	outModal = drawFailedAdding(res.getStatus());
                 }
             }
         }
 
-	}
-	
-            
-    public String drawUploadingPageError(){
-		String out = "";
-		out += "<h5><font color=\"red\">You didn't select a file!</font></h5>";
-		out += "<h5>";
-		out += "Your file size cannot be larger than 10 kilbytes.";
-		out += "</h5>";
-		out += "<h5>";
-		out += "<div class=\"row\">";
-		out += "<a href=\"signup\">Start again</a>";
-		out += "</div>";
-
-		return out;
 	}
 
 	
@@ -247,21 +232,38 @@ public class SignUpServlet extends HttpServlet {
 		Validator v = SignUpService.addUserwithKeyProtectionPassword(newUser);
 
 		if (v.isVerified()){
-			outModal = drawSuccessfullAdding();
+			outModal = drawSuccessfullAdding(newUser.getFirstName());
 		}else{
 			outModal = drawFailedAdding(v.getStatus());
 		}
 	}
+
 	
+            
+    public String drawUploadingPageError(){
+		String out = "";
+		out += "<h5><font color=\"red\">You didn't select a file!</font></h5>";
+		out += "<h5>";
+		out += "Your file size cannot be larger than 10 kilbytes.";
+		out += "</h5>";
+		out += "<h5>";
+		out += "<div class=\"row\">";
+		out += "<a href=\"signup\">Start again</a>";
+		out += "</div>";
+
+		return out;
+	}
+
+
 	/**
 	 * This function is to draw a welcome page after a successful adding user:
 	 * @return HTML String
 	 */
-	public String drawSuccessfullAdding(){
+	public String drawSuccessfullAdding(String fname){
 		String out = "";
 		
 		out += "<div class=\"row\">";
-			out += "<h3>Welcome " + firstName + " to Certus Voting System!</h3>";
+			out += "<h3>Welcome " + fname + " to Certus Voting System!</h3>";
 			out += "<a class=\"button radius\" href=\"login\">Let's get started!</a>";
 		out += "</div>";
 		
@@ -297,17 +299,6 @@ public class SignUpServlet extends HttpServlet {
 		outModal = drawNewUser();
 	}
 
-	/**
-	 * This function performs required actions to show private key protection modal
-	 */
-	public void routineKeyProtectionModal(){
-		mode = "2";
-		messageLabel = HtmlService.drawMessageLabel("Please fill in required labels", "secondary");
-		outModal = drawKeyProtection();
-//		outModal += request.getParameter("new_user_firstname");
-		
-	}
-	
 	
 	/**
 	 * This functions resets all global variables for this class
@@ -397,11 +388,6 @@ public class SignUpServlet extends HttpServlet {
 						out += "<p>Your file size cannot be larger than 10 kilobytes.</p>";
 						
 						out += "<input name=\"uploadFile\" id=\"FileInput\" type=\"file\" size=\"10240\" disabled=\"disabled\">";
-						out += "<input type=\"hidden\" name=\"user_firstName\" value=\"" + firstName + "\">";
-						out += "<input type=\"hidden\" name=\"user_lastName\" value=\"" + lastName + "\">";
-						out += "<input type=\"hidden\" name=\"user_email\" value=\"" + emailAdd + "\">";
-						out += "<input type=\"hidden\" name=\"user_password\" value=\"" + password + "\">";
-						out += "<input type=\"hidden\" name =\"testtest\" value =\"testtest\" >";
 	
 					out += "</fieldset>";
 				out += "</div>";		
