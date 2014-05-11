@@ -18,11 +18,12 @@ public class NewKeyService {
 		int userID = HeaderService.getUserId(request);
 		String sessionID = HeaderService.getUserSessionId(request);
 		try {
-			res = Initializer.rmi.generateNewKeys(userID, newKeyPass, userPassword, sessionID);
-		} catch (RemoteException e) {
+			res = Initializer.getRmi().generateNewKeys(userID, newKeyPass, userPassword, sessionID);
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			res.setVerified(false);
 			res.setStatus("RMI failure.");
+			HeaderService.errorLogout(request);
 		}
 		return res;
 	}
@@ -43,11 +44,12 @@ public class NewKeyService {
 
 			buffer.flush();
 			
-			res = Initializer.rmi.uploadPubKey(buffer.toByteArray(), userPassword, sessionID);
-		} catch (RemoteException e) {
+			res = Initializer.getRmi().uploadPubKey(buffer.toByteArray(), userPassword, sessionID);
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			res.setVerified(false);
 			res.setStatus("RMI failure.");
+			HeaderService.errorLogout(request);
 		}
 		return res;
 

@@ -19,7 +19,7 @@ public class VotingService {
 		
 		try {
 			String sessionID = HeaderService.getUserSessionId(request);
-			v2 = Initializer.rmi.vote(vote, sessionID);
+			v2 = Initializer.getRmi().vote(vote, sessionID);
 
 			if(v2.isVerified()) {
 				v1.setVerified(true);
@@ -33,6 +33,7 @@ public class VotingService {
 			e.printStackTrace();
 			v1.setVerified(false);
 			v1.setStatus(e.toString() + "RMI failed");
+			HeaderService.errorLogout(request);
 		}
 				
 		return v1;
@@ -47,7 +48,7 @@ public class VotingService {
 		// get public key from the server
 		try {
 			String sessionID = HeaderService.getUserSessionId(request);
-			v2 = Initializer.rmi.getTallierPublicKey(electionId, sessionID);
+			v2 = Initializer.getRmi().getTallierPublicKey(electionId, sessionID);
 		
 			if(v2.isVerified()) {
 				String cipherText = "";
@@ -67,7 +68,7 @@ public class VotingService {
 				cipherText = byteArraytoHex(cipherBytes);
 
 				v1.setVerified(true);
-				v1.setObject(cipherText);			
+				v1.setObject(cipherText);
 			} else {
 				v1.setVerified(false);
 				v1.setStatus(v2.getStatus());
@@ -75,9 +76,11 @@ public class VotingService {
 		} catch(RemoteException e) {
 			v1.setVerified(false);
 			v1.setStatus("RMI call failed");
+			HeaderService.errorLogout(request);
 		} catch(Exception e) {
 			v1.setVerified(false);
-			v1.setStatus("Encryption failed");			
+			v1.setStatus("Encryption failed");
+			HeaderService.errorLogout(request);
 		}
 		
 		return v1;		

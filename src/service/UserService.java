@@ -34,10 +34,11 @@ public class UserService
 
 		try {
 			String sessionID = HeaderService.getUserSessionId(request);
-			val = Initializer.rmi.editUser(userDto, sessionID);
-		} catch (RemoteException e) {
+			val = Initializer.getRmi().editUser(userDto, sessionID);
+		} catch (Exception e) {
 			val.setVerified(false);
 			val.setStatus("RMI call failed");
+			HeaderService.errorLogout(request);
 		}
 		return val;
 	}
@@ -51,10 +52,11 @@ public class UserService
 
 		try {
 			String sessionID = HeaderService.getUserSessionId(request);
-			val = Initializer.rmi.selectUser(userId, sessionID);
-		} catch (RemoteException e) {
+			val = Initializer.getRmi().selectUser(userId, sessionID);
+		} catch (Exception e) {
 			val.setVerified(false);
 			val.setStatus("RMI call failed");
+			HeaderService.errorLogout(request);
 		}
 		return val;
 	}
@@ -67,10 +69,11 @@ public class UserService
 
 		try {
 			String sessionID = HeaderService.getUserSessionId(request);
-			val = Initializer.rmi.selectAllUsers(sessionID);
-		} catch (RemoteException e) {
+			val = Initializer.getRmi().selectAllUsers(sessionID);
+		} catch (Exception e) {
 			val.setVerified(false);
 			val.setStatus("RMI call failed");
+			HeaderService.errorLogout(request);
 		}
 		return val;
 	}
@@ -84,10 +87,11 @@ public class UserService
 
 		try {
 			String sessionID = HeaderService.getUserSessionId(request);
-			val = Initializer.rmi.editUserStatus(userId, UserStatus.ACTIVE, sessionID);
-		} catch (RemoteException e) {
+			val = Initializer.getRmi().editUserStatus(userId, UserStatus.ACTIVE, sessionID);
+		} catch (Exception e) {
 			val.setVerified(false);
 			val.setStatus("RMI call failed");
+			HeaderService.errorLogout(request);
 		}
 		return val;
 	}
@@ -101,10 +105,11 @@ public class UserService
 
 		try {
 			String sessionID = HeaderService.getUserSessionId(request);
-			val = Initializer.rmi.editUserStatus(userId, UserStatus.LOCKED, sessionID);
-		} catch (RemoteException e) {
+			val = Initializer.getRmi().editUserStatus(userId, UserStatus.LOCKED, sessionID);
+		} catch (Exception e) {
 			val.setVerified(false);
 			val.setStatus("RMI call failed");
+			HeaderService.errorLogout(request);
 		}
 		return val;
 	}

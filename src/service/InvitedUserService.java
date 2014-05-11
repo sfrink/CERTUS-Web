@@ -17,10 +17,11 @@ public class InvitedUserService {
 		String sessionID = HeaderService.getUserSessionId(request);
 		
 		try {
-			res = Initializer.rmi.updateTempUser(newUser, sessionID);
-		} catch (RemoteException e) {
+			res = Initializer.getRmi().updateTempUser(newUser, sessionID);
+		} catch (Exception e) {
 			res.setVerified(false);
 			res.setStatus("RMI failure.");
+			HeaderService.errorLogout(request);
 		}
 		
 		return res;
@@ -33,10 +34,11 @@ public class InvitedUserService {
 		String sessionID = HeaderService.getUserSessionId(request);
 		
 		try {
-			res = Initializer.rmi.UpdateTempUserWithPP(newUser, sessionID);
-		} catch (RemoteException e) {
+			res = Initializer.getRmi().UpdateTempUserWithPP(newUser, sessionID);
+		} catch (Exception e) {
 			res.setVerified(false);
 			res.setStatus("RMI failure.");
+			HeaderService.errorLogout(request);
 		}
 		
 		return res;
@@ -50,10 +52,11 @@ public class InvitedUserService {
 		String sessionID = HeaderService.getUserSessionId(request);
 		
 		try {
-			res = Initializer.rmi.UpdateTempUserWithKey(newUser, sessionID);
-		} catch (RemoteException e) {
+			res = Initializer.getRmi().UpdateTempUserWithKey(newUser, sessionID);
+		} catch (Exception e) {
 			res.setVerified(false);
 			res.setStatus("RMI failure.");
+			HeaderService.errorLogout(request);
 		}
 		
 		return res;

@@ -4,8 +4,14 @@
 <%
 String messageAlert = (String) request.getAttribute("message_alert");
 String outForm = (String) request.getAttribute("out_form");
+
+String messageErrorRmi = "";
+if(request.getAttribute("rmi_error") != null) {
+	messageErrorRmi = (String) request.getAttribute("rmi_error");
+}
 %>
 
+<%=messageErrorRmi %>
 <%=messageAlert %>
   
   

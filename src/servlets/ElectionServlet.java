@@ -159,13 +159,14 @@ public class ElectionServlet extends HttpServlet {
 			out += "</tr></thead><tbody>";
 
 			for (ElectionDto e : elections) {
-				int voted = 0, votersTotal = 0;
+				int voted = 0; 
+				String votersTotal = "";
 				
 				Validator v2 = TallyingService.voteProgressStatusForElection(request, e.getElectionId());
 				if(v2.isVerified()) {
 					ElectionProgressDto epd = (ElectionProgressDto) v2.getObject();
 					voted = epd.getTotalVotes();
-					votersTotal = epd.getTotalEligible();
+					votersTotal = getTotalEligibleVotes(epd.getTotalEligible());
 				}
 				
 				String trClass = getElectionTableRowClass(e.getStatus());
@@ -174,7 +175,7 @@ public class ElectionServlet extends HttpServlet {
 				out += "<td class =\"" + trClass + "\">" + e.getElectionName() + "</td>";
 				out += "<td class =\"" + trClass + "\">" + drawElectionStatus(e.getStatus(), e.getStatusDescription()) + "</td>";
 				out += "<td class =\"" + trClass + "\">" + voted + " votes</td>";
-				out += "<td class =\"" + trClass + "\">" + votersTotal + " voters</td>";				
+				out += "<td class =\"" + trClass + "\">" + votersTotal + "</td>";				
 				out += "<td class =\"" + trClass + "\">" + drawElectionAction(e.getElectionId(), e.getStatus(), e.getElectionType()) + "</td>";
 				out += "</tr>";
 			}
@@ -825,6 +826,22 @@ public class ElectionServlet extends HttpServlet {
 			for(String str : arrayOfStrings) {
 				out += str + deliminter;
 			}
+		}
+		
+		return out;
+	}
+	
+	/**
+	 * Dmitriy Karmazin
+	 * This function returns string representation of people who can vote in this election
+	 */
+	public String getTotalEligibleVotes(int total) {
+		String out = "";
+		
+		if(total == -1) {
+			out = "public";
+		} else {
+			out = "" + total + " voters";
 		}
 		
 		return out;

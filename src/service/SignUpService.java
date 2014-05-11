@@ -7,46 +7,76 @@ import dto.UserDto;
 import dto.Validator;
 
 public class SignUpService {
+	private static boolean repeatRmi = true;
 
 	public static Validator addBasicUser(UserDto newUser){
-		Validator res = new Validator();
+		Validator v = new Validator();
 		
 		try {
-			res = Initializer.rmi.addUser(newUser);
-		} catch (RemoteException e) {
-			res.setVerified(false);
-			res.setStatus("RMI failure.");
+			v = Initializer.getRmi().addUser(newUser);
+			repeatRmi = true;
+		} catch (Exception e) {
+			if(repeatRmi) {
+				// Revoke RMI one more time
+				Initializer.connectRmiServer();
+				repeatRmi = false;
+				v = addBasicUser(newUser);
+			} else {
+				// Give out error message
+				v.setVerified(false);
+				v.setStatus("ERROR: the application has encountered problem establishing RMI connection");
+				repeatRmi = true;
+			}
 		}
 		
-		return res;
+		return v;
 	}
 	
 	
 	public static Validator addUserwithKeyProtectionPassword(UserDto newUser){
-		Validator res = new Validator();
+		Validator v = new Validator();
 		
 		try {
-			res = Initializer.rmi.addUserWithPP(newUser);
-		} catch (RemoteException e) {
-			res.setVerified(false);
-			res.setStatus("RMI failure.");
+			v = Initializer.getRmi().addUserWithPP(newUser);
+			repeatRmi = true;
+		} catch (Exception e) {
+			if(repeatRmi) {
+				// Revoke RMI one more time
+				Initializer.connectRmiServer();
+				repeatRmi = false;
+				v = addUserwithKeyProtectionPassword(newUser);
+			} else {
+				// Give out error message
+				v.setVerified(false);
+				v.setStatus("ERROR: the application has encountered problem establishing RMI connection");
+				repeatRmi = true;
+			}
 		}
 		
-		return res;
+		return v;
 	}
 	
 	
 	public static Validator addUserWithPublicKey(UserDto newUser){
-Validator res = new Validator();
+		Validator v = new Validator();
 		
 		try {
-			res = Initializer.rmi.addUserWithKey(newUser);
-		} catch (RemoteException e) {
-			res.setVerified(false);
-			res.setStatus("RMI failure.");
+			v = Initializer.getRmi().addUserWithKey(newUser);
+			repeatRmi = true;
+		} catch (Exception e) {
+			if(repeatRmi) {
+				// Revoke RMI one more time
+				Initializer.connectRmiServer();
+				repeatRmi = false;
+				v = addUserWithPublicKey(newUser);
+			} else {
+				// Give out error message
+				v.setVerified(false);
+				v.setStatus("ERROR: the application has encountered problem establishing RMI connection");
+				repeatRmi = true;
+			}
 		}
-		
-		return res;
+
+		return v;
 	}
-	
 }

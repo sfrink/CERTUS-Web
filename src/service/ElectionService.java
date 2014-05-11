@@ -17,35 +17,24 @@ public class ElectionService {
 		String sessionID = HeaderService.getUserSessionId(request);
 
 		try {
-			v1 = Initializer.rmi.selectElectionsForVoter(userId, sessionID);
-		} catch (RemoteException e) {
+			v1 = Initializer.getRmi().selectElectionsForVoter(userId, sessionID);
+		} catch (Exception e) {
 			v1.setVerified(false);
 			v1.setStatus("RMI call failed");
+			HeaderService.errorLogout(request);
 		}
 		return v1;
 	}
-	
-	
-	public static Validator saveVote(VoteDto vote) {
-		Validator v1 = new Validator();
-		
-		v1.setVerified(false);
-		v1.setStatus("failed!");
-		
-		
-		
-		return v1;
-	}
-	
 	
 	public static Validator selectElectionForOwner(HttpServletRequest request, int id) {
 		Validator v1 = new Validator();
 		try {
 			String sessionID = HeaderService.getUserSessionId(request);
-			v1 = Initializer.rmi.selectElectionForOwner(id, sessionID);
-		} catch (RemoteException e) {
+			v1 = Initializer.getRmi().selectElectionForOwner(id, sessionID);
+		} catch (Exception e) {
 			v1.setVerified(false);
 			v1.setStatus("RMI call failed");
+			HeaderService.errorLogout(request);
 		}
 		return v1;
 	}
@@ -54,10 +43,11 @@ public class ElectionService {
 		Validator v1 = new Validator();
 		try {
 			String sessionID = HeaderService.getUserSessionId(request);
-			v1 = Initializer.rmi.selectElectionForVoter(id, sessionID);
-		} catch (RemoteException e) {
+			v1 = Initializer.getRmi().selectElectionForVoter(id, sessionID);
+		} catch (Exception e) {
 			v1.setVerified(false);
 			v1.setStatus("RMI call failed");
+			HeaderService.errorLogout(request);
 		}
 		return v1;
 	}
@@ -67,11 +57,11 @@ public class ElectionService {
 		Validator val=new Validator();
 		try{
 			String sessionID = HeaderService.getUserSessionId(request);
-			val=Initializer.rmi.deleteElection(electionID, sessionID);
-		}
-		catch (RemoteException e){
+			val=Initializer.getRmi().deleteElection(electionID, sessionID);
+		} catch (Exception e) {
 			val.setVerified(false);
 			val.setStatus("RMI call failed");
+			HeaderService.errorLogout(request);
 		}
 		return val;
 	}
@@ -82,10 +72,9 @@ public class ElectionService {
     	
 		try {
 			String sessionID = HeaderService.getUserSessionId(request);
-			validator  = Initializer.rmi.selectElectionFullDetail(electionId, sessionID);
-			
-		} catch (RemoteException e) {
-			e.printStackTrace();
+			validator  = Initializer.getRmi().selectElectionFullDetail(electionId, sessionID);
+		} catch (Exception e) {
+			HeaderService.errorLogout(request);
 		}
 		return validator;
 	}
@@ -96,10 +85,9 @@ public class ElectionService {
     	
 		try {
 			String sessionID = HeaderService.getUserSessionId(request);
-			validator  = Initializer.rmi.selectElectionsForAdmin(sessionID);
-			
-		} catch (RemoteException e) {
-			e.printStackTrace();
+			validator  = Initializer.getRmi().selectElectionsForAdmin(sessionID);
+		} catch (Exception e) {
+			HeaderService.errorLogout(request);
 		}
 		return validator;
     }
@@ -112,9 +100,9 @@ public class ElectionService {
     	
 		try {
 			String sessionID = HeaderService.getUserSessionId(request);
-			validator  = Initializer.rmi.selectElectionsForOwner(electionOwnerId, sessionID);
-		} catch (RemoteException e) {
-			e.printStackTrace();
+			validator  = Initializer.getRmi().selectElectionsForOwner(electionOwnerId, sessionID);
+		} catch (Exception e) {
+			HeaderService.errorLogout(request);
 		}
 		return validator;
     }
@@ -128,9 +116,9 @@ public class ElectionService {
     	
 		try {
 			String sessionID = HeaderService.getUserSessionId(request);
-			validator  = Initializer.rmi.addElection(electionDto, sessionID);
-		} catch (RemoteException e) {
-			e.printStackTrace();
+			validator  = Initializer.getRmi().addElection(electionDto, sessionID);
+		} catch (Exception e) {
+			HeaderService.errorLogout(request);
 		}
 		return validator;
     }
@@ -141,9 +129,9 @@ public class ElectionService {
     	
 		try {
 			String sessionID = HeaderService.getUserSessionId(request);
-			validator  = Initializer.rmi.addAdditionalUsersToElection(electionDto, sessionID);
-		} catch (RemoteException e) {
-			e.printStackTrace();
+			validator  = Initializer.getRmi().addAdditionalUsersToElection(electionDto, sessionID);
+		} catch (Exception e) {
+			HeaderService.errorLogout(request);
 		}
 		return validator;
     }
@@ -154,9 +142,9 @@ public class ElectionService {
     	
 		try {
 			String sessionID = HeaderService.getUserSessionId(request);
-			validator  = Initializer.rmi.editElection(election, sessionID);
-		} catch (RemoteException e) {
-			e.printStackTrace();
+			validator  = Initializer.getRmi().editElection(election, sessionID);
+		} catch (Exception e) {
+			HeaderService.errorLogout(request);
 		}
 		return validator;
     }
@@ -167,9 +155,9 @@ public class ElectionService {
     	
 		try {
 			String sessionID = HeaderService.getUserSessionId(request);
-			validator  = Initializer.rmi.openElectionAndPopulateCandidates(electionId, sessionID);
-		} catch (RemoteException e) {
-			e.printStackTrace();
+			validator  = Initializer.getRmi().openElectionAndPopulateCandidates(electionId, sessionID);
+		} catch (Exception e) {
+			HeaderService.errorLogout(request);
 		}
 		return validator;
     }
@@ -180,9 +168,9 @@ public class ElectionService {
     	
 		try {
 			String sessionID = HeaderService.getUserSessionId(request);
-			validator  = Initializer.rmi.editElectionStatus(electionId, ElectionStatus.OPEN, sessionID);
-		} catch (RemoteException e) {
-			e.printStackTrace();
+			validator  = Initializer.getRmi().editElectionStatus(electionId, ElectionStatus.OPEN, sessionID);
+		} catch (Exception e) {
+			HeaderService.errorLogout(request);
 		}
 		return validator;
     }
@@ -193,9 +181,9 @@ public class ElectionService {
     	
 		try {
 			String sessionID = HeaderService.getUserSessionId(request);
-			validator  = Initializer.rmi.editElectionStatus(electionId, ElectionStatus.CLOSED, sessionID);
-		} catch (RemoteException e) {
-			e.printStackTrace();
+			validator  = Initializer.getRmi().editElectionStatus(electionId, ElectionStatus.CLOSED, sessionID);
+		} catch (Exception e) {
+			HeaderService.errorLogout(request);
 		}
 		return validator;
     }
@@ -205,10 +193,10 @@ public class ElectionService {
     	
     	try{
 			String sessionID = HeaderService.getUserSessionId(request);
-    		val=Initializer.rmi.publishResults(electionId, password, sessionID);
-    	} catch(RemoteException e){
-    		e.printStackTrace();
-    	}
+    		val=Initializer.getRmi().publishResults(electionId, password, sessionID);
+		} catch (Exception e) {
+			HeaderService.errorLogout(request);
+		}
     	return val;
     }
     
@@ -218,9 +206,9 @@ public class ElectionService {
     	
 		try {
 			String sessionID = HeaderService.getUserSessionId(request);
-			validator  = Initializer.rmi.deleteElection(electionId, sessionID);
-		} catch (RemoteException e) {
-			e.printStackTrace();
+			validator  = Initializer.getRmi().deleteElection(electionId, sessionID);
+		} catch (Exception e) {
+			HeaderService.errorLogout(request);
 		}
 		return validator;
     }
@@ -232,9 +220,9 @@ public class ElectionService {
     	
     	try {
 			String sessionID = HeaderService.getUserSessionId(request);
-			validator  = Initializer.rmi.selectElectionsForVoter(userId, sessionID);
-		} catch (RemoteException e) {
-			e.printStackTrace();
+			validator  = Initializer.getRmi().selectElectionsForVoter(userId, sessionID);
+		} catch (Exception e) {
+			HeaderService.errorLogout(request);
 		}
     	
 		return validator;  
@@ -247,9 +235,9 @@ public class ElectionService {
     	
     	try {
 			String sessionID = HeaderService.getUserSessionId(request);
-			validator  = Initializer.rmi.selectElectionsForResults(userId, sessionID);
-		} catch (RemoteException e) {
-			e.printStackTrace();
+			validator  = Initializer.getRmi().selectElectionsForResults(userId, sessionID);
+		} catch (Exception e) {
+			HeaderService.errorLogout(request);
 		}
     	
 		return validator;  
@@ -261,9 +249,9 @@ public class ElectionService {
     	
     	try {
 			String sessionID = HeaderService.getUserSessionId(request);
-			validator  = Initializer.rmi.selectResults(electionId, sessionID);
-		} catch (RemoteException e) {
-			e.printStackTrace();
+			validator  = Initializer.getRmi().selectResults(electionId, sessionID);
+		} catch (Exception e) {
+			HeaderService.errorLogout(request);
 		}
     	
 		return validator;  

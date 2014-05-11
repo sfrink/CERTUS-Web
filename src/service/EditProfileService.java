@@ -14,10 +14,11 @@ public class EditProfileService {
 		Validator val = new Validator();
 		String sessionID = HeaderService.getUserSessionId(request);
 		try {
-			val = Initializer.rmi.selectUser(userId, sessionID);
-		} catch (RemoteException e) {
+			val = Initializer.getRmi().selectUser(userId, sessionID);
+		} catch (Exception e) {
 			val.setVerified(false);
 			val.setStatus("RMI call failed");
+			HeaderService.errorLogout(request);
 		}
 		return val;
 	}
@@ -26,10 +27,11 @@ public class EditProfileService {
 		Validator val = new Validator();
 		String sessionID = HeaderService.getUserSessionId(request);	
 		try {
-			val = Initializer.rmi.updateUser(userDto, sessionID);
-		} catch (RemoteException e) {
+			val = Initializer.getRmi().updateUser(userDto, sessionID);
+		} catch (Exception e) {
 			val.setVerified(false);
 			val.setStatus("RMI call failed");
+			HeaderService.errorLogout(request);
 		}
 		return val;
 	}
@@ -38,13 +40,14 @@ public class EditProfileService {
 		Validator val = new Validator();
 		String sessionID = HeaderService.getUserSessionId(request);	
 		try {
-			val = Initializer.rmi.updateUserPassword(userDto, sessionID);
+			val = Initializer.getRmi().updateUserPassword(userDto, sessionID);
 			/*if (val.isVerified()){
 				HeaderService.logout();
 			}*/
-		} catch (RemoteException e) {
+		} catch (Exception e) {
 			val.setVerified(false);
 			val.setStatus("RMI call failed");
+			HeaderService.errorLogout(request);
 		}
 		return val;
 	}
@@ -52,11 +55,11 @@ public class EditProfileService {
 	public static Validator resetPassword(String email){
 		Validator val=new Validator();
 		try{
-			val=Initializer.rmi.resetPassword(email);
-		}
-		catch(RemoteException e){
+			val=Initializer.getRmi().resetPassword(email);
+		} catch (Exception e) {
 			val.setVerified(false);
 			val.setStatus("RMI call failed");
+			
 		}
 		return val;
 	}

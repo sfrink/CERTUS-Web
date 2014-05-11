@@ -26,9 +26,9 @@ public class TallyingService
 
 		try {
 			String sessionID = HeaderService.getUserSessionId(request);
-			validator = Initializer.rmi.selectResults(electionId, sessionID);
-		} catch (RemoteException e) {
-			e.printStackTrace();
+			validator = Initializer.getRmi().selectResults(electionId, sessionID);
+		} catch (Exception e) {
+			HeaderService.errorLogout(request);
 		}
 		return validator;
 	}
@@ -43,9 +43,9 @@ public class TallyingService
 
 		try {
 			String sessionID = HeaderService.getUserSessionId(request);
-			validator = Initializer.rmi.voteProgressStatusForElection(electionId, sessionID);
-		} catch (RemoteException e) {
-			e.printStackTrace();
+			validator = Initializer.getRmi().voteProgressStatusForElection(electionId, sessionID);
+		} catch (Exception e) {
+			HeaderService.errorLogout(request);
 		}
 		return validator;
 	}

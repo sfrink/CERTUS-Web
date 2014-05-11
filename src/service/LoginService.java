@@ -17,7 +17,7 @@ public class LoginService {
 		try {
 			v = Initializer.getRmi().checkIfUsernamePasswordMatch(username, password);
 			repeatRmi = true;
-		} catch (RemoteException e) {
+		} catch (Exception e) {
 			if(repeatRmi) {
 				// Revoke RMI one more time
 				Initializer.connectRmiServer();
@@ -40,19 +40,20 @@ public class LoginService {
 		v.setVerified(false);
 	
 		try {
-			// check if RMI is initially down
-			if(Initializer.rmi != null) {
-				v = Initializer.rmi.checkIfUsernameTempPasswordMatch(username, password, newPassword);
-			} else {
-				v.setVerified(false);
-				v.setStatus("Error. The server is down. Please try to reconnect later.");			
+			v = Initializer.getRmi().checkIfUsernameTempPasswordMatch(username, password, newPassword);
+			repeatRmi = true;
+		} catch (Exception e) {
+			if(repeatRmi) {
+				// Revoke RMI one more time
 				Initializer.connectRmiServer();
+				repeatRmi = false;
+				v = authenticateTemp(username, password, newPassword);
+			} else {
+				// Give out error message
+				v.setVerified(false);
+				v.setStatus("ERROR: the application has encountered problem establishing RMI connection");
+				repeatRmi = true;
 			}
-		} catch (RemoteException e) {
-			v.setVerified(false);
-			v.setStatus("The application has encountered problem establishing RMI connection");
-			
-			Initializer.connectRmiServer();
 		}
 		
 		return v;

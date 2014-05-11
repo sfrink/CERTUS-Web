@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.swing.text.html.HTML;
 
 import rmi.Initializer;
 
@@ -172,7 +173,7 @@ public class HeaderService {
 
 	public static void logout(HttpServletRequest request) {
 		try {
-			Initializer.rmi.logOut(getUserSessionId(request));
+			Initializer.getRmi().logOut(getUserSessionId(request));
 			request.getSession().invalidate();
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
@@ -181,7 +182,18 @@ public class HeaderService {
 		// reset all session variables
 		resetSession(request);
 	}
-	
+
+	/**
+	 * This function logs out the user in case the server encounteres problem connecting to RMI
+	 * @author Dmitriy Karmazin | dkarmazi
+	 * @param request
+	 */
+	public static void errorLogout(HttpServletRequest request) {
+		request.getSession().invalidate();
+		resetSession(request);
+		request.setAttribute("rmi_error", HtmlService.drawMessageAlert("You have been logged out because of the problems on the server. Please try to login or come back later.", "alert"));
+	}
+
 	
 	/**
 	 * Dmitriy Karmazin

@@ -43,7 +43,7 @@ public class Initializer {
 
 			System.out.println("RMI connection established");
 		} catch (Exception e) {
-//			rmi = null;
+			rmi = null;
 			System.out.println("RMI connection exception: " + e.getMessage());
 			e.printStackTrace();
 		}
